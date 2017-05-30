@@ -25,7 +25,7 @@ before_script:
   - docker-compose up --build -d
 
 script:
-  - bundle exec rspec spec
+  - docker-compose run web rspec spec
 
 after_script:
   - docker-compose down
