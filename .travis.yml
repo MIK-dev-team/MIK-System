@@ -22,8 +22,9 @@ install:
   - docker-compose version
 
 before_script:
-  - docker-compose up --build -d
-  - docker-compose run -e web rake db:create db:migrate
+  - docker-compose build
+  - docker-compose up -d
+  - docker-compose run -e web bin/rake db:create db:migrate
 
 script:
   - docker-compose run web rspec spec
