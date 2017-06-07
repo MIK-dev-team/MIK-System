@@ -1,8 +1,8 @@
 # README
 
-###Development:
+### Development:
 * running app: docker-compose up
-* compiling assets: docker-compose bin/webpack
+* compiling assets: docker-compose run web bin/webpack
 * running tests: docker-compose run web rspec spec
 
 If you need to change Dockerfile or Gemfile run docker-compile build
