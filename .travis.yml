@@ -22,9 +22,9 @@ install:
   - docker-compose version
 
 before_script:
-  - docker-compose build
-  - docker-compose up -d
-  - docker-compose run web rake db:create db:migrate
+  - docker-compose up --build -d
+  - sleep 20
+  - docker-compose run -e "RAILS_ENV=test" web rake db:create db:migrate
 
 script:
   - docker-compose run web rspec spec
