@@ -1,13 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Plane:</strong>
-  <%= @reservation.plane %>
-</p>
-
-<p>
-  <strong>Resevation type:</strong>
-  <%= @reservation.resevation_type %>
+  <strong>Reservation type:</strong>
+  <%= @reservation.reservation_type %>
 </p>
 
 <p>
@@ -23,6 +18,11 @@
 <p>
   <strong>User:</strong>
   <%= @reservation.user_id %>
+</p>
+
+<p>
+  <strong>Plane:</strong>
+  <%= @reservation.plane_id %>
 </p>
 
 <%= link_to 'Edit', edit_reservation_path(@reservation) %> |
