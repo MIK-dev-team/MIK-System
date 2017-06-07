@@ -12,13 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :plane %>
-    <%= form.text_field :plane, id: :reservation_plane %>
-  </div>
-
-  <div class="field">
-    <%= form.label :resevation_type %>
-    <%= form.text_field :resevation_type, id: :reservation_resevation_type %>
+    <%= form.label :reservation_type %>
+    <%= form.text_field :reservation_type, id: :reservation_reservation_type %>
   </div>
 
   <div class="field">
@@ -34,6 +29,11 @@
   <div class="field">
     <%= form.label :user_id %>
     <%= form.number_field :user_id, id: :reservation_user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :plane_id %>
+    <%= form.text_field :plane_id, id: :reservation_plane_id %>
   </div>
 
   <div class="actions">

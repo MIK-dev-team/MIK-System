@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :reservations
+  resources :planes, only: [:show]
   get 'hello/index'
   root 'hello#index'
 
