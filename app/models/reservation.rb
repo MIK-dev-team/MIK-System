@@ -6,7 +6,6 @@ class Reservation < ApplicationRecord
   def start_date_before_end_date
     if self.start > self.finish
       errors.add("Lopetus ennen aloitusta")
-
     end
   end
 end
