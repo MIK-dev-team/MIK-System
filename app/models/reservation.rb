@@ -4,7 +4,7 @@ class Reservation < ApplicationRecord
   validate :start_date_before_end_date
 
   def start_date_before_end_date
-    if self.start > self.finish
+    if self.start > self.end
       errors.add("Lopetus ennen aloitusta")
     end
   end
