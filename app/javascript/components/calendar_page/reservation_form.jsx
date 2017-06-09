@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment'
+import axios from 'axios';
 import { Panel, FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 
 moment.locale('fi');
@@ -16,12 +17,20 @@ export default class ReservationForm extends React.Component {
     }
 
     submitReservation(event) {
-        console.log("start: " + this.props.timeSlot.start +
-                    "\nend: " + this.props.timeSlot.end +
-                    "\nplanetype: " + this.props.plane +
-                    "\ntype: " + this.state.type);
-
-        // TODO: LÄHETÄ TÄMÄ DATA PALVELIMELLE ASYNKRONISESTI JA LATAA ONNISTUESSA ETUSIVU JA ONNISTUMISVIESTI. MUUTEN NÄYTÄ VIRHE TÄLLÄ SIVULLA
+        const reservation = {
+            'start': this.props.timeSlot.start,
+            'end': this.props.timeSlot.end,
+            'reservation_type': this.state.type,
+            'plane_id': 1
+        };
+        axios.post('/reservations.json', reservation)
+            .then(function(response) {
+                this.forceUpdate();
+                console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
         event.preventDefault();
     }
 

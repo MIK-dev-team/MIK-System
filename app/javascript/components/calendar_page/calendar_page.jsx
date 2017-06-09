@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Row, Col, Button, ButtonToolbar, ButtonGroup } from 'react-bootstrap';
 import Calendar from "./calendar";
+import ReservationFetcher from "./reservation_fetcher";
 
 const kone1 = "kone1",
       kone2 = "kone2",
@@ -44,7 +45,7 @@ export default class CalendarPage extends React.Component {
                         </Col>
                     </Row>
                 <br />
-                <Calendar plane={this.state.selectedPlane}/>
+                <ReservationFetcher plane={this.state.selectedPlane}/>
                 <br />
             </Grid>
         )

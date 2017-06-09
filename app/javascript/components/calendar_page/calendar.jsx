@@ -17,7 +17,7 @@ export default class Calendar extends React.Component {
         super(props);
 
         this.state = {
-            reservations: [{}],
+            reservations: this.props.reservations,
             timeSlot: {
                 start: "",
                 end: ""
@@ -29,20 +29,16 @@ export default class Calendar extends React.Component {
         this.setCollapsed = this.setCollapsed.bind(this);
     }
 
-    componentDidMount() {
-        axios.get('/reservations.json')
-            .then(function (response) {
-                this.setState({
-                    reservations: response.data
-                });
-            }.bind(this))
-            .catch(function (error) {
-                console.log(error);
+    componentWillReceiveProps(nextProps) {
+        if(JSON.stringify(this.props.reservations) !== JSON.stringify(nextProps.reservations)) {
+            this.setState({
+                reservations: nextProps.reservations
             });
+        }
     }
 
     eventStyleGetter(event, start, end, isSelected) {
-        var background,
+        var background = "#ffffff",
             color = "#000000";
         if (event.reservation_type === "opetus")
             background = "#ffe99a";
@@ -103,7 +99,7 @@ export default class Calendar extends React.Component {
                             {...this.props}
                             events={this.state.reservations}
                             defaultView="week"
-                            onSelectEvent={() => alert("Tehdään tähän vaikka modaali tai muu ikkuna joka kertoo kaikki tiedot")}
+                            onSelectEvent={({}) => alert("Tehdään tähän vaikka modaali tai muu ikkuna joka kertoo kaikki tiedot")}
                             onSelectSlot={(timeSlot) => this.fillForm(timeSlot)}
                             views={["week", "day", "agenda"]}
                             eventPropGetter={this.eventStyleGetter}
