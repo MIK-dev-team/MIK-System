@@ -1,28 +1,15 @@
-# README
+# MIK-System [![Build Status](https://www.travis-ci.org/vipeeri/MIK-System.svg?branch=master)](https://www.travis-ci.org/vipeeri/MIK-System)
 
-###Development:
+New system for MIK (Malmin Ilmailukerho) to handle reservation of
+aeroplanes, keeping track of flight times for members, handling 
+billing and accounting, and managing memberships.
+
+The application is built with Ruby on Rails and React, and is
+deployed using Docker.
+
+### Development:
 * running app: docker-compose up
-* compiling assets: docker-compose bin/webpack
+* compiling assets: docker-compose run web bin/webpack
 * running tests: docker-compose run web rspec spec
 
 If you need to change Dockerfile or Gemfile run docker-compile build
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
