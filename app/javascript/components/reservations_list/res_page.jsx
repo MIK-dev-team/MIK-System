@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import ReservationList from './reservation_list';
+import moment from 'moment';
+import { Grid } from 'react-bootstrap';
+import ReservationTable from './reservation_table';
 
 export default class ReservationsPage extends React.Component {
     constructor() {
@@ -14,6 +16,11 @@ export default class ReservationsPage extends React.Component {
     componentDidMount() {
         axios.get('/reservations.json')
             .then(function (response) {
+                response.data.map(function(res) {
+                    res.start = moment(res.start).toDate();
+                    res.end = moment(res.end).toDate();
+                });
+
                 this.setState({
                     reservations: response.data
                 });
@@ -24,12 +31,10 @@ export default class ReservationsPage extends React.Component {
     }
 
     render() {
-        console.log(this.state.reservations);
         return (
-            <div>
-                <h1>Varaukset</h1>
-                <ReservationList reservations={this.state.reservations} />
-            </div>
+            <Grid>
+                <ReservationTable reservations={this.state.reservations} />
+            </Grid>
         )
     }
 }
