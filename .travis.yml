@@ -28,6 +28,7 @@ before_script:
 
 script:
   - docker-compose run web rspec spec
+  - sleep 5
   - docker-compose run web jest __tests__
 
 after_script:
