@@ -1,8 +1,6 @@
 sudo: required
 dist: trusty
 
-language: ruby
-
 service:
   - docker
 
@@ -25,7 +23,6 @@ before_script:
   - docker-compose up --build -d
   - sleep 20
   - docker-compose run -e "RAILS_ENV=test" web rake db:create db:migrate
-  - sleep 5
   - docker-compose run web yarn
 
 script:
