@@ -7,8 +7,27 @@ import ReservationsPage from "../../app/javascript/components/reservations_list/
 /**
  * Created by owlaukka on 13/06/17.
  */
-
 let page;
+const response = {
+    data: [
+        {
+            id: 1,
+            start: moment("2017-06-10T18:00:00+03:00").toDate(),
+            end: moment("2017-06-10T20:00:00+03:00").toDate(),
+            plane_id: 2,
+            reservation_type: "opetus"
+        },
+        {
+            id: 2,
+            start: moment("2017-06-09T10:30:00+03:00").toDate(),
+            end: moment("2017-06-09T20:00:00+03:00").toDate(),
+            plane_id: 1,
+            reservation_type: "harraste"
+        }
+    ]
+};
+
+
 describe('Reservation page initially', () => {
 
     beforeAll(() => {
@@ -30,29 +49,36 @@ describe('Reservation page initially', () => {
     it('sets props correctly on ReservationTable', () => {
         expect(page.find('ReservationTable').props()).toEqual({reservations: [{}]});
     });
+
+    it('converts datestrings correctly with modifyResponse', () => {
+        const input = {
+            data: [
+                {
+                    id: 1,
+                    start: "2017-06-10T18:00:00+03:00",
+                    end: "2017-06-10T20:00:00+03:00",
+                    plane_id: 2,
+                    reservation_type: "opetus"
+                },
+                {
+                    id: 2,
+                    start: "2017-06-09T10:30:00+03:00",
+                    end: "2017-06-09T20:00:00+03:00",
+                    plane_id: 1,
+                    reservation_type: "harraste"
+                }
+            ]
+        };
+        expect(page.state()).toEqual({reservations: [{}]});
+        page.instance().modifyResponse(input);
+        page.update();
+        expect(page.state()).toEqual({reservations: response.data});
+    });
 });
 
 describe('Reservation page reservation fetch', () => {
     let stub;
     let promise;
-    const response = {
-        data: [
-            {
-                id: 1,
-                start: moment("2017-06-10T18:00:00+03:00").toDate(),
-                end: moment("2017-06-10T20:00:00+03:00").toDate(),
-                plane_id: 2,
-                reservation_type: "opetus"
-            },
-            {
-                id: 2,
-                start: moment("2017-06-09T10:30:00+03:00").toDate(),
-                end: moment("2017-06-09T20:00:00+03:00").toDate(),
-                plane_id: 1,
-                reservation_type: "harraste"
-            }
-        ]
-    };
 
     beforeAll(() => {
         promise = Promise.resolve(response);
@@ -87,30 +113,4 @@ describe('Reservation page reservation fetch', () => {
             expect(page.find('ReservationTable').props()).toEqual({reservations: response.data});
         })
     });
-
-    it('converts datestrings correctly with modifyResponse', () => {
-        const input = {
-            data: [
-                {
-                    id: 1,
-                    start: "2017-06-10T18:00:00+03:00",
-                    end: "2017-06-10T20:00:00+03:00",
-                    plane_id: 2,
-                    reservation_type: "opetus"
-                },
-                {
-                    id: 2,
-                    start: "2017-06-09T10:30:00+03:00",
-                    end: "2017-06-09T20:00:00+03:00",
-                    plane_id: 1,
-                    reservation_type: "harraste"
-                }
-            ]
-        }
-        page = shallow(<ReservationsPage/>);
-        expect(page.state()).toEqual({reservations: [{}]});
-        page.instance().modifyResponse(input);
-        page.update();
-        expect(page.state()).toEqual({reservations: response.data});
-    })
 });
