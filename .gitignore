@@ -31,6 +31,9 @@
 # Default database schema
 /db/schema.rb
 
+# Test coverage
+/coverage
+
 config/initializers/secret_token.rb
 
 *.rbc

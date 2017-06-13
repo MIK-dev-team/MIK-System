@@ -37,6 +37,7 @@
     "react-test-renderer": "^15.5.4",
     "resolve-url-loader": "^2.0.2",
     "sass-loader": "^6.0.5",
+    "sinon": "^2.3.4",
     "style-loader": "^0.18.1",
     "webpack": "^2.6.1",
     "webpack-manifest-plugin": "^1.1.0",
@@ -48,5 +49,11 @@
   },
   "scripts": {
     "test": "jest"
+  },
+  "jest": {
+    "testPathIgnorePatterns": ["<rootDir>/node_modules/", "<rootDir>/config/"],
+    "collectCoverage": true,
+    "collectCoverageFrom": ["**/app/javascript/components/**"],
+    "coverageDirectory": "coverage/react"
   }
 }
