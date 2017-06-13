@@ -27,7 +27,7 @@ before_script:
 
 script:
   - docker-compose run web rspec spec
-  - docker-compose run web yarn test __tests__
+  - docker-compose run web yarn test
 
 after_script:
   - docker-compose down

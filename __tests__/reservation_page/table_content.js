@@ -36,9 +36,12 @@ afterEach(() => {
 
 describe('Reservation table content', () => {
 
-    // This HAS to be the first test
-    it('displays correct amount of rows', () => {
+    it('displays nothing extra if no props given', () => {
         expect(tableContent.find('tr').length).toEqual(1);
+        expect(tableContent.find('td').length).toEqual(0);
+    })
+
+    it('displays correct amount of rows', () => {
         tableContent.setProps({ reservations: reservations });
         expect(tableContent.find('tr').length).toEqual(2);
     });
