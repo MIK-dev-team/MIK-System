@@ -13,17 +13,21 @@ export default class ReservationsPage extends React.Component {
 
     }
 
+    modifyResponse(response) {
+        response.data.map(function(res) {
+            res.start = moment(res.start).toDate();
+            res.end = moment(res.end).toDate();
+        });
+
+        this.setState({
+            reservations: response.data
+        });
+    }
+
     componentDidMount() {
         axios.get('/reservations.json')
             .then(function (response) {
-                response.data.map(function(res) {
-                    res.start = moment(res.start).toDate();
-                    res.end = moment(res.end).toDate();
-                });
-
-                this.setState({
-                    reservations: response.data
-                });
+                this.modifyResponse(response);
             }.bind(this))
             .catch(function (error) {
                 console.log("errormessage: " + error);
