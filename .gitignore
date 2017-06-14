@@ -6,6 +6,7 @@
 
 # Ignore RubyMine things
 .idea
+.generators
 
 # Ignore bundler config.
 /.bundle

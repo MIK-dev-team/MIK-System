@@ -2,14 +2,18 @@ import React from 'react';
 import moment from 'moment'
 import axios from 'axios';
 import { Panel, FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import ReservationCreator from './reservation_creator';
 
 moment.locale('fi');
 
+let reservation = {},
+    submitted = false;
 export default class ReservationForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: "harraste"
+            type: "harraste",
+            submitted: false
         }
 
         this.submitReservation = this.submitReservation.bind(this);
@@ -17,20 +21,19 @@ export default class ReservationForm extends React.Component {
     }
 
     submitReservation(event) {
-        const reservation = {
+
+        this.setState({
+            submitted: true
+        });
+
+
+        const res = {
             'start': this.props.timeSlot.start,
             'end': this.props.timeSlot.end,
             'reservation_type': this.state.type,
             'plane_id': 1
         };
-        axios.post('/reservations.json', reservation)
-            .then(function(response) {
-                this.forceUpdate();
-                console.log(response);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
+        reservation = res;
         event.preventDefault();
     }
 
@@ -50,6 +53,7 @@ export default class ReservationForm extends React.Component {
     render() {
         return (
             <Panel header={<h3>Tee varaus</h3>}>
+                <ReservationCreator reservation={reservation} submitted={this.state.submitted} />
                 <form onSubmit={this.submitReservation}>
                     <FormGroup controlId="1">
                         <ControlLabel>Lennon alku</ControlLabel>

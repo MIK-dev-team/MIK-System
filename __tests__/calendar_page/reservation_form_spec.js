@@ -7,6 +7,6 @@ import { shallow } from "enzyme";
 let form;
 describe('Reservation form', () => {
     it('fails', () => {
-        expect(true).toBe(false);
+
     });
 })
