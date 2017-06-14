@@ -6,8 +6,7 @@ import ReservationCreator from './reservation_creator';
 
 moment.locale('fi');
 
-let reservation = {},
-    submitted = false;
+let reservation = {}
 export default class ReservationForm extends React.Component {
     constructor(props) {
         super(props);
@@ -21,11 +20,9 @@ export default class ReservationForm extends React.Component {
     }
 
     submitReservation(event) {
-
         this.setState({
             submitted: true
         });
-
 
         const res = {
             'start': this.props.timeSlot.start,
@@ -63,7 +60,7 @@ export default class ReservationForm extends React.Component {
                         <ControlLabel>Lennon loppu</ControlLabel>
                         <FormControl disabled type="text" value={this.formatTimes(this.props.timeSlot.end)} />
                     </FormGroup>
-                    <FormGroup controlId="selectPlane">
+                    <FormGroup id="selectPlane" controlId="selectPlane">
                         <ControlLabel>Lentokone</ControlLabel>
                         <FormControl disabled componentClass="select" value={this.props.plane}>
                             <option value="kone1">Kone 1</option>
@@ -71,7 +68,7 @@ export default class ReservationForm extends React.Component {
                             <option value="kone3">Kone 3</option>
                         </FormControl>
                     </FormGroup>
-                    <FormGroup controlId="selectPlane">
+                    <FormGroup id="selectType" controlId="selectType">
                         <ControlLabel>Lentokone</ControlLabel>
                         <FormControl componentClass="select" value={this.state.type} onChange={this.setType}>
                             <option value="opetus">Opetuslento</option>
