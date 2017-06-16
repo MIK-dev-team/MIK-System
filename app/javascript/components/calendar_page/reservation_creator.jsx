@@ -32,11 +32,12 @@ export default class ReservationCreator extends React.Component {
                 this.setState({
                     msg: "Yippii"
                 });
-                window.location.reload();
+                console.log(response);
+                //window.location.reload();
             }.bind(this))
             .catch(function(error) {
                 this.setState({
-                    msg: "vitut"
+                    msg: "Ei onnaa"
                 });
                 console.log(error);
             });
