@@ -24,6 +24,7 @@ before_script:
   - sleep 20
   - docker-compose run -e "RAILS_ENV=test" web rake db:create db:migrate
   - docker-compose run web yarn
+  - docker-compose run -e "RAILS_ENV=test" web bin/webpack
 
 script:
   - docker-compose run web rspec spec
