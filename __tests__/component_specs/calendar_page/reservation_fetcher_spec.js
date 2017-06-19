@@ -6,7 +6,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
-import ReservationFetcher from "../../app/javascript/components/calendar_page/reservation_fetcher";
+import ReservationFetcher from "../../../app/javascript/components/calendar_page/reservation_fetcher";
 
 let fetcher;
 const plane = "kone1";

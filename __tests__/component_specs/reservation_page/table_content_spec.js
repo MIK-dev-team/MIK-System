@@ -4,7 +4,7 @@
 import React from 'react';
 import moment from 'moment';
 import { shallow } from 'enzyme';
-import ReservationTableContent from "../../app/javascript/components/reservations_list/reservation_table_content";
+import ReservationTableContent from "../../../app/javascript/components/reservations_list/reservation_table_content";
 
 moment.locale('fi');
 
@@ -28,16 +28,16 @@ let reservations = [
 
 beforeEach(() => {
     tableContent = shallow(<ReservationTableContent reservations={[]} />);
-})
+});
 
 afterEach(() => {
     tableContent.setProps({ reservations: [] });
-})
+});
 
 describe('Reservation table content', () => {
 
     it('displays nothing extra if no props given', () => {
-        expect(tableContent.find('tr').length).toEqual(1);
+        expect(tableContent.find('tr').length).toEqual(0);
         expect(tableContent.find('td').length).toEqual(0);
     })
 
@@ -61,7 +61,7 @@ describe('Reservation table content', () => {
             .find('td').first().text()).toEqual("2");
         expect(tableContent.find('tr').at(2)
             .find('td').first().text()).toEqual("")
-    })
+    });
 
     it('displays id correctly', () => {
         tableContent.setProps({ reservations: reservations });

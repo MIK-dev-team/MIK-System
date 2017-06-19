@@ -4,7 +4,7 @@
 import React from 'react';
 import { shallow } from "enzyme";
 import sinon from 'sinon';
-import ReservationForm from "../../app/javascript/components/calendar_page/reservation_form";
+import ReservationForm from "../../../app/javascript/components/calendar_page/reservation_form";
 
 let form;
 describe('Reservation form', () => {

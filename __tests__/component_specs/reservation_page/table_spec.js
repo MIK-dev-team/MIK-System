@@ -4,21 +4,18 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import moment from 'moment';
-import ReservationTable from "../../app/javascript/components/reservations_list/reservation_table";
+import { ReservationTable } from "../../../app/javascript/components/reservations_list/reservation_table";
 
 let table;
 
-beforeEach(() => {
-    table = shallow(<ReservationTable reservations={[]} />)
-});
+describe('Reservation table after fetching', () => {
+    beforeEach(() => {
+        table = shallow(<ReservationTable reservations={[{}]} fetched={true}/>)
+    });
 
-afterEach(() => {
-    table.setProps({
-        reservations: []
-    })
-})
-
-describe('Reservation table', () => {
+    afterEach(() => {
+        table;
+    });
 
     it('has title', () => {
         expect(table.find('h1').text()).toEqual('Varaukset');
@@ -32,17 +29,14 @@ describe('Reservation table', () => {
         expect(table.find('th').length).toEqual(5);
     });
 
-    it('sets reservations to state', () => {
-        expect(table.state().reservations).toEqual([]);
-    });
-
-    it('has ReservationTableContent', () => {
+    it('has ReservationTableContent when fetched is true', () => {
         expect(table.find('ReservationTableContent').length).toEqual(1);
+        expect(table.find('#load').length).toEqual(0);
     });
 
     it('passes correct props to ReservationTableContent when empty array', () => {
         let content = table.find('ReservationTableContent');
-        expect(content.props().reservations).toEqual([]);
+        expect(content.props().reservations).toEqual([{}]);
     });
 
     it('passes correct props to ReservationTableContent when not an empty array of reservations', () => {
@@ -58,7 +52,22 @@ describe('Reservation table', () => {
         table.setProps({
             reservations: newRes
         });
+        table.update();
         let content = table.find('ReservationTableContent');
         expect(content.props().reservations).toEqual(newRes);
+    })
+});
+
+describe('ReservationTable before fetching', () => {
+    beforeEach(() => {
+        table = shallow(<ReservationTable reservations={[{}]} fetching={true} fetched={false}/>)
+    });
+
+    afterEach(() => {
+        table;
+    });
+
+    it('has ReactLoading', () => {
+        expect(table.find('#load').length).toEqual(1);
     })
 });

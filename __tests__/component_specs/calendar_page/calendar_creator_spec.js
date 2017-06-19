@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { shallow } from "enzyme";
 import sinon from 'sinon';
-import ReservationCreator from "../../app/javascript/components/calendar_page/reservation_creator";
+import ReservationCreator from "../../../app/javascript/components/calendar_page/reservation_creator";
 /**
  * Created by owlaukka on 17/06/17.
  */

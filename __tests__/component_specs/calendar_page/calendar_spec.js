@@ -3,7 +3,7 @@ import { mount, shallow } from "enzyme";
 import sinon from "sinon";
 import moment from "moment";
 import axios from "axios";
-import Calendar from "../../app/javascript/components/calendar_page/calendar";
+import Calendar from "../../../app/javascript/components/calendar_page/calendar";
 /**
  * Created by owlaukka on 17/06/17.
  */
