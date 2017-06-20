@@ -1,10 +1,14 @@
 class PlanesController < ApplicationController
-  before_action :set_plane, only: [:show]
+  before_action :set_plane, only: [:show, :reservations]
 
   # GET /reservations/1
   # GET /reservations/1.json
   def show
-    @resevations = @plane.reservations
+    @reservations = @plane.reservations
+  end
+
+  def reservations
+    @reservations = @plane.reservations
   end
 
   private

@@ -26,6 +26,9 @@ class ReservationsController < ApplicationController
   def create
     @reservation = Reservation.new(reservation_params)
 
+    # This has to be changed when we get an actual user control system. Taken from current_user mnost likely
+    @reservation.user_id = 1
+
     respond_to do |format|
       if @reservation.save
         format.html { redirect_to @reservation, notice: 'Reservation was successfully created.' }
