@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :reservations
   resources :planes, only: [:show]
+  get '/planes/:id/reservations.json', to: 'planes#reservations'
   get 'hello/index'
   root 'hello#index'
 
