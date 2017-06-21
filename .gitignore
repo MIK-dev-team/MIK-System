@@ -6,13 +6,15 @@
 
 # Ignore RubyMine things
 .idea
+.generators
 
 # Ignore bundler config.
 /.bundle
+/vendor/bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
+/log
+/tmp
 !/log/.keep
 !/tmp/.keep
 
@@ -25,6 +27,22 @@
 # Test and misc stuff
 .rspec
 /public/system
+/public/assets/**
 
 # Default database schema
 /db/schema.rb
+
+# Test coverage
+/coverage
+
+config/initializers/secret_token.rb
+
+*.rbc
+capybara-*.html
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/coverage/
+/spec/tmp
+*.orig
+rerun.txt
+pickle-email-*.html
