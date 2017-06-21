@@ -11,5 +11,6 @@ deployed using Docker.
 * running app: docker-compose up
 * compiling assets: docker-compose run web bin/webpack
 * running tests: docker-compose run web rspec spec
+* running react tests: docker-compose run web yarn test
 
 If you need to change Dockerfile or Gemfile run docker-compile build
