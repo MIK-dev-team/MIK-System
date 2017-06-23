@@ -11,7 +11,8 @@
         "useBuiltIns": true
       }
     ],
-    "react"
+    "react",
+    "stage-0"
   ],
   "plugins": [
     "syntax-dynamic-import",
@@ -20,6 +21,12 @@
       {
         "spec": true
       }
-    ]
-  ]
+    ],
+    "transform-decorators-legacy"
+  ],
+  "env": {
+    "test": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    }
+  }
 }
