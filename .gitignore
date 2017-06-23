@@ -16,6 +16,9 @@
 !/log/.keep
 !/tmp/.keep
 
+# Merge file backups
+*.orig
+
 /node_modules
 /yarn-error.log
 
