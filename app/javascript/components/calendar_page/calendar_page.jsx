@@ -18,6 +18,7 @@ export default class CalendarPage extends React.Component {
         this.selectPlane = this.selectPlane.bind(this);
     }
 
+    // Reducer+action done
     selectPlane(plane) {
         selected = plane;
         this.setState({

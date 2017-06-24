@@ -18,6 +18,37 @@ export function fetchReservations() {
     }
 }
 
+export function submitReservation(reservation) {
+    return function(dispatch) {
+        dispatch({type: "SUBMIT_RESERVATION_PENDING"});
+        axios.post('/reservations.json', reservation)
+            .then(response => {
+                dispatch({type: "SUBMIT_RESERVATION_FULFILLED"})
+            })
+            .catch(err => {
+                dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: err})
+            })
+    }
+}
+
+export function selectPlane(plane) {
+    return (dispatch) => {
+        dispatch({type: "SELECT_PLANE", payload: plane});
+    }
+}
+
+export function setType(event) {
+    return (dispatch) => {
+        dispatch({type: "SET_TYPE", payload: event.target.value});
+    }
+}
+
+export function setFlightTime(timeSlot) {
+    return (dispatch) => {
+        dispatch({type: "SET_FLIGHT_TIME", payload: timeSlot});
+    }
+}
+
 export function mapReservations(reservations) {
     return reservations.map((res) =>
         (<tr key={res.id}>
