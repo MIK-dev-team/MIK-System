@@ -9,12 +9,11 @@ export default function reducer(state = {
     sending: false,
     sent: false,
     submitError: null,
-    toBeReservation: {
-        plane: "kone 1",
-        flightType: "harraste",
-        start: "",
-        end: "",
-    }
+    plane: 1,
+    reservation_type: "harraste",
+    start: "",
+    end: "",
+    collapsed: true,
 }, action) {
 
     switch(action.type) {
@@ -32,6 +31,7 @@ export default function reducer(state = {
                 reservations: action.payload,
             }
         }
+
         case "SUBMIT_RESERVATION_PENDING": {
             return {
                 ...state,
@@ -52,29 +52,39 @@ export default function reducer(state = {
                 sent: true,
             }
         }
+
         case "SELECT_PLANE": {
+            // TODO: later take plane_id
             return {
                 ...state,
-                toBeReservation: {
-                    plane: action.payload
-                }
+                plane: action.payload
             }
         }
         case "SET_TYPE": {
             return {
                 ...state,
-                toBeReservation: {
-                    flightType: action.payload
-                }
+                reservation_type:  action.payload
             }
         }
-        case "SET_FLIGHT_TIME": {
+        case "SET_TIMESLOT": {
             return {
                 ...state,
-                toBeReservation: {
-                    start: action.payload.start,
-                    end: action.payload.end
-                }
+                start: action.payload.start,
+                end: action.payload.end,
+            }
+        }
+        case "SET_COLLAPSED": {
+            return {...state, collapsed: action.payload}
+        }
+        case "RESET_NEW_RESERVATION": {
+            return {
+                ...state,
+                submitError: null,
+                plane: 1,
+                reservation_type: "harraste",
+                start: "",
+                end: "",
+                collapsed: true,
             }
         }
     }

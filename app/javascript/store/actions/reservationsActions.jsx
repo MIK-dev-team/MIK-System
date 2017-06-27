@@ -10,6 +10,11 @@ export function fetchReservations() {
         dispatch({type: "FETCH_RESERVATIONS_PENDING"});
         axios.get('/reservations.json')
             .then((response) => {
+                response.data.map((res) => {
+                    res.key = res.id;
+                    res.start = moment(res.start).toDate();
+                    res.end = moment(res.end).toDate();
+                });
                 dispatch({type: "FETCH_RESERVATIONS_FULFILLED", payload: response.data})
             })
             .catch((err) => {
@@ -18,15 +23,25 @@ export function fetchReservations() {
     }
 }
 
-export function submitReservation(reservation) {
+
+export function submitReservation(event, start, end, plane, type) {
+    const reservation = {
+        start: start,
+        end: end,
+        plane_id: plane,
+        reservation_type: type,
+    };
+    event.preventDefault();
     return function(dispatch) {
         dispatch({type: "SUBMIT_RESERVATION_PENDING"});
         axios.post('/reservations.json', reservation)
             .then(response => {
-                dispatch({type: "SUBMIT_RESERVATION_FULFILLED"})
+                dispatch({type: "SUBMIT_RESERVATION_FULFILLED"});
+                dispatch({type: "RESET_NEW_RESERVATION"});
+                dispatch(fetchReservations());
             })
             .catch(err => {
-                dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: err})
+                dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: err.response.data})
             })
     }
 }
@@ -43,20 +58,35 @@ export function setType(event) {
     }
 }
 
-export function setFlightTime(timeSlot) {
+export function setCollapsed(prev) {
     return (dispatch) => {
-        dispatch({type: "SET_FLIGHT_TIME", payload: timeSlot});
+        dispatch({type: "SET_COLLAPSED", payload: !prev})
+    }
+}
+
+export function fillForm(timeSlot) {
+    return (dispatch) => {
+        dispatch({
+            type: "SET_TIMESLOT",
+            payload: {
+                start: moment(timeSlot.start).toDate(),
+                end: moment(timeSlot.end).toDate(),
+            }
+        });
+
+        dispatch({type: "SET_COLLAPSED", payload: false});
     }
 }
 
 export function mapReservations(reservations) {
     return reservations.map((res) =>
-        (<tr key={res.id}>
+        <tr key={res.id}>
             <td>{res.id}</td>
             <td>{moment(res.start).format('lll')}</td>
             <td>{moment(res.end).format('lll')}</td>
             <td>{res.plane_id}</td>
             <td>{res.reservation_type}</td>
-        </tr>)
+        </tr>
+
     )
 }

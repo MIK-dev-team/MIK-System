@@ -3,25 +3,25 @@ import { mount, shallow } from "enzyme";
 import sinon from "sinon";
 import moment from "moment";
 import axios from "axios";
-import Calendar from "../../../app/javascript/components/calendar_page/calendar";
+import { Calendar } from "../../../app/javascript/components/calendar_page/calendar";
 /**
  * Created by owlaukka on 17/06/17.
  */
 
 let calendar;
 describe('Calendar', () => {
-    beforeEach(() => {
-        calendar = shallow(<Calendar plane="kone1" reservations={[{}]} />);
+    beforeAll(() => {
+        calendar = shallow(<Calendar reservations={[{}]}/>);
     });
+
+    afterEach(() => {
+        calendar.setProps({reservations: [{}]});
+        calendar.update();
+    })
 
     it('sets initial state correctly', () => {
         const expectedState = {
             reservations: [{}],
-            timeSlot: {
-                start: "",
-                end: "",
-            },
-            collapsed: true
         };
         expect(calendar.state()).toEqual(expectedState)
     });
@@ -32,11 +32,6 @@ describe('Calendar', () => {
         calendar.update();
         expect(calendar.state()).toEqual({
             reservations: newReservations,
-            timeSlot: {
-                start: "",
-                end: "",
-            },
-            collapsed: true
         });
     });
 
@@ -52,65 +47,60 @@ describe('Calendar', () => {
         expect(calendar.find('Button').hasClass('disabled')).toBe(false);
     });
 
-    it('has method fillForm that pushes new reservation to reservations correctly', () => {
+
+    it('has method fillFormView that pushes new reservation to reservations state correctly', () => {
+        const dispatch = sinon.spy();
         const timeSlot = {
-            start: "2017-06-10T18:00:00+03:00",
-            end: "2017-06-10T20:00:00+03:00"
+            start: moment().add(1, 'days').format(),
+            end: moment().add(1, 'days').add(2, 'hours').format()
         };
         expect(calendar.state().reservations).toEqual([{}]);
-
-        calendar.instance().fillForm(timeSlot);
+        calendar.setProps({dispatch: dispatch, reservations: [{}, {
+                    'title': 'opetus',
+                    'start': "2017-06-10T18:00:00+03:00",
+                    'end': "2017-06-10T20:00:00+03:00",
+                    reservation_type: 'opetus'
+                }
+            ]
+        });
         calendar.update();
         expect(calendar.state().reservations).toEqual([{}, {
-            'title': '<valittu aika>',
-            'start': timeSlot.start,
-            'end': timeSlot.end,
-            reservation_type: 'selected'
-        }]);
-    });
+            'title': 'opetus',
+            'start': "2017-06-10T18:00:00+03:00",
+            'end': "2017-06-10T20:00:00+03:00",
+            reservation_type: 'opetus'
+        }
+        ]);
 
-    it('fillForm method sets state correctly', () => {
-        const timeSlot = {
-            start: "2017-06-10T18:00:00+03:00",
-            end: "2017-06-10T20:00:00+03:00"
-        };
-        expect(calendar.state()).toEqual({
-            reservations: [{}],
-            timeSlot: {
-                start: "",
-                end: ""
-            },
-            collapsed: true
-        });
-        calendar.instance().fillForm(timeSlot);
-        calendar.update();
-
-        expect(calendar.state()).toEqual({
-            reservations: [{}, {
+        calendar.instance().fillFormView(timeSlot);
+        expect(calendar.state().reservations).toEqual([{}, {
+            'title': 'opetus',
+            'start': "2017-06-10T18:00:00+03:00",
+            'end': "2017-06-10T20:00:00+03:00",
+            reservation_type: 'opetus'
+        },
+            {
                 'title': '<valittu aika>',
                 'start': timeSlot.start,
                 'end': timeSlot.end,
                 reservation_type: 'selected'
-            }],
-            timeSlot: {
-                start: moment("2017-06-10T18:00:00+03:00").format(),
-                end: moment("2017-06-10T20:00:00+03:00").format()
-            },
-            collapsed: false
-        });
+            }
+            ]);
     });
 
     it('fillForm pops a reservation out of the list if another is selected', () => {
+        const dispatch = sinon.spy();
+        calendar.setProps({dispatch: dispatch})
         const timeSlot = {
-            start: "2017-06-10T18:00:00+03:00",
-            end: "2017-06-10T20:00:00+03:00"
+                start: moment().add(1, 'days').format(),
+                end: moment().add(1, 'days').add(2, 'hours').format()
         },
         anotherTimeSlot = {
-            start: "2017-06-10T21:00:00+03:00",
-            end: "2017-06-10T22:00:00+03:00"
+            start: moment().add(1, 'days').add(2, 'hours').format(),
+            end: moment().add(1, 'days').add(4, 'hours').format()
         };
         expect(calendar.state().reservations).toEqual([{}]);
-        calendar.instance().fillForm(timeSlot);
+        calendar.instance().fillFormView(timeSlot);
         calendar.update();
 
         expect(calendar.state().reservations).toEqual([{}, {
@@ -120,7 +110,7 @@ describe('Calendar', () => {
             reservation_type: 'selected'
         }]);
 
-        calendar.instance().fillForm(anotherTimeSlot);
+        calendar.instance().fillFormView(anotherTimeSlot);
         calendar.update();
 
         expect(calendar.state().reservations).toEqual([{}, {
@@ -131,44 +121,71 @@ describe('Calendar', () => {
         }]);
     });
 
+    it("fillFormView doesn't allow reservations in the past", () => {
+        const dispatch = sinon.spy();
+        const timeSlot = {
+            'start': new Date("2016-06-10T18:00:00+03:00"),
+            'end': new Date("2016-06-10T20:00:00+03:00"),
+        };
+        calendar.setProps({dispatch: dispatch, reservations: [{}, {
+                'title': 'opetus',
+                'start': "2017-06-10T18:00:00+03:00",
+                'end': "2017-06-10T20:00:00+03:00",
+                reservation_type: 'opetus'
+            }
+        ]});
+        calendar.instance().fillFormView(timeSlot);
+        calendar.update();
+
+        expect(calendar.state().reservations).toEqual([{}, {
+                'title': 'opetus',
+                'start': "2017-06-10T18:00:00+03:00",
+                'end': "2017-06-10T20:00:00+03:00",
+                reservation_type: 'opetus'
+            }
+        ]);
+    });
+
     it("fillForm doesn't allow overlapping reservations", () => {
         let spy = sinon.spy(window, 'alert');
         const timeSlot = {
-            start: "2017-06-10T19:00:00+03:00",
-            end: "2017-06-10T19:30:00+03:00"
+                start: moment().add(1, 'days').add(1, 'hours').format(),
+                end: moment().add(1, 'days').add(1, 'hours').add(30, 'minutes').format()
         },
         reservation = {
-            'title': 'opetus',
-            'start': "2017-06-10T18:00:00+03:00",
-            'end': "2017-06-10T20:00:00+03:00",
+            title: 'opetus',
+            start: moment().add(1, 'days').format(),
+            end: moment().add(1, 'days').add(2, 'hours').format(),
             reservation_type: 'opetus'
         };
         calendar.setProps({reservations: [{}, reservation]});
         calendar.update();
-        calendar.instance().fillForm(timeSlot);
+        calendar.instance().fillFormView(timeSlot);
         calendar.update();
         expect(spy.calledOnce).toBe(true);
         expect(calendar.state().reservations).toEqual([{}, {
-            'title': 'opetus',
-            'start': "2017-06-10T18:00:00+03:00",
-            'end': "2017-06-10T20:00:00+03:00",
+            title: 'opetus',
+            start: moment().add(1, 'days').format(),
+            end: moment().add(1, 'days').add(2, 'hours').format(),
             reservation_type: 'opetus'
         }]);
         spy.restore();
     });
 
-    it('has Button that calls method setCollapsed and sets state correctly', () => {
-        expect(calendar.state().collapsed).toBe(true);
+    it('has Button that calls dispatch', () => {
+        const dispatch = sinon.spy();
+        calendar.setProps({dispatch: dispatch});
+        calendar.update();
         calendar.find('Button').simulate('click');
         calendar.update();
-        expect(calendar.state().collapsed).toBe(false);
+        expect(dispatch.calledOnce).toBe(true);
     });
 
     it('has eventStyleGetter method that returns a style object', () => {
         const reservation = {
-            'title': 'opetus',
-            'start': "2017-06-10T18:00:00+03:00",
-            'end': "2017-06-10T20:00:00+03:00",
+            title: 'opetus',
+            start: moment().add(1, 'days').format(),
+            end: moment().add(1, 'days').add(2, 'hours').format(),
             reservation_type: 'opetus'
         };
         const expectedStyle = calendar.instance().eventStyleGetter(reservation, null, null, null);
@@ -182,9 +199,9 @@ describe('Calendar', () => {
 
     it('has eventStyleGetter method that returns a correct style object for harraste type', () => {
         const reservation = {
-            'title': 'harraste',
-            'start': "2017-06-10T18:00:00+03:00",
-            'end': "2017-06-10T20:00:00+03:00",
+            title: 'harraste',
+            start: moment().add(1, 'days').format(),
+            end: moment().add(1, 'days').add(2, 'hours').format(),
             reservation_type: 'harraste'
         };
         const expectedStyle = calendar.instance().eventStyleGetter(reservation, null, null, null);
@@ -196,12 +213,12 @@ describe('Calendar', () => {
         });
     });
 
-    it('has eventStyleGetter method that returns a correct style object for selected type', () => {
+    it('has eventStyleGetter method that returns a correct style object for selected timeSlot', () => {
         const reservation = {
-            'title': 'selected',
-            'start': "2017-06-10T18:00:00+03:00",
-            'end': "2017-06-10T20:00:00+03:00",
-            reservation_type: 'selected'
+            title: '<valittu aika>',
+            start: moment().add(1, 'days').format(),
+            end: moment().add(1, 'days').add(2, 'hours').format(),
+            reservation_type: 'opetus'
         };
         const expectedStyle = calendar.instance().eventStyleGetter(reservation, null, null, null);
         expect(expectedStyle).toEqual({

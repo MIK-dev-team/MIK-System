@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap';
 import ReactLoading from 'react-loading';
 import { connect } from 'react-redux';
 import { fetchReservations } from '../../store/actions/reservationsActions';
+
 import ReservationTableContent from './reservation_table_content';
 
 export class ReservationTable extends React.Component {

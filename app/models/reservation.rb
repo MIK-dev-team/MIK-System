@@ -13,7 +13,7 @@ class Reservation < ApplicationRecord
 
 
   scope :in_range, -> range {
-    where("(start BETWEEN ? AND ? OR \"end\" BETWEEN ? AND ?) OR (start <= ? AND \"end\" >= ?)", range.first, range.last, range.first, range.last, range.first, range.last)
+    where("(start BETWEEN ? AND ? OR \"end\" BETWEEN ? AND ?) OR (start < ? AND \"end\" > ?)", range.first, range.last, range.first, range.last, range.first, range.last)
   }
 
   scope :exclude_self, -> id { where.not(id: id) }

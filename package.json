@@ -62,14 +62,12 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
       "**/app/javascript/components/**",
-      "**/app/javascript/store/**"
+      "**/app/javascript/store/**",
+      "!**/index.*"
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/",
-      "<rootDir>/config/",
-      "<rootDir>/app/javascript/store/reducers/index.js",
-      "<rootDir>/app/javascript/store/store.js",
-      "<rootDir>/app/javascript/components/reservations_list/index.jsx"
+      "<rootDir>/config/"
     ],
     "coverageDirectory": "coverage/react"
   }

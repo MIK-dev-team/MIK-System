@@ -36,7 +36,15 @@ describe('Reservation action', () => {
             reservations: [{}],
             fetching: false,
             fetched: false,
-            error: null,
+            fetchError: null,
+            sending: false,
+            sent: false,
+            submitError: null,
+            plane: 1,
+            reservation_type: "harraste",
+            start: "",
+            end: "",
+            collapsed: true,
         });
 
     });
@@ -79,4 +87,19 @@ describe('Reservation action', () => {
 
         expect(returnedValue).toEqual(expectedValue);
     })
+
+    // it('submitReservation dispatches correct actions on successful save', () => {
+    //     promise = Promise.resolve({});
+    //     stub = sinon.stub(axios, 'post').callsFake(() => promise);
+    //     const expectedActions = [
+    //         { type: "SUBMIT_RESERVATION_PENDING" },
+    //         { type: "SUBMIT_RESERVATION_FULFILLED"},
+    //         { type: "RESET_NEW_RESERVATION"}
+    //     ];
+    //
+    //     store.dispatch(actions.submitReservation({}, "", "", "", "", ""));
+    //     return promise.then(() => {
+    //         expect(store.getActions()).toEqual(expectedActions);
+    //     });
+    // })
 });
