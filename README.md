@@ -1,4 +1,4 @@
-# MIK-System[![Build Status](https://www.travis-ci.org/Owlaukka/MIK-System.svg?branch=master)](https://www.travis-ci.org/Owlaukka/MIK-System)
+# MIK-System [![Build Status](https://www.travis-ci.org/Owlaukka/MIK-System.svg?branch=master)](https://www.travis-ci.org/Owlaukka/MIK-System)
 
 New system for MIK (Malmin Ilmailukerho) to handle reservation of
 aeroplanes, keeping track of flight times for members, handling 
@@ -14,3 +14,5 @@ deployed using Docker.
 * running react tests: docker-compose run web yarn test
 
 If you need to change Dockerfile or Gemfile run docker-compile build
+
+### Backlog: https://tree.taiga.io/project/owlaukka-mik-system/backlog
