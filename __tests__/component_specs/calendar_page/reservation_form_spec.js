@@ -22,7 +22,7 @@ describe('Reservation form', () => {
     });
 
     it('has correct amount of form groups', () => {
-        expect(form.find('FormGroup').length).toEqual(4);
+        expect(form.find('FormGroup').length).toEqual(5);
     });
 
     it('has select for planes', () => {
@@ -67,7 +67,7 @@ describe('Reservation form', () => {
         expect(spy.calledOnce).toBe(false);
         form.find('form').simulate('submit', {preventDefault: () => {}});
         expect(spy.calledOnce).toBe(true);
-    })
+    });
 
     describe("with start and end times", () => {
         afterEach(() => {

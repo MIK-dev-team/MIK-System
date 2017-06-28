@@ -5,6 +5,8 @@ import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
 
+moment.locale('fi');
+
 export function fetchReservations() {
     return function(dispatch) {
         dispatch({type: "FETCH_RESERVATIONS_PENDING"});
@@ -24,12 +26,13 @@ export function fetchReservations() {
 }
 
 
-export function submitReservation(event, start, end, plane, type) {
+export function submitReservation(event, start, end, plane, type, desc) {
     const reservation = {
         start: start,
         end: end,
         plane_id: plane,
         reservation_type: type,
+        description: desc,
     };
     event.preventDefault();
     return function(dispatch) {

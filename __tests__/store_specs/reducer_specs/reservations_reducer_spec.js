@@ -1,40 +1,30 @@
 import reducer from '../../../app/javascript/store/reducers/reservationsReducer';
 
+const initialState = {
+    reservations: [{}],
+    fetching: false,
+    fetched: false,
+    fetchError: null,
+    sending: false,
+    sent: false,
+    submitError: null,
+    plane: 1,
+    reservation_type: "harraste",
+    start: "",
+    end: "",
+    desc: "",
+    collapsed: true,
+}
+
 describe('Reservations reducer', () => {
     it('should return correct initial state', () => {
-        expect(reducer(undefined, {})).toEqual({
-            reservations: [{}],
-            fetching: false,
-            fetched: false,
-            fetchError: null,
-            sending: false,
-            sent: false,
-            submitError: null,
-            plane: 1,
-            reservation_type: "harraste",
-            start: "",
-            end: "",
-            collapsed: true,
-        })
+        expect(reducer(undefined, {})).toEqual(initialState)
     });
 
     it('should handle FETCH_RESERVATIONS_PENDING correctly', () => {
         expect(
             reducer(undefined, {type: "FETCH_RESERVATIONS_PENDING"})
-        ).toEqual({
-            reservations: [{}],
-            fetching: true,
-            fetched: false,
-            fetchError: null,
-            sending: false,
-            sent: false,
-            submitError: null,
-            plane: 1,
-            reservation_type: "harraste",
-            start: "",
-            end: "",
-            collapsed: true,
-        })
+        ).toEqual({...initialState, fetching: true})
     });
 
     it('should handle FETCH_RESERVATIONS_REJECTED correctly', () => {
@@ -43,18 +33,9 @@ describe('Reservations reducer', () => {
                 type: "FETCH_RESERVATIONS_REJECTED",
                 payload: "some cool error thingy"
             })).toEqual({
-                reservations: [{}],
+                ...initialState,
                 fetching: false,
-                fetched: false,
                 fetchError: "some cool error thingy",
-                sending: false,
-                sent: false,
-                submitError: null,
-                plane: 1,
-                reservation_type: "harraste",
-                start: "",
-                end: "",
-                collapsed: true,
             })
     });
 
@@ -65,18 +46,10 @@ describe('Reservations reducer', () => {
                 type: "FETCH_RESERVATIONS_FULFILLED",
                 payload: payload
             })).toEqual({
+                ...initialState,
                 reservations: payload,
                 fetching: false,
                 fetched: true,
-                fetchError: null,
-                sending: false,
-                sent: false,
-                submitError: null,
-                plane: 1,
-                reservation_type: "harraste",
-                start: "",
-                end: "",
-                collapsed: true,
             })
     })
 
@@ -84,39 +57,11 @@ describe('Reservations reducer', () => {
         expect(
             reducer(undefined, {type: "SUBMIT_RESERVATION_PENDING"})
         ).toEqual({
-            reservations: [{}],
-            fetching: false,
-            fetched: false,
-            fetchError: null,
+            ...initialState,
             sending: true,
-            sent: false,
-            submitError: null,
-            plane: 1,
-            reservation_type: "harraste",
-            start: "",
-            end: "",
-            collapsed: true,
         })
     });
 
-    it('should handle SUBMIT_RESERVATION_PENDING correctly', () => {
-        expect(
-            reducer(undefined, {type: "SUBMIT_RESERVATION_PENDING"})
-        ).toEqual({
-            reservations: [{}],
-            fetching: false,
-            fetched: false,
-            fetchError: null,
-            sending: true,
-            sent: false,
-            submitError: null,
-            plane: 1,
-            reservation_type: "harraste",
-            start: "",
-            end: "",
-            collapsed: true,
-        })
-    });
 
     it('should handle SUBMIT_RESERVATION_REJECTED correctly', () => {
         const payload = "Some sorta error?";
@@ -124,18 +69,9 @@ describe('Reservations reducer', () => {
             reducer(undefined, {type: "SUBMIT_RESERVATION_REJECTED",
                                 payload: payload})
         ).toEqual({
-            reservations: [{}],
-            fetching: false,
-            fetched: false,
-            fetchError: null,
+            ...initialState,
             sending: false,
-            sent: false,
             submitError: "Some sorta error?",
-            plane: 1,
-            reservation_type: "harraste",
-            start: "",
-            end: "",
-            collapsed: true,
         })
     });
 
@@ -143,18 +79,9 @@ describe('Reservations reducer', () => {
         expect(
             reducer(undefined, {type: "SUBMIT_RESERVATION_FULFILLED"})
         ).toEqual({
-            reservations: [{}],
-            fetching: false,
-            fetched: false,
-            fetchError: null,
+            ...initialState,
             sending: false,
             sent: true,
-            submitError: null,
-            plane: 1,
-            reservation_type: "harraste",
-            start: "",
-            end: "",
-            collapsed: true,
         })
     });
 
@@ -163,18 +90,8 @@ describe('Reservations reducer', () => {
         expect(
             reducer(undefined, {type: "SELECT_PLANE", payload: plane})
         ).toEqual({
-            reservations: [{}],
-            fetching: false,
-            fetched: false,
-            fetchError: null,
-            sending: false,
-            sent: false,
-            submitError: null,
+            ...initialState,
             plane: plane,
-            reservation_type: "harraste",
-            start: "",
-            end: "",
-            collapsed: true,
         })
     });
 
@@ -183,18 +100,8 @@ describe('Reservations reducer', () => {
         expect(
             reducer(undefined, {type: "SET_TYPE", payload: type})
         ).toEqual({
-            reservations: [{}],
-            fetching: false,
-            fetched: false,
-            fetchError: null,
-            sending: false,
-            sent: false,
-            submitError: null,
-            plane: 1,
+            ...initialState,
             reservation_type: type,
-            start: "",
-            end: "",
-            collapsed: true,
         })
     });
 
@@ -206,18 +113,9 @@ describe('Reservations reducer', () => {
         expect(
             reducer(undefined, {type: "SET_TIMESLOT", payload: timeSlot})
         ).toEqual({
-            reservations: [{}],
-            fetching: false,
-            fetched: false,
-            fetchError: null,
-            sending: false,
-            sent: false,
-            submitError: null,
-            plane: 1,
-            reservation_type: "harraste",
+            ...initialState,
             start: timeSlot.start,
             end: timeSlot.end,
-            collapsed: true,
         })
     });
 
@@ -226,17 +124,7 @@ describe('Reservations reducer', () => {
         expect(
             reducer(undefined, {type: "SET_COLLAPSED", payload: collapsed})
         ).toEqual({
-            reservations: [{}],
-            fetching: false,
-            fetched: false,
-            fetchError: null,
-            sending: false,
-            sent: false,
-            submitError: null,
-            plane: 1,
-            reservation_type: "harraste",
-            start: "",
-            end: "",
+            ...initialState,
             collapsed: collapsed,
         })
     });
@@ -244,19 +132,16 @@ describe('Reservations reducer', () => {
     it("should handle RESET_NEW_RESERVATION correctly", () => {
         expect(
             reducer(undefined, {type: "RESET_NEW_RESERVATION"})
-        ).toEqual({
-            reservations: [{}],
-            fetching: false,
-            fetched: false,
-            fetchError: null,
-            sending: false,
-            sent: false,
-            submitError: null,
-            plane: 1,
-            reservation_type: "harraste",
-            start: "",
-            end: "",
-            collapsed: true,
-        })
+        ).toEqual(initialState)
     });
+
+    it("should handle SET_DESCRIPTION correctly", () => {
+        const desc = "Awesome description of some cool stuff here";
+        expect(
+            reducer(undefined, {type: "SET_DESCRIPTION", payload: desc})
+        ).toEqual({
+            ...initialState,
+            desc: desc,
+        })
+    })
 });

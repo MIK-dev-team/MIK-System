@@ -13,6 +13,7 @@ export default function reducer(state = {
     reservation_type: "harraste",
     start: "",
     end: "",
+    desc: "",
     collapsed: true,
 }, action) {
 
@@ -76,6 +77,9 @@ export default function reducer(state = {
         case "SET_COLLAPSED": {
             return {...state, collapsed: action.payload}
         }
+        case "SET_DESCRIPTION": {
+            return {...state, desc: action.payload}
+        }
         case "RESET_NEW_RESERVATION": {
             return {
                 ...state,
@@ -84,6 +88,7 @@ export default function reducer(state = {
                 reservation_type: "harraste",
                 start: "",
                 end: "",
+                desc: "",
                 collapsed: true,
             }
         }

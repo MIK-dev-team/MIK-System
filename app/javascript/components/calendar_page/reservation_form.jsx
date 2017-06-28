@@ -6,6 +6,7 @@ import { submitReservation, setType } from '../../store/actions/reservationsActi
 
 moment.locale('fi');
 
+let description;
 export class ReservationForm extends React.Component {
     formatTimes(time) {
         if (time != "")
@@ -17,7 +18,7 @@ export class ReservationForm extends React.Component {
     render() {
         return (
             <Panel header={<h3>Tee varaus</h3>}>
-                <form onSubmit={(event) => this.props.dispatch(submitReservation(event, this.props.start, this.props.end, this.props.plane, this.props.reservation_type))}>
+                <form onSubmit={(event) => this.props.dispatch(submitReservation(event, this.props.start, this.props.end, this.props.plane, this.props.reservation_type, description))}>
                     <FormGroup controlId="1">
                         <ControlLabel>Lennon alku</ControlLabel>
                         <FormControl disabled type="text" value={this.formatTimes(this.props.start)} />
@@ -40,6 +41,10 @@ export class ReservationForm extends React.Component {
                             <option value="opetus">Opetuslento</option>
                             <option value="harraste">Harrastelento</option>
                         </FormControl>
+                    </FormGroup>
+                    <FormGroup controlId="setDesc">
+                        <ControlLabel>Lisätietoja</ControlLabel>
+                        <FormControl componentClass="textarea" onChange={(event) => description = event.target.value} />
                     </FormGroup>
                     <Button type="submit">Tee varaus</Button>
                 </form>
