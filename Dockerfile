@@ -14,10 +14,10 @@ RUN apt-get update -qq && \
     iceweasel
 # install phantomjs - download from https://bitbucket.org/ariya/phantomjs/downloads
 ADD https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 .
-RUN tar -xjf phantomjs-2.1.1-linux-x86_64.tar.bz2
-RUN mv ./phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin
-RUN rm -rf ./phantomjs-2.1.1-linux-x86_64
-RUN phantomjs --version
+RUN tar -xjf phantomjs-2.1.1-linux-x86_64.tar.bz2 \
+    && mv ./phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin \
+    && rm -rf ./phantomjs-2.1.1-linux-x86_64 \
+    && phantomjs --version
 ## for headless
 #RUN apt-get install -y xvfb
 ## for capybara-webkit
@@ -30,6 +30,7 @@ WORKDIR /mik-system
 ADD Gemfile /mik-system/Gemfile
 ADD Gemfile.lock /mik-system/Gemfile.lock
 RUN bundle install
-RUN yarn
 ADD . /mik-system
+RUN yarn \
+    && bin/webpack
 
