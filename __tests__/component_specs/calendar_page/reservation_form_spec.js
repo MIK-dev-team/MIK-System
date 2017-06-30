@@ -8,12 +8,7 @@ import { ReservationForm } from "../../../app/javascript/components/calendar_pag
 
 let form;
 describe('Reservation form', () => {
-    let timeSlot;
     beforeAll(() => {
-        // timeSlot = {
-        //     start: "",
-        //     end: ""
-        // };
         form = shallow(<ReservationForm />);
     });
 
