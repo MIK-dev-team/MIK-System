@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'liity', to: 'membership_applications#join'
+
+
   resources :reservations
   resources :planes, only: [:show]
   get '/planes/:id/reservations.json', to: 'planes#reservations'

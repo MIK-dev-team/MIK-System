@@ -10,10 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170607230857) do
+ActiveRecord::Schema.define(version: 20170629190910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "membership_applications", force: :cascade do |t|
+    t.string "username", limit: 20
+    t.string "member_type"
+    t.string "full_name"
+    t.date "birthday"
+    t.string "address"
+    t.bigint "postal_code"
+    t.string "city"
+    t.string "phone"
+    t.string "email"
+    t.string "licences"
+    t.integer "experience_with_engine"
+    t.integer "other_experience"
+    t.string "other_memberships"
+    t.string "join_sil"
+    t.integer "sil_membership_number"
+    t.string "extra_information"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["username"], name: "index_membership_applications_on_username", unique: true
+  end
 
   create_table "planes", force: :cascade do |t|
     t.string "name"
