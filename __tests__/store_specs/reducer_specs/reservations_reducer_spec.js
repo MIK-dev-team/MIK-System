@@ -14,7 +14,7 @@ const initialState = {
     end: "",
     desc: "",
     collapsed: true,
-}
+};
 
 describe('Reservations reducer', () => {
     it('should return correct initial state', () => {

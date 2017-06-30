@@ -12,8 +12,7 @@ export class MembershipForm extends React.Component {
     render() {
         return (
             <form onSubmit={(event) => {
-                console.log(this.props.submitObject);
-                event.preventDefault();
+                this.props.dispatch(actions.submitApplication(this.props.submitObject, event));
             }}>
                 <FormGroup controlId="username" validationState={this.props.applications.username.length === 0 ? null :
                                                                     validators.usernameIsValid(this.props.applications.username) ? 'success' : 'error'}>

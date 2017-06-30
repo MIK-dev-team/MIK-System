@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170629190910) do
+ActiveRecord::Schema.define(version: 20170630141336) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,7 +34,6 @@ ActiveRecord::Schema.define(version: 20170629190910) do
     t.string "extra_information"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["username"], name: "index_membership_applications_on_username", unique: true
   end
 
   create_table "planes", force: :cascade do |t|

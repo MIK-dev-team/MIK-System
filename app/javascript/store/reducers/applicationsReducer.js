@@ -11,6 +11,7 @@ export default function reducer(state = {
     membershipTypes: membershipTypes,
     sending: false,
     sent: false,
+    submitError: null,
 
     // Mandatory fields (for validations)
     username: "",
@@ -33,7 +34,7 @@ export default function reducer(state = {
             return {...state, sending: true}
         }
         case "SUBMIT_APPLICATION_REJECTED": {
-            return {...state, sending: false}
+            return {...state, sending: false, submitError: action.payload}
         }
         case "SUBMIT_APPLICATION_FULFILLED": {
             return {...state, sending: false, sent: true}

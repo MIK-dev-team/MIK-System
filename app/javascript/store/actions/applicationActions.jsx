@@ -4,17 +4,24 @@
 import React from 'react';
 import axios from 'axios';
 
-export function submitApplication(app) {
-    return (dispatch) => {
-        dispatch({type: "SUBMIT_APPLICATION_PENDING"})
-        axios.post('liity', app)
+import { allFieldsValid } from './applicationValidationActions';
+
+export function submitApplication(app, event) {
+    event.preventDefault();
+    return function(dispatch) {
+        if (!allFieldsValid(app)) {
+            dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: "Tarkasta täyttämäsi kentät"});
+            return;
+        }
+
+        dispatch({type: "SUBMIT_APPLICATION_PENDING"});
+        axios.post('/membership_applications', app)
             .then((response) => {
-                dispatch({type: "SUBMIT_APPLICATION_FULFILLED"})
-                console.log(response);
+                dispatch({type: "SUBMIT_APPLICATION_FULFILLED"});
+                window.location.replace('/')
             })
             .catch((err) => {
                 dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: err.response});
-                console.log(err);
             });
     }
 }

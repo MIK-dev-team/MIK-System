@@ -94,10 +94,10 @@ describe('Reservation action', () => {
                 <td>{res.plane_id}</td>
                 <td>{res.reservation_type}</td>
             </tr>)
-        )
+        );
 
         expect(returnedValue).toEqual(expectedValue);
-    })
+    });
 
     it('submitReservation dispatches correct actions on successful save', () => {
         promise = Promise.resolve({});
@@ -113,7 +113,7 @@ describe('Reservation action', () => {
         return promise.then(() => {
             expect(store.getActions()).toEqual(expectedActions);
         });
-    })
+    });
 
     it('submitReservation dispatches correct actions on incorrect request', () => {
         const error = {response: {status: 422, data: {some: "data here"}}};
