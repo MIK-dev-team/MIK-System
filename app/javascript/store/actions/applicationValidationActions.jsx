@@ -68,6 +68,10 @@ export function cityIsValid(city) {
     return /^[a-zA-ZöäåÖÄÅ\- ]+$/.test(city);
 }
 
+export function phoneNumberIsValid(number) {
+    return /^[0-9\+\-\(\)]+$/.test(number);
+}
+
 export function allFieldsValid(submitObject) {
     return usernameIsValid(submitObject.username) &&
             emailIsValid(submitObject.email) &&

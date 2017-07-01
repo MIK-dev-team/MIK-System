@@ -53,11 +53,11 @@ describe("Membership form", () => {
     });
 
     it("contains correct amount of FormGroups", () => {
-        expect(form.find('FormGroup').length).toEqual(16);
+        expect(form.find('FormGroup').length).toEqual(17);
     });
 
     it("contains correct amount of glyphicons that signal mandatory fields", () => {
-        expect(form.find('Glyphicon').length).toEqual(8);
+        expect(form.find('Glyphicon').length).toEqual(9);
     })
 
     it("contains correct options for selecting member_type", () => {
@@ -92,7 +92,7 @@ describe("Membership form", () => {
             value: 3
         }});
         expect(spy.calledOnce).toBe(true);
-    })
+    });
 
     it('has no validation state on mandatory fields initially', () => {
         expect(form.findWhere(n => n.prop('controlId') === 'username').props().validationState).toBe(null);
@@ -103,6 +103,7 @@ describe("Membership form", () => {
         expect(form.findWhere(n => n.prop('controlId') === 'address').props().validationState).toBe(null);
         expect(form.findWhere(n => n.prop('controlId') === 'postalCode').props().validationState).toBe(null);
         expect(form.findWhere(n => n.prop('controlId') === 'city').props().validationState).toBe(null);
+        expect(form.findWhere(n => n.prop('controlId') === 'phoneNumber').props().validationState).toBe(null);
     });
 
     it('has error validation state when mandatory fields are wrong', () => {
@@ -131,6 +132,7 @@ describe("Membership form", () => {
         expect(form.findWhere(n => n.prop('controlId') === 'address').props().validationState).toBe(null);
         expect(form.findWhere(n => n.prop('controlId') === 'postalCode').props().validationState).toBe('error');
         expect(form.findWhere(n => n.prop('controlId') === 'city').props().validationState).toBe('error');
+        expect(form.findWhere(n => n.prop('controlId') === 'phoneNumber').props().validationState).toBe('error');
     });
 
     it('has success validation state when mandatory fields are correct', () => {
@@ -159,6 +161,7 @@ describe("Membership form", () => {
         expect(form.findWhere(n => n.prop('controlId') === 'address').props().validationState).toBe('success');
         expect(form.findWhere(n => n.prop('controlId') === 'postalCode').props().validationState).toBe('success');
         expect(form.findWhere(n => n.prop('controlId') === 'city').props().validationState).toBe('success');
+        expect(form.findWhere(n => n.prop('controlId') === 'phoneNumber').props().validationState).toBe('success');
     });
 
     it('calls dispatch when a field is changed', () => {
@@ -177,6 +180,7 @@ describe("Membership form", () => {
         form.findWhere(n => n.prop('controlId') === 'address').find('FormControl').simulate('change', { target: {value: 'a'} });
         form.findWhere(n => n.prop('controlId') === 'postalCode').find('FormControl').simulate('change', { target: {value: 'a'} });
         form.findWhere(n => n.prop('controlId') === 'city').find('FormControl').simulate('change', { target: {value: 'a'} });
+        form.findWhere(n => n.prop('controlId') === 'phoneNumber').find('FormControl').simulate('change', { target: {value: 'a'} });
 
         form.findWhere(n => n.prop('controlId') === 'licences').find('FormControl').simulate('change', { target: {value: 'a'} });
         form.findWhere(n => n.prop('controlId') === 'expWithEngine').find('FormControl').simulate('change', { target: {value: 'a'} });
@@ -185,6 +189,6 @@ describe("Membership form", () => {
         form.findWhere(n => n.prop('controlId') === 'silMembership').find('FormControl').simulate('change', { target: {value: 'willNot'} });
         form.findWhere(n => n.prop('controlId') === 'silNumber').find('FormControl').simulate('change', { target: {value: 'a'} });
         form.findWhere(n => n.prop('controlId') === 'additionalInfo').find('FormControl').simulate('change', { target: {value: 'a'} });
-        expect(spy.callCount).toEqual(16);
+        expect(spy.callCount).toEqual(17);
     });
 });

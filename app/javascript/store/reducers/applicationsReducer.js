@@ -130,6 +130,16 @@ export default function reducer(state = {
                 }
             }
         }
+        case "SET_PHONE_NUMBER": {
+            return {
+                ...state,
+                phone: action.payload,
+                submitObject: {
+                    ...state.submitObject,
+                    phone: action.payload
+                }
+            }
+        }
         case "SET_LICENCES": {
             return {
                 ...state,

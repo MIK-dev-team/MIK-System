@@ -88,6 +88,14 @@ export class MembershipForm extends React.Component {
                         <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
+                <FormGroup controlId="phoneNumber" validationState={this.props.applications.phone.length === 0 ? null :
+                                                                    validators.phoneNumberIsValid(this.props.applications.phone) ? 'success' : 'error'}>
+                    <ControlLabel>Puhelinnumero</ControlLabel>
+                    <InputGroup>
+                        <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setPhoneNumber(event.target.value))}/>
+                        <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
+                    </InputGroup>
+                </FormGroup>
 
                 <br />
                 <hr />

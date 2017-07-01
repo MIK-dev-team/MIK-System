@@ -172,6 +172,23 @@ describe('Application Validation', () => {
         it("that doesn't accept city names that have special characters in them", () => {
             input = "New@York";
             expect(validators.cityIsValid(input)).toBe(false);
+        });
+    });
+
+    describe("has phone number validator function", () => {
+        it("that accepts phone numbers that have numbers, or characters: +, -, ( or )", () => {
+            input = "+35850-1234567";
+            expect(validators.phoneNumberIsValid(input)).toBe(true);
+        });
+
+        it("that doesn't accept phone numbers with letters in them", () => {
+            input = "0505O1234";
+            expect(validators.phoneNumberIsValid(input)).toBe(false);
+        });
+
+        it("that doesn't accept phone numbers with special characters in them", () => {
+            input = "@358501234567";
+            expect(validators.phoneNumberIsValid(input)).toBe(false);
         })
-    })
+    });
 });

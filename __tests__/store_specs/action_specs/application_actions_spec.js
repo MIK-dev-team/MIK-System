@@ -178,6 +178,15 @@ describe('Application Actions', () => {
         expect(store.getActions()).toEqual(expectedActions);
     });
 
+    it("setPhoneNumber dispatches correct actions", () => {
+        const number = "123456";
+        const expectedActions = [
+            { type: "SET_PHONE_NUMBER", payload: number }
+        ];
+        store.dispatch(actions.setPhoneNumber(number));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
     it("setLicences dispatches correct actions", () => {
         const licences = "some licences";
         const expectedActions = [

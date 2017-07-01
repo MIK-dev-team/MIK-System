@@ -5,7 +5,6 @@ class MembershipApplicationsController < ApplicationController
   def create
     @membership_application = MembershipApplication.new(application_params)
 
-
     respond_to do |format|
       if @membership_application.save
         format.html { redirect_to root_path, notice: 'Reservation was successfully created.' }

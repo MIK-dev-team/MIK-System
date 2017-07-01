@@ -176,6 +176,20 @@ describe('Applications Reducer', () => {
         )
     });
 
+    it('should handle SET_PHONE_NUMBER correctly', () => {
+        const number = "123456";
+        expect(
+            reducer(undefined, {type: "SET_PHONE_NUMBER", payload: number})
+        ).toEqual({
+            ...initialState,
+            phone: number,
+            submitObject: {
+                ...initialState.submitError,
+                phone: number
+            }}
+        )
+    });
+
     it('should handle SET_LICENCES correctly', () => {
         const licences = "monia hassuja lupia";
         expect(

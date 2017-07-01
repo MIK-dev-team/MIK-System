@@ -74,6 +74,12 @@ export function setCity(city) {
     }
 }
 
+export function setPhoneNumber(number) {
+    return (dispatch) => {
+        dispatch({type: "SET_PHONE_NUMBER", payload: number})
+    }
+}
+
 export function setLicences(licences) {
     return (dispatch) => {
         dispatch({type: "SET_LICENCES", payload: licences})
