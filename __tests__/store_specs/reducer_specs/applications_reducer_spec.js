@@ -15,6 +15,7 @@ const initialState = {
 
     username: "",
     email: "",
+    repeatEmail: "",
     birthday: "",
     member_type: "",
     full_name: "",
@@ -76,7 +77,20 @@ describe('Applications Reducer', () => {
                 email: email
             }}
         )
-    })
+    });
+
+    it('should handle SET_REPEAT_EMAIL correctly', () => {
+        const repeatEmail = "email@emaili.co"
+        expect(
+            reducer(undefined, {type: "SET_REPEAT_EMAIL", payload: repeatEmail})
+        ).toEqual({
+            ...initialState,
+            repeatEmail: repeatEmail,
+            submitObject: {
+                ...initialState.submitError
+            }}
+        )
+    });
 
     it('should handle SET_BIRTHDAY correctly', () => {
         const birthday = "15.12.1989";

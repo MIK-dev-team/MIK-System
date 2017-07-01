@@ -28,6 +28,14 @@ export class MembershipForm extends React.Component {
                         <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
+                <FormGroup controlId="repeatEmail" validationState={this.props.applications.repeatEmail.length === 0 ? null :
+                                                                    validators.repeatEmailIsValid(this.props.applications.email, this.props.applications.repeatEmail) ? 'success' : 'error'}>
+                    <ControlLabel>Kirjoita sähköpostiosoite uudelleen</ControlLabel>
+                    <InputGroup>
+                        <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setEmail(event.target.value))}/>
+                        <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
+                    </InputGroup>
+                </FormGroup>
                 <FormGroup controlId="birthday" validationState={this.props.applications.birthday.length === 0 ? null :
                                                                 validators.birthdayIsValid(this.props.applications.birthday) ? 'success' : 'error'}>
                     <ControlLabel>Syntymäaika (pp.kk.vvvv)</ControlLabel>
@@ -36,7 +44,7 @@ export class MembershipForm extends React.Component {
                         <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
-                <FormGroup controlId="memberType">
+                <FormGroup id="memberType" controlId="memberType">
                     <ControlLabel>Jäsenlaji</ControlLabel>
                     <InputGroup>
                         <FormControl componentClass="select" onChange={(event) => this.props.dispatch(actions.setMemberType(event.target.value))}>

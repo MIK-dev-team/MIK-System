@@ -16,6 +16,7 @@ export default function reducer(state = {
     // Mandatory fields (for validations)
     username: "",
     email: "",
+    repeatEmail: "",
     birthday: "",
     member_type: "",
     full_name: "",
@@ -57,6 +58,15 @@ export default function reducer(state = {
                 submitObject: {
                     ...state.submitObject,
                     email: action.payload
+                }
+            }
+        }
+        case "SET_REPEAT_EMAIL": {
+            return {
+                ...state,
+                repeatEmail: action.payload,
+                submitObject: {
+                    ...state.submitObject,
                 }
             }
         }
