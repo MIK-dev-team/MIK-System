@@ -5,7 +5,6 @@ import React from 'react';
 import { shallow } from "enzyme";
 import sinon from 'sinon';
 
-import * as actions from '../../../app/javascript/store/actions/applicationActions';
 import { MembershipForm } from "../../../app/javascript/components/membership_application/membership_form";
 
 const initialProps = {
