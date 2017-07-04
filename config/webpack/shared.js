@@ -16,43 +16,43 @@ const entryPath = join(settings.source_path, settings.source_entry_path)
 const packPaths = sync(join(entryPath, extensionGlob))
 
 module.exports = {
-  entry: packPaths.reduce(
-    (map, entry) => {
-      const localMap = map
-      const namespace = relative(join(entryPath), dirname(entry))
-      localMap[join(namespace, basename(entry, extname(entry)))] = resolve(entry)
-      return localMap
-    }, {}
-  ),
+    entry: packPaths.reduce(
+        (map, entry) => {
+            const localMap = map
+            const namespace = relative(join(entryPath), dirname(entry))
+            localMap[join(namespace, basename(entry, extname(entry)))] = resolve(entry)
+            return localMap
+        }, {}
+    ),
 
-  output: {
-    filename: '[name].js',
-    path: output.path,
-    publicPath: output.publicPath
-  },
+    output: {
+        filename: '[name].js',
+        path: output.path,
+        publicPath: output.publicPath
+    },
 
-  module: {
-    rules: sync(join(loadersDir, '*.js')).map(loader => require(loader))
-  },
+    module: {
+        rules: sync(join(loadersDir, '*.js')).map(loader => require(loader))
+    },
 
-  plugins: [
-    new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
-    new ExtractTextPlugin(env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css'),
-    new ManifestPlugin({
-      publicPath: output.publicPath,
-      writeToFileEmit: true
-    })
-  ],
+    plugins: [
+        new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
+        new ExtractTextPlugin(env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css'),
+        new ManifestPlugin({
+            publicPath: output.publicPath,
+            writeToFileEmit: true
+        })
+    ],
 
-  resolve: {
-    extensions: settings.extensions,
-    modules: [
-      resolve(settings.source_path),
-      'node_modules'
-    ]
-  },
+    resolve: {
+        extensions: settings.extensions,
+        modules: [
+            resolve(settings.source_path),
+            'node_modules'
+        ]
+    },
 
-  resolveLoader: {
-    modules: ['node_modules']
-  }
+    resolveLoader: {
+        modules: ['node_modules']
+    }
 }
