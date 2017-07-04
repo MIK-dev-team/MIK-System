@@ -61,8 +61,9 @@ describe('Application Actions', () => {
         promise = Promise.resolve({});
         stub = sinon.stub(axios, 'post').callsFake(() => promise);
         const expectedActions = [
+            { type: "RESET_ERROR_MSG" },
             { type: "SUBMIT_APPLICATION_PENDING" },
-            { type: "SUBMIT_APPLICATION_FULFILLED"},
+            { type: "SUBMIT_APPLICATION_FULFILLED", payload: "Hakemuksenne on lähetetty onnistuneesti." },
         ];
 
         store.dispatch(actions.submitApplication(submitObject, {preventDefault: () => {}}));
@@ -97,7 +98,7 @@ describe('Application Actions', () => {
         promise = Promise.resolve({});
         stub = sinon.stub(axios, 'post').callsFake(() => promise);
         const expectedActions = [
-            { type: "SUBMIT_APPLICATION_REJECTED", payload: "Tarkasta täyttämäsi kentät" }
+            { type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"] }
         ];
 
         store.dispatch(actions.submitApplication(submitObject, {preventDefault: () => {}}));

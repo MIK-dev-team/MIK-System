@@ -4,7 +4,49 @@
 import React from 'react';
 import moment from 'moment';
 
-export function usernameIsValid(username) {
+const validators = {
+    username: usernameIsValid,
+    email: emailIsValid,
+    repeatEmail: repeatEmailIsValid,
+    birthday: birthdayIsValid,
+    fullName: fullNameIsValid,
+    address: addressIsValid,
+    postalCode: postalCodeIsValid,
+    city: cityIsValid,
+    phoneNumber: phoneNumberIsValid,
+};
+
+export function validationStateForForm(fieldName, ...fieldValues) {
+    if (fieldValues[0].length === 0) {
+        return null;
+    } else if (validators[fieldName](...fieldValues)) {
+        return 'success'
+    } else {
+        return 'error'
+    }
+}
+
+export function allFieldsValid(submitObject) {
+    return usernameIsValid(submitObject.username) &&
+        emailIsValid(submitObject.email) &&
+        birthdayIsValid(submitObject.birthday) &&
+        fullNameIsValid(submitObject.full_name) &&
+        addressIsValid(submitObject.address) &&
+        postalCodeIsValid(submitObject.postal_code) &&
+        cityIsValid(submitObject.city)
+
+}
+
+function isEmpty(value) {
+    if (value == undefined || value.length == 0) {
+        return false;
+    }
+}
+
+function usernameIsValid(username) {
+    if (username === undefined) {
+        return tr
+    }
     if (username.indexOf(' ') > -1) {
         return false
     }
@@ -14,7 +56,7 @@ export function usernameIsValid(username) {
     return true;
 }
 
-export function emailIsValid(email) {
+function emailIsValid(email) {
     let copy = (' ' + email).slice(1);
     if (copy.replace(/[^@]/g, "").length !== 1) {
         return false;
@@ -22,11 +64,14 @@ export function emailIsValid(email) {
     return true;
 }
 
-export function repeatEmailIsValid(email, repeat) {
-    return email === repeat;
+function repeatEmailIsValid(email, repeat) {
+    return email == repeat;
 }
 
-export function birthdayIsValid(bday) {
+function birthdayIsValid(bday) {
+    if (isEmpty(bday)) {
+        return false;
+    }
     let dateFormat1 = "D.M.YYYY",
         dateFormat2 = "D.M.YY",
         correctFormat = null;
@@ -49,36 +94,37 @@ export function birthdayIsValid(bday) {
     return true;
 }
 
-export function fullNameIsValid(name) {
+function fullNameIsValid(name) {
+    if (isEmpty(name)) {
+        return false;
+    }
     return /^[a-zA-ZöäåÖÄÅ ]+$/.test(name);
 }
 
-export function addressIsValid(address) {
-    if (address.length < 1) {
+function addressIsValid(address) {
+    if (isEmpty(address)) {
         return false;
     }
     return true;
 }
 
-export function postalCodeIsValid(code) {
+function postalCodeIsValid(code) {
+    if (isEmpty(code)) {
+        return false;
+    }
     return /^[0-9]{5}$/.test(code);
 }
 
-export function cityIsValid(city) {
+function cityIsValid(city) {
+    if (isEmpty(city)) {
+        return false;
+    }
     return /^[a-zA-ZöäåÖÄÅ\- ]+$/.test(city);
 }
 
-export function phoneNumberIsValid(number) {
+function phoneNumberIsValid(number) {
+    if (isEmpty(number)) {
+        return false;
+    }
     return /^[0-9\+\-\(\)]+$/.test(number);
-}
-
-export function allFieldsValid(submitObject) {
-    return usernameIsValid(submitObject.username) &&
-            emailIsValid(submitObject.email) &&
-            birthdayIsValid(submitObject.birthday) &&
-            fullNameIsValid(submitObject.full_name) &&
-            addressIsValid(submitObject.address) &&
-            postalCodeIsValid(submitObject.postal_code) &&
-            cityIsValid(submitObject.city)
-
 }

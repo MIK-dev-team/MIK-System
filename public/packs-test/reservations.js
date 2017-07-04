@@ -4970,7 +4970,7 @@ function splitBsPropsAndOmit(props, omittedPropNames) {
 
 /**
  * Add a style variant to a Component. Mutates the propTypes of the component
- * in order to validate the new variant.
+ * in order to validationStateForForm the new variant.
  */
 function addStyle(Component) {
   for (var _len2 = arguments.length, styleVariant = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
@@ -9013,7 +9013,7 @@ var React = {
   createClass: ReactClass.createClass,
   createFactory: createFactory,
   createMixin: function (mixin) {
-    // Currently a noop. Will be used to validate and trace mixins.
+    // Currently a noop. Will be used to validationStateForForm and trace mixins.
     return mixin;
   },
 
@@ -35570,7 +35570,7 @@ function validateChildKeys(node, parentType) {
 }
 
 /**
- * Given an element, validate that its props follow the propTypes definition,
+ * Given an element, validationStateForForm that its props follow the propTypes definition,
  * provided by the type.
  *
  * @param {ReactElement} element
@@ -44542,7 +44542,7 @@ module.exports = keysIn;
     }
 
     /**
-     * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+     * The base implementation of `_.rest` which doesn't validationStateForForm or coerce arguments.
      *
      * @private
      * @param {Function} func The function to apply a rest parameter to.
@@ -79968,7 +79968,7 @@ var identity = __webpack_require__(492),
     setToString = __webpack_require__(705);
 
 /**
- * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+ * The base implementation of `_.rest` which doesn't validationStateForForm or coerce arguments.
  *
  * @private
  * @param {Function} func The function to apply a rest parameter to.

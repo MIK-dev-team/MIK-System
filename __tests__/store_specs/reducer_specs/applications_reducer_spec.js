@@ -11,6 +11,7 @@ const initialState = {
     ],
     sending: false,
     sent: false,
+    successMsg: null,
     submitError: null,
 
     username: "",
@@ -47,8 +48,8 @@ describe('Applications Reducer', () => {
 
     it('should handle SUBMIT_APPLICATION_FULFILLED correctly', () => {
         expect(
-            reducer(undefined, {type: "SUBMIT_APPLICATION_FULFILLED"})
-        ).toEqual({...initialState, sending: false, sent: true})
+            reducer(undefined, {type: "SUBMIT_APPLICATION_FULFILLED", payload: "Success!!"})
+        ).toEqual({...initialState, sending: false, sent: true, successMsg: "Success!!"})
     });
 
     it('should handle SET_USERNAME correctly', () => {

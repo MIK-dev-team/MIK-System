@@ -3,41 +3,60 @@
  */
 import React from 'react';
 import { connect } from 'react-redux'
-import { FormGroup, ControlLabel, FormControl, HelpBlock, Button, InputGroup, Glyphicon } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, HelpBlock, Button, InputGroup, Glyphicon, Alert } from 'react-bootstrap';
 
 import * as actions from '../../store/actions/applicationActions';
-import * as validators from '../../store/actions/applicationValidationActions';
+import { validationStateForForm } from '../../store/actions/applicationValidationActions';
 
+let alert;
 export class MembershipForm extends React.Component {
+    componentWillUpdate(nextProps, nextState) {
+        if (nextProps.successMsg !== null) {
+            alert =
+                <Alert bsStyle="success">
+                    <h4>Hakemuksenne on onnistuneesti lähetetty</h4>
+                    <p>Vahvistussähköposti on lähetetty antamaanne sähköpostiosoitteeseen. Teidät uudelleenohjataan
+                        etusivulle piakkoin
+                    </p>
+                </Alert>
+        } else if (nextProps.submitError !== null) {
+            alert =
+                <Alert bsStyle="danger">
+                    <h4>Lähetysvirhe</h4>
+                    {nextProps.submitError.map((error) => (
+                        <p key={error}>{error}</p>
+                    ))}
+                </Alert>
+        }
+    }
+
     render() {
         return (
+            <div>
+                {alert}
             <form onSubmit={(event) => {
                 this.props.dispatch(actions.submitApplication(this.props.submitObject, event));
             }}>
-                <FormGroup controlId="username" validationState={this.props.applications.username.length === 0 ? null :
-                                                                    validators.usernameIsValid(this.props.applications.username) ? 'success' : 'error'}>
+                <FormGroup controlId="username" validationState={validationStateForForm("username", this.props.applications.username)}>
                     <ControlLabel>Käyttäjätunnus</ControlLabel>
                     <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setUsername(event.target.value))}/>
                     <HelpBlock>Voit jättää tyhjäksi halutessasi ja käyttää sähköpostiosoitetta kirjautumiseen</HelpBlock>
                 </FormGroup>
-                <FormGroup controlId="email" validationState={this.props.applications.email.length === 0 ? null :
-                                                                validators.emailIsValid(this.props.applications.email) ? 'success' : 'error'}>
+                <FormGroup controlId="email" validationState={validationStateForForm("email", this.props.applications.email)}>
                     <ControlLabel>Sähköpostiosoite</ControlLabel>
                     <InputGroup>
                         <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setEmail(event.target.value))}/>
                         <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
-                <FormGroup controlId="repeatEmail" validationState={this.props.applications.repeatEmail.length === 0 ? null :
-                                                                    validators.repeatEmailIsValid(this.props.applications.email, this.props.applications.repeatEmail) ? 'success' : 'error'}>
+                <FormGroup controlId="repeatEmail" validationState={validationStateForForm("repeatEmail", this.props.applications.email, this.props.applications.repeatEmail)}>
                     <ControlLabel>Kirjoita sähköpostiosoite uudelleen</ControlLabel>
                     <InputGroup>
-                        <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setEmail(event.target.value))}/>
+                        <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setRepeatEmail(event.target.value))}/>
                         <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
-                <FormGroup controlId="birthday" validationState={this.props.applications.birthday.length === 0 ? null :
-                                                                validators.birthdayIsValid(this.props.applications.birthday) ? 'success' : 'error'}>
+                <FormGroup controlId="birthday" validationState={validationStateForForm("birthday", this.props.applications.birthday)}>
                     <ControlLabel>Syntymäaika (pp.kk.vvvv)</ControlLabel>
                     <InputGroup>
                         <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setBirthday(event.target.value))}/>
@@ -56,40 +75,35 @@ export class MembershipForm extends React.Component {
                         <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
-                <FormGroup controlId="fullName" validationState={this.props.applications.full_name.length === 0 ? null :
-                                                                    validators.fullNameIsValid(this.props.applications.full_name) ? 'success' : 'error'}>
+                <FormGroup controlId="fullName" validationState={validationStateForForm("fullName", this.props.applications.full_name)}>
                     <ControlLabel>Koko nimi</ControlLabel>
                     <InputGroup>
                         <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setFullName(event.target.value))}/>
                         <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
-                <FormGroup controlId="address" validationState={this.props.applications.address.length === 0 ? null :
-                                                                    validators.addressIsValid(this.props.applications.address) ? 'success' : 'error'}>
+                <FormGroup controlId="address" validationState={validationStateForForm("address", this.props.applications.address)}>
                     <ControlLabel>Osoite</ControlLabel>
                     <InputGroup>
                         <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setAddress(event.target.value))}/>
                         <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
-                <FormGroup controlId="postalCode" validationState={this.props.applications.postal_code.length === 0 ? null :
-                                                                    validators.postalCodeIsValid(this.props.applications.postal_code) ? 'success' : 'error'}>
+                <FormGroup controlId="postalCode" validationState={validationStateForForm("postalCode", this.props.applications.postal_code)}>
                     <ControlLabel>Postinumero</ControlLabel>
                     <InputGroup>
                         <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setPostalCode(event.target.value))}/>
                         <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
-                <FormGroup controlId="city" validationState={this.props.applications.city.length === 0 ? null :
-                                                                validators.cityIsValid(this.props.applications.city) ? 'success' : 'error'}>
+                <FormGroup controlId="city" validationState={validationStateForForm("city", this.props.applications.city)}>
                     <ControlLabel>Postitoimipaikka</ControlLabel>
                     <InputGroup>
                         <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setCity(event.target.value))}/>
                         <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
-                <FormGroup controlId="phoneNumber" validationState={this.props.applications.phone.length === 0 ? null :
-                                                                    validators.phoneNumberIsValid(this.props.applications.phone) ? 'success' : 'error'}>
+                <FormGroup controlId="phoneNumber" validationState={validationStateForForm("phoneNumber", this.props.applications.phone)}>
                     <ControlLabel>Puhelinnumero</ControlLabel>
                     <InputGroup>
                         <FormControl type="text" onChange={(event) => this.props.dispatch(actions.setPhoneNumber(event.target.value))}/>
@@ -152,6 +166,7 @@ export class MembershipForm extends React.Component {
                     Lähetä hakemus
                 </Button>
             </form>
+            </div>
         )
     }
 }
@@ -161,5 +176,7 @@ export default connect((store) => {
         membershipTypes: store.applications.membershipTypes,
         applications: store.applications,
         submitObject: store.applications.submitObject,
+        successMsg: store.applications.successMsg,
+        submitError: store.applications.submitError,
     }
 })(MembershipForm)

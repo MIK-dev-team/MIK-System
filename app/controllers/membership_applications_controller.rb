@@ -7,11 +7,11 @@ class MembershipApplicationsController < ApplicationController
 
     respond_to do |format|
       if @membership_application.save
-        format.html { redirect_to root_path, notice: 'Reservation was successfully created.' }
-        format.json { render :show, status: :created, location: @membership_application }
+        format.html { redirect_to root_path, notice: 'Application was successfully created.' }
+        format.json { render @membership_application, status: :created }
       else
         format.html { render :new }
-        format.json { render json: @membership_application.errors, status: :unprocessable_entity }
+        format.json { render json: @membership_application.errors.full_messages, status: :unprocessable_entity }
       end
     end
   end

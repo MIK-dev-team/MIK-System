@@ -10,18 +10,21 @@ export function submitApplication(app, event) {
     event.preventDefault();
     return function(dispatch) {
         if (!allFieldsValid(app)) {
-            dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: "Tarkasta täyttämäsi kentät"});
+            dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"]});
             return;
         }
 
+        dispatch({type: "RESET_ERROR_MSG"});
         dispatch({type: "SUBMIT_APPLICATION_PENDING"});
-        axios.post('/membership_applications', app)
-            .then((response) => {
-                dispatch({type: "SUBMIT_APPLICATION_FULFILLED"});
-                window.location.replace('/')
+        window.scrollTo(0, 0);
+        axios.post('/membership_applications.json', app)
+            .then(() => {
+                const success = "Hakemuksenne on lähetetty onnistuneesti."
+                dispatch({type: "SUBMIT_APPLICATION_FULFILLED", payload: success});
+                setTimeout(() => window.location.replace('/'), 5000);
             })
             .catch((err) => {
-                dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: err.response});
+                dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: err.response.data});
             });
     }
 }
@@ -35,6 +38,12 @@ export function setUsername(username) {
 export function setEmail(email) {
     return (dispatch) => {
         dispatch({type: "SET_EMAIL", payload: email})
+    }
+}
+
+export function setRepeatEmail(repeatEmail) {
+    return (dispatch) => {
+        dispatch({type: "SET_REPEAT_EMAIL", payload: repeatEmail})
     }
 }
 
