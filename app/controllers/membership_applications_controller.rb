@@ -1,5 +1,10 @@
 class MembershipApplicationsController < ApplicationController
+  before_action :set_membership_application, only: [:show]
+
   def join
+  end
+
+  def show
   end
 
   def create
@@ -17,6 +22,10 @@ class MembershipApplicationsController < ApplicationController
   end
 
   private
+    def set_membership_application
+      @membership_application = MembershipApplication.find(params[:id])
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def application_params
       params.require(:membership_application).permit(:username, :email, :birthday, :member_type, :full_name, :address,

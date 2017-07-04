@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
+  get 'membership_applications/show'
+
   get 'liity', to: 'membership_applications#join'
 
 
-  resources :membership_applications, only: [:create]
+  resources :membership_applications, only: [:create, :show]
   resources :reservations
   resources :planes, only: [:show]
   get '/planes/:id/reservations.json', to: 'planes#reservations'
