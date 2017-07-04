@@ -12,6 +12,9 @@ class MembershipApplicationsController < ApplicationController
 
     respond_to do |format|
       if @membership_application.save
+        MembershipAppMailer.application_received(@membership_application).deliver_later
+        MembershipAppMailer.application_received_mod(@membership_application).deliver_later
+
         format.html { redirect_to root_path, notice: 'Application was successfully created.' }
         format.json { render @membership_application, status: :created }
       else
