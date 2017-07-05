@@ -38,6 +38,10 @@ gem 'rails-i18n', '~> 5.0.0'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+group :test do
+  gem 'factory_girl_rails'
+end
+
 group :development, :test do
   gem 'database_cleaner'
   gem 'rspec-rails'

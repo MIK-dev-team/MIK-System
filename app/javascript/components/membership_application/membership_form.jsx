@@ -69,7 +69,7 @@ export class MembershipForm extends React.Component {
                         <FormControl componentClass="select" onChange={(event) => this.props.dispatch(actions.setMemberType(event.target.value))}>
                             <option value="null">** Valitse jäsenlaji **</option>
                             {this.props.membershipTypes.map((type) =>
-                                <option key={type.id} value={type.id}>{type.name}</option>
+                                <option key={type.name} value={type.name}>{type.name}</option>
                             )}
                         </FormControl>
                         <InputGroup.Addon><Glyphicon glyph="fire" /></InputGroup.Addon>

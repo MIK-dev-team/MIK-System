@@ -9,6 +9,8 @@ class MembershipApplicationsController < ApplicationController
 
   def create
     @membership_application = MembershipApplication.new(application_params)
+    @membership_application.user_id = 1
+    @membership_application.pending = true
 
     respond_to do |format|
       if @membership_application.save

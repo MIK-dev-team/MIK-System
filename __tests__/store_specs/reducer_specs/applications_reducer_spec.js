@@ -5,9 +5,9 @@ import reducer from '../../../app/javascript/store/reducers/applicationsReducer'
 
 const initialState = {
     membershipTypes: [
-        {id: 1, name: 'Täysjäsen'},
-        {id: 2, name: 'Nuorisojäsen (alle 18v)'},
-        {id: 3, name: 'Kannatusjäsen'}
+        {name: 'Täysjäsen'},
+        {name: 'Nuorisojäsen (alle 18v)'},
+        {name: 'Kannatusjäsen'}
     ],
     sending: false,
     sent: false,

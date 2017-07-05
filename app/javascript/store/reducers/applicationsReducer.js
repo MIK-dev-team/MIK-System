@@ -2,9 +2,9 @@
  * Created by owlaukka on 30/06/17.
  */
 const membershipTypes = [
-    {id: 1, name: 'Täysjäsen'},
-    {id: 2, name: 'Nuorisojäsen (alle 18v)'},
-    {id: 3, name: 'Kannatusjäsen'}
+    {name: 'Täysjäsen'},
+    {name: 'Nuorisojäsen (alle 18v)'},
+    {name: 'Kannatusjäsen'}
 ];
 
 export default function reducer(state = {
