@@ -12,17 +12,19 @@ RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive apt-get install -qq -y \
     iceweasel
-# install phantomjs - download from https://bitbucket.org/ariya/phantomjs/downloads
-ADD https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 .
-RUN tar -xjf phantomjs-2.1.1-linux-x86_64.tar.bz2 \
-    && mv ./phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin \
-    && rm -rf ./phantomjs-2.1.1-linux-x86_64 \
-    && phantomjs --version
-## for headless
-#RUN apt-get install -y xvfb
-## for capybara-webkit
-#RUN apt-get install -y libqt4-webkit libqt4-dev
-# cleanup repositories
+
+## install phantomjs - download from https://bitbucket.org/ariya/phantomjs/downloads
+RUN mkdir /tmp/phantomjs \
+    && curl -L https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 \
+           | tar -xj --strip-components=1 -C /tmp/phantomjs \
+    && cd /tmp/phantomjs \
+    && mv bin/phantomjs /usr/local/bin \
+    && cd \
+    && apt-get purge --auto-remove -y \
+        curl \
+    && apt-get clean \
+    && rm -rf /tmp/* /var/lib/apt/lists/*
+
 RUN rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /mik-system

@@ -10,6 +10,10 @@ class MembershipApplication < ApplicationRecord
     message: "Valitse jäsenyyden tyyppi" }
   validate :username_blank_or_between_8_and_25_characters
 
+  # validation for optional fields
+  validates :sil_membership_number, numericality: { allow_blank: true }
+  validates :join_sil, inclusion: { in: ["willJoin", "willNotJoin", "alreadyMember"], allow_blank: true }
+
   def username_blank_or_between_8_and_25_characters
     unless self.username.nil? or (self.username.length > 7 and self.username.length < 26)
       errors.add(:username, 'pitää olla tyhjä tai 8-25 merkkiä pitkä')

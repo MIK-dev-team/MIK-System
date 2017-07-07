@@ -3,7 +3,7 @@ FactoryGirl.define do
     username "Käyttis1"
     email "asdf@asdf.fi"
     full_name "John Johnson"
-    birthday "12.12.12"
+    birthday Date.new(1990, 12, 12)
     member_type "Täysjäsen"
     address "Coolstreet 12, A5"
     postal_code "12345"
@@ -17,7 +17,7 @@ FactoryGirl.define do
     username "Käyttis2"
     email "asdf@asdf.com"
     full_name "John Jackson"
-    birthday "12.12.10"
+    birthday Date.new(1990, 12, 12)
     member_type "Täysjäsen"
     address "Coolstreet 13, A5"
     postal_code "12349"
@@ -25,5 +25,17 @@ FactoryGirl.define do
     phone "+358501234569"
     pending 'true'
     user_id 2
+  end
+
+  factory :plane do
+    name "EH123"
+  end
+
+  factory :reservation do
+    reservation_type "opetus"
+    start "2018-06-07 15:42:00+03:00"
+    self.end "2018-06-07 17:42:00+03:00"
+    user_id 1
+    plane
   end
 end

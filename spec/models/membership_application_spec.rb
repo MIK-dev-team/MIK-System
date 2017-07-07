@@ -21,7 +21,7 @@ RSpec.describe MembershipApplication, type: :model do
   end
 
   it 'is not valid when username is too long' do
-    app.username = 'asdfasdfasdfasdfadfasdfasdfadsfasdfasdfadfafdsasdfafdf'
+    app.username = 'asdfasdfasdfasdfasdfasdfas'
     expect(app).to_not be_valid
   end
 
@@ -62,5 +62,34 @@ RSpec.describe MembershipApplication, type: :model do
   it 'is not valid if member_type is not among accepted types' do
     app.member_type = "Superjäsen"
     expect(app).to_not be_valid
+  end
+
+  it 'is valid with sil_number set' do
+    app.sil_membership_number = "12345"
+    expect(app).to be_valid
+  end
+
+  it 'is not valid if sil_number has letters in it' do
+    app.sil_membership_number = "asdf"
+    expect(app).to_not be_valid
+  end
+
+  it 'is not valid if sil_number has dash in it' do
+    app.sil_membership_number = "12345-12345"
+    expect(app).to_not be_valid
+  end
+
+  it 'is not valid if join_sil has wrong value' do
+    app.join_sil = 'wrongValue'
+    expect(app).to_not be_valid
+  end
+
+  it 'is valid with correct join_sil values' do
+    app.join_sil = 'willJoin'
+    expect(app).to be_valid
+    app.join_sil = 'willNotJoin'
+    expect(app).to be_valid
+    app.join_sil = 'alreadyMember'
+    expect(app).to be_valid
   end
 end

@@ -81,7 +81,8 @@ RSpec.configure do |config|
 
   Capybara.register_driver :poltergeist do |app|
     Capybara::Poltergeist::Driver.new(app, {
-        js_errors: false
+        js_errors: false,
+        extensions: ['spec/support/polyfill.js']
     })
   end
 

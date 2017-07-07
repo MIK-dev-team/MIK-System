@@ -35,7 +35,7 @@ export class MembershipForm extends React.Component {
             <div>
                 {alert}
             <form onSubmit={(event) => {
-                this.props.dispatch(actions.submitApplication(this.props.submitObject, event));
+                this.props.dispatch(actions.submitApplication(this.props.submitObject, this.props.applications.repeatEmail, event));
             }}>
                 <FormGroup controlId="username" validationState={validationStateForForm("username", this.props.applications.username)}>
                     <ControlLabel>Käyttäjätunnus</ControlLabel>

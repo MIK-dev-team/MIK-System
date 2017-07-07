@@ -26,9 +26,10 @@ export function validationStateForForm(fieldName, ...fieldValues) {
     }
 }
 
-export function allFieldsValid(submitObject) {
+export function allFieldsValid(submitObject, repeat) {
     return usernameIsValid(submitObject.username) &&
         emailIsValid(submitObject.email) &&
+        repeatEmailIsValid(submitObject.email, repeat) &&
         birthdayIsValid(submitObject.birthday) &&
         fullNameIsValid(submitObject.full_name) &&
         addressIsValid(submitObject.address) &&
@@ -45,7 +46,7 @@ function isEmpty(value) {
 
 function usernameIsValid(username) {
     if (username === undefined) {
-        return tr
+        return true
     }
     if (username.indexOf(' ') > -1) {
         return false

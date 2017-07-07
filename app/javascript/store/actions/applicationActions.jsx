@@ -6,15 +6,14 @@ import axios from 'axios';
 
 import { allFieldsValid } from './applicationValidationActions';
 
-export function submitApplication(app, event) {
+export function submitApplication(app, repeatEmail, event) {
     event.preventDefault();
     return function(dispatch) {
-        if (!allFieldsValid(app)) {
+        dispatch({type: "RESET_ERROR_MSG"});
+        if (!allFieldsValid(app, repeatEmail)) {
             dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"]});
             return;
         }
-
-        dispatch({type: "RESET_ERROR_MSG"});
         dispatch({type: "SUBMIT_APPLICATION_PENDING"});
         window.scrollTo(0, 0);
         axios.post('/membership_applications.json', app)

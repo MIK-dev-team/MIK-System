@@ -98,6 +98,7 @@ describe('Application Actions', () => {
         promise = Promise.resolve({});
         stub = sinon.stub(axios, 'post').callsFake(() => promise);
         const expectedActions = [
+            { type: "RESET_ERROR_MSG" },
             { type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"] }
         ];
 

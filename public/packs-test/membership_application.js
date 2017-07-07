@@ -77662,8 +77662,8 @@ function validationStateForForm(fieldName) {
     }
 }
 
-function allFieldsValid(submitObject) {
-    return usernameIsValid(submitObject.username) && emailIsValid(submitObject.email) && birthdayIsValid(submitObject.birthday) && fullNameIsValid(submitObject.full_name) && addressIsValid(submitObject.address) && postalCodeIsValid(submitObject.postal_code) && cityIsValid(submitObject.city);
+function allFieldsValid(submitObject, repeat) {
+    return usernameIsValid(submitObject.username) && emailIsValid(submitObject.email) && repeatEmailIsValid(submitObject.email, repeat) && birthdayIsValid(submitObject.birthday) && fullNameIsValid(submitObject.full_name) && addressIsValid(submitObject.address) && postalCodeIsValid(submitObject.postal_code) && cityIsValid(submitObject.city);
 }
 
 function isEmpty(value) {
@@ -77674,7 +77674,7 @@ function isEmpty(value) {
 
 function usernameIsValid(username) {
     if (username === undefined) {
-        return tr;
+        return true;
     }
     if (username.indexOf(' ') > -1) {
         return false;
@@ -78071,7 +78071,7 @@ var MembershipForm = exports.MembershipForm = function (_React$Component) {
                 _react2.default.createElement(
                     'form',
                     { onSubmit: function onSubmit(event) {
-                            _this2.props.dispatch(actions.submitApplication(_this2.props.submitObject, event));
+                            _this2.props.dispatch(actions.submitApplication(_this2.props.submitObject, _this2.props.applications.repeatEmail, event));
                         } },
                     _react2.default.createElement(
                         _reactBootstrap.FormGroup,
@@ -78523,15 +78523,14 @@ var _applicationValidationActions = __webpack_require__(677);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function submitApplication(app, event) {
+function submitApplication(app, repeatEmail, event) {
     event.preventDefault();
     return function (dispatch) {
-        if (!(0, _applicationValidationActions.allFieldsValid)(app)) {
+        dispatch({ type: "RESET_ERROR_MSG" });
+        if (!(0, _applicationValidationActions.allFieldsValid)(app, repeatEmail)) {
             dispatch({ type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"] });
             return;
         }
-
-        dispatch({ type: "RESET_ERROR_MSG" });
         dispatch({ type: "SUBMIT_APPLICATION_PENDING" });
         window.scrollTo(0, 0);
         _axios2.default.post('/membership_applications.json', app).then(function () {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170704144322) do
+ActiveRecord::Schema.define(version: 20170707145139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 20170704144322) do
     t.string "other_experience"
     t.string "other_memberships"
     t.string "join_sil"
-    t.integer "sil_membership_number"
+    t.string "sil_membership_number"
     t.string "extra_information"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
