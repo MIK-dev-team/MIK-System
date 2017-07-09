@@ -4,3 +4,4 @@ var
 vendor
 *.log
 public/assets
+Gemfile.lock
