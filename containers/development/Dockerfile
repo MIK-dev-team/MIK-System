@@ -1,4 +1,4 @@
-FROM ruby:2.4.1
+FROM ruby:2.4.1-slim
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev
 # yarn
@@ -25,14 +25,10 @@ RUN mkdir /tmp/phantomjs \
     && apt-get clean \
     && rm -rf /tmp/* /var/lib/apt/lists/*
 
-RUN rm -rf /var/lib/apt/lists/*
-
 RUN mkdir /mik-system
 WORKDIR /mik-system
 ADD Gemfile /mik-system/Gemfile
 ADD Gemfile.lock /mik-system/Gemfile.lock
 RUN bundle install
 ADD . /mik-system
-RUN yarn \
-    && bin/webpack
-
+RUN yarn

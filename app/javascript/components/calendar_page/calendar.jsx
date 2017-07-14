@@ -48,7 +48,7 @@ export class Calendar extends React.Component {
         for (let o of this.props.reservations) {
             newArray.push(o);
         }
-        if (this.props.reservations[this.props.reservations.length-1].title === '<valittu aika>') {
+        if (this.props.reservations.length !== 0 && this.props.reservations[this.props.reservations.length-1].title === '<valittu aika>') {
             newArray.pop();
         }
 
@@ -111,7 +111,7 @@ export class Calendar extends React.Component {
                 <br />
                 <Row>
                     <Col lg={12} md={12} sm={12}>
-                        <Button disabled={this.props.reservations[this.props.reservations.length-1].title === '<valittu aika>'} onClick={() => this.props.dispatch(setCollapsed(this.props.collapsed))}>
+                        <Button disabled={this.state.reservations[this.state.reservations.length-1].title === '<valittu aika>'} onClick={() => this.props.dispatch(setCollapsed(this.props.collapsed))}>
                             {this.props.collapsed ? "Näytä varauksesi tiedot" : "Piilota varauksesi tiedot"}
                         </Button>
                     </Col>

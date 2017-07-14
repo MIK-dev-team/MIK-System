@@ -66,7 +66,7 @@ describe('Application Actions', () => {
             { type: "SUBMIT_APPLICATION_FULFILLED", payload: "Hakemuksenne on lähetetty onnistuneesti." },
         ];
 
-        store.dispatch(actions.submitApplication(submitObject, {preventDefault: () => {}}));
+        store.dispatch(actions.submitApplication(submitObject, submitObject.repeat_email, {preventDefault: () => {}}));
         return promise.then(() => {
             expect(store.getActions()).toEqual(expectedActions);
         });
@@ -85,7 +85,7 @@ describe('Application Actions', () => {
         ];
 
 
-        store.dispatch(actions.submitApplication(submitObject, {preventDefault: () => {}}));
+        store.dispatch(actions.submitApplication(submitObject, null, {preventDefault: () => {}}));
         return promise.catch(() => {
             expect(store.getActions()).toEqual(expectedActions);
         })
@@ -102,7 +102,7 @@ describe('Application Actions', () => {
             { type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"] }
         ];
 
-        store.dispatch(actions.submitApplication(submitObject, {preventDefault: () => {}}));
+        store.dispatch(actions.submitApplication(submitObject, null, {preventDefault: () => {}}));
         return promise.then(() => {
             expect(store.getActions()).toEqual(expectedActions);
         });
