@@ -82710,7 +82710,7 @@ var Calendar = exports.Calendar = function (_React$Component) {
                 }
             }
 
-            if (this.props.reservations[this.props.reservations.length - 1].title === '<valittu aika>') {
+            if (this.props.reservations.length !== 0 && this.props.reservations[this.props.reservations.length - 1].title === '<valittu aika>') {
                 newArray.pop();
             }
 
@@ -82787,7 +82787,7 @@ var Calendar = exports.Calendar = function (_React$Component) {
                         { lg: 12, md: 12, sm: 12 },
                         _react2.default.createElement(
                             _reactBootstrap.Button,
-                            { disabled: this.props.reservations[this.props.reservations.length - 1].title === '<valittu aika>', onClick: function onClick() {
+                            { disabled: this.state.reservations[this.state.reservations.length - 1].title === '<valittu aika>', onClick: function onClick() {
                                     return _this2.props.dispatch((0, _reservationsActions.setCollapsed)(_this2.props.collapsed));
                                 } },
                             this.props.collapsed ? "Näytä varauksesi tiedot" : "Piilota varauksesi tiedot"

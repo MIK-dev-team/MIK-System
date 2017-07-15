@@ -5,6 +5,7 @@ import React from 'react';
 import { shallow } from "enzyme";
 import sinon from 'sinon';
 
+import * as applicationActions from '../../../app/javascript/store/actions/applicationActions'
 import { MembershipForm } from "../../../app/javascript/components/membership_application/membership_form";
 
 const initialProps = {
@@ -22,6 +23,7 @@ const initialProps = {
         sending: false,
         sent: false,
         submitError: null,
+        successMsg: null,
 
         username: "",
         email: "",
@@ -42,10 +44,7 @@ const initialProps = {
 let form;
 describe("Membership form", () => {
     beforeEach(() => {
-        form = shallow(<MembershipForm
-                        membershipTypes={initialProps.membershipTypes}
-                        applications={initialProps.applications}
-                        submitObject={initialProps.submitObject}/>);
+        form = shallow(<MembershipForm {...initialProps}/>);
     });
 
     it("contains 1 form", () => {
@@ -70,9 +69,7 @@ describe("Membership form", () => {
     it("calls dispatch when form is submitted", () => {
         const spy = sinon.spy();
         form = shallow(<MembershipForm
-            membershipTypes={initialProps.membershipTypes}
-            applications={initialProps.applications}
-            submitObject={initialProps.submitObject}
+            {...initialProps}
             dispatch={spy}/>);
         expect(spy.calledOnce).toBe(false);
         form.find('form').simulate('submit', {preventDefault: () => {}});
@@ -82,9 +79,7 @@ describe("Membership form", () => {
     it("calls dispatch when changing membership type", () => {
         const spy = sinon.spy();
         form = shallow(<MembershipForm
-            membershipTypes={initialProps.membershipTypes}
-            applications={initialProps.applications}
-            submitObject={initialProps.submitObject}
+            {...initialProps}
             dispatch={spy}/>);
         expect(spy.calledOnce).toBe(false);
         expect(form.find('FormGroup#memberType > InputGroup > FormControl').length).toEqual(1);
@@ -120,9 +115,8 @@ describe("Membership form", () => {
             city: "s1",
         };
         form = shallow(<MembershipForm
-            membershipTypes={initialProps.membershipTypes}
-            applications={applicationProps}
-            submitObject={initialProps.submitObject}/>);
+            {...initialProps}
+            applications={applicationProps}/>);
 
         expect(form.findWhere(n => n.prop('controlId') === 'username').props().validationState).toBe('error');
         expect(form.findWhere(n => n.prop('controlId') === 'email').props().validationState).toBe('error');
@@ -149,9 +143,8 @@ describe("Membership form", () => {
             city: "Yli-Ii",
         };
         form = shallow(<MembershipForm
-            membershipTypes={initialProps.membershipTypes}
-            applications={applicationProps}
-            submitObject={initialProps.submitObject}/>);
+            {...initialProps}
+            applications={applicationProps}/>);
 
         expect(form.findWhere(n => n.prop('controlId') === 'username').props().validationState).toBe('success');
         expect(form.findWhere(n => n.prop('controlId') === 'email').props().validationState).toBe('success');
@@ -167,9 +160,7 @@ describe("Membership form", () => {
     it('calls dispatch when a field is changed', () => {
         const spy = sinon.spy();
         form = shallow(<MembershipForm
-            membershipTypes={initialProps.membershipTypes}
-            applications={initialProps.applications}
-            submitObject={initialProps.submitObject}
+            {...initialProps}
             dispatch={spy}/>);
         form.findWhere(n => n.prop('controlId') === 'username').find('FormControl').simulate('change', { target: {value: 'a'} });
         form.findWhere(n => n.prop('controlId') === 'email').find('FormControl').simulate('change', { target: {value: 'a'} });
@@ -190,5 +181,205 @@ describe("Membership form", () => {
         form.findWhere(n => n.prop('controlId') === 'silNumber').find('FormControl').simulate('change', { target: {value: 'a'} });
         form.findWhere(n => n.prop('controlId') === 'additionalInfo').find('FormControl').simulate('change', { target: {value: 'a'} });
         expect(spy.callCount).toEqual(17);
+    });
+
+    it('sets success msg correctly when one exists', () => {
+        expect(form.find('Alert').length).toEqual(0);
+        form.setProps({successMsg: "Success!"});
+        form.update();
+        expect(form.find('Alert').length).toEqual(1);
+        expect(form.find('Alert > p').text())
+            .toContain('Vahvistussähköposti on lähetetty antamaanne sähköpostiosoitteeseen.');
+        form.setProps({successMsg: null});
+        form.update();
+    });
+
+    it('sets error msg correctly when one exists', () => {
+        form.setProps({submitError: ['Some error']});
+        form.update();
+        expect(form.find('Alert').length).toEqual(1);
+        expect(form.find('Alert > p').text())
+            .toContain('Some error');
+        form.setProps({submitError: null});
+        form.update();
+    });
+
+    it('shows all error msgs correctly when there are several', () => {
+        form.setProps({submitError: ['Some error', 'Another error']});
+        form.update();
+        expect(form.find('Alert').length).toEqual(1);
+        expect(form.find('Alert > p').length).toEqual(2);
+        expect(form.find('Alert > p').first().text()).toEqual('Some error');
+        expect(form.find('Alert > p').at(1).text()).toEqual('Another error');
+        form.setProps({submitError: null});
+        form.update();
+    });
+
+    describe('calls correct function inside dispatch', () => {
+        let actionStub;
+        beforeEach(() => {
+            form = shallow(<MembershipForm
+                membershipTypes={initialProps.membershipTypes}
+                applications={initialProps.applications}
+                submitObject={initialProps.submitObject}
+                dispatch={sinon.spy()}/>);
+        });
+
+        afterEach(() => {
+            actionStub.restore();
+        });
+
+        it('when changing username', () => {
+            actionStub = sinon.stub(applicationActions, 'setUsername');
+            expect(actionStub.calledOnce).toBe(false)
+            form.findWhere(n => n.prop('controlId') === 'username')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true)
+        });
+
+        it('when changing email', () => {
+            actionStub = sinon.stub(applicationActions, 'setEmail');
+            expect(actionStub.calledOnce).toBe(false)
+            form.findWhere(n => n.prop('controlId') === 'email')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true)
+        });
+
+        it('when changing repeatEmail', () => {
+            actionStub = sinon.stub(applicationActions, 'setRepeatEmail');
+            expect(actionStub.calledOnce).toBe(false)
+            form.findWhere(n => n.prop('controlId') === 'repeatEmail')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true)
+        });
+
+        it('when changing member_type', () => {
+            actionStub = sinon.stub(applicationActions, 'setMemberType');
+            expect(actionStub.calledOnce).toBe(false)
+            form.findWhere(n => n.prop('controlId') === 'memberType')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true)
+        });
+
+        it('when changing birthday', () => {
+            actionStub = sinon.stub(applicationActions, 'setBirthday');
+            expect(actionStub.calledOnce).toBe(false)
+            form.findWhere(n => n.prop('controlId') === 'birthday')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true)
+        });
+
+        it('when changing full name', () => {
+            actionStub = sinon.stub(applicationActions, 'setFullName');
+            expect(actionStub.calledOnce).toBe(false)
+            form.findWhere(n => n.prop('controlId') === 'fullName')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true)
+        });
+
+        it('when changing address', () => {
+            actionStub = sinon.stub(applicationActions, 'setAddress');
+            expect(actionStub.calledOnce).toBe(false)
+            form.findWhere(n => n.prop('controlId') === 'address')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true)
+        });
+
+        it('when changing postal code', () => {
+            actionStub = sinon.stub(applicationActions, 'setPostalCode');
+            expect(actionStub.calledOnce).toBe(false)
+            form.findWhere(n => n.prop('controlId') === 'postalCode')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true)
+        });
+
+        it('when changing city', () => {
+            actionStub = sinon.stub(applicationActions, 'setCity');
+            expect(actionStub.calledOnce).toBe(false)
+            form.findWhere(n => n.prop('controlId') === 'city')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true)
+        });
+
+        it('when changing phone', () => {
+            actionStub = sinon.stub(applicationActions, 'setPhoneNumber');
+            expect(actionStub.calledOnce).toBe(false);
+            form.findWhere(n => n.prop('controlId') === 'phoneNumber')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true);
+        });
+
+        it('when changing licences', () => {
+            actionStub = sinon.stub(applicationActions, 'setLicences');
+            expect(actionStub.calledOnce).toBe(false);
+            form.findWhere(n => n.prop('controlId') === 'licences')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true);
+        });
+
+        it('when changing exp with engine planes', () => {
+            actionStub = sinon.stub(applicationActions, 'setEngineExp');
+            expect(actionStub.calledOnce).toBe(false);
+            form.findWhere(n => n.prop('controlId') === 'expWithEngine')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true);
+        });
+
+        it('when changing other exp', () => {
+            actionStub = sinon.stub(applicationActions, 'setOtherExp');
+            expect(actionStub.calledOnce).toBe(false);
+            form.findWhere(n => n.prop('controlId') === 'otherExp')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true);
+        });
+
+        it('when changing other memberships', () => {
+            actionStub = sinon.stub(applicationActions, 'setOtherMemberships');
+            expect(actionStub.calledOnce).toBe(false);
+            form.findWhere(n => n.prop('controlId') === 'otherMemberships')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true);
+        });
+
+        it('when changing SIL membership', () => {
+            actionStub = sinon.stub(applicationActions, 'setSilMembership');
+            expect(actionStub.calledOnce).toBe(false);
+            form.findWhere(n => n.prop('controlId') === 'silMembership')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true);
+        });
+
+        it('when changing sil number', () => {
+            actionStub = sinon.stub(applicationActions, 'setSilNumber');
+            expect(actionStub.calledOnce).toBe(false);
+            form.findWhere(n => n.prop('controlId') === 'silNumber')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true);
+        });
+
+        it('when changing additional info', () => {
+            actionStub = sinon.stub(applicationActions, 'setAdditionalInfo');
+            expect(actionStub.calledOnce).toBe(false);
+            form.findWhere(n => n.prop('controlId') === 'additionalInfo')
+                .find('FormControl')
+                .simulate('change', { target: {value: 'a'} });
+            expect(actionStub.calledOnce).toBe(true);
+        });
     });
 });

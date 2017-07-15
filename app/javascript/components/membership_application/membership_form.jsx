@@ -11,7 +11,7 @@ import { validationStateForForm } from '../../store/actions/applicationValidatio
 let alert;
 export class MembershipForm extends React.Component {
     componentWillUpdate(nextProps, nextState) {
-        if (nextProps.successMsg !== null) {
+        if (nextProps.successMsg !== null && nextProps.successMsg !== undefined) {
             alert =
                 <Alert bsStyle="success">
                     <h4>Hakemuksenne on onnistuneesti lähetetty</h4>
@@ -19,7 +19,7 @@ export class MembershipForm extends React.Component {
                         etusivulle piakkoin
                     </p>
                 </Alert>
-        } else if (nextProps.submitError !== null) {
+        } else if (nextProps.submitError !== null && nextProps.submitError !== undefined) {
             alert =
                 <Alert bsStyle="danger">
                     <h4>Lähetysvirhe</h4>
