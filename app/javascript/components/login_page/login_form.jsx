@@ -8,32 +8,28 @@ import * as validators from '../../store/actions/loginValidationActions';
 export class LoginForm extends React.Component {
   render() {
     return(
-  <form>
-    <FormGroup controlId="formHorizontalEmail">
-      <Col componentClass={ControlLabel} sm={2}>
-        Sähköposti
-      </Col>
-      <Col sm={10}>
-        <FormControl type="email"/>
-      </Col>
-    </FormGroup>
+      <form>
+          <FormGroup controlId="username">
+                      <ControlLabel>Käyttäjätunnus/Sähköposti</ControlLabel>
+                      <FormControl type="text"/>
+          </FormGroup>
 
-    <FormGroup controlId="formHorizontalPassword">
-      <Col componentClass={ControlLabel} sm={2}>
-        Salasana
-      </Col>
-      <Col sm={10}>
-        <FormControl type="password"/>
-      </Col>
-    </FormGroup>
+          <FormGroup controlId="username">
+                      <ControlLabel>Salasana</ControlLabel>
+                      <FormControl type="password"/>
+          </FormGroup>
 
-    <FormGroup>
-      <Col smOffset={2} sm={10}>
-        <Button type="submit">
-          Sign in
-        </Button>
-      </Col>
-    </FormGroup>
-  </form>
-)
+          <Button type="submit">
+              Kirjaudu
+          </Button>
+      </form>
+    )
+    }
 }
+
+export default connect((store) => {
+    return {
+        //applications: store.applications,
+        //submitObject: store.applications.submitObject,
+    }
+})(LoginForm)
