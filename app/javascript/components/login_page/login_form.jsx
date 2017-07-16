@@ -6,6 +6,8 @@ import * as actions from '../../store/actions/loginActions';
 import * as validators from '../../store/actions/loginValidationActions';
 
 export class LoginForm extends React.Component {
+  render() {
+    return(
   <form>
     <FormGroup controlId="formHorizontalEmail">
       <Col componentClass={ControlLabel} sm={2}>
@@ -33,4 +35,5 @@ export class LoginForm extends React.Component {
       </Col>
     </FormGroup>
   </form>
+)
 }

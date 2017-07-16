@@ -1,15 +1,1 @@
-<h1>Kirjautuminen</h1>
-<form method="post" action="/login">
-  <% if flash[:notice] %>
-    <div class="notice"><%= flash[:notice] %></div>
-  <% end %>
-  <div class="field">
-    <label id="email">Sähköposti</label><br />
-    <%= text_field_tag :email, params[:email] %>
-  </div>
-  <div class="field">
-    <label id="password">Salasana</label><br />
-    <%= password_field_tag :password %>
-  </div>
-  <div class="actions"><%= submit_tag "Kirjaudu" %></div>
-</form>
+<%= react_component 'LoginIndex' %>
