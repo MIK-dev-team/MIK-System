@@ -4,7 +4,8 @@
 import sinon from 'sinon';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import axios from 'axios';
+
+import AjaxService from '../../../app/javascript/services/ajax_service';
 
 import * as actions from '../../../app/javascript/store/actions/applicationActions';
 
@@ -59,7 +60,7 @@ describe('Application Actions', () => {
             city: "Yli-Ii",
         };
         promise = Promise.resolve({});
-        stub = sinon.stub(axios, 'post').callsFake(() => promise);
+        stub = sinon.stub(AjaxService.service, 'request').callsFake(() => promise);
         const expectedActions = [
             { type: "RESET_ERROR_MSG" },
             { type: "SUBMIT_APPLICATION_PENDING" },
@@ -78,7 +79,7 @@ describe('Application Actions', () => {
         };
         const error = {response: {status: 422, data: {some: "data here"}}};
         promise = Promise.resolve(error);
-        stub = sinon.stub(axios, 'post').callsFake(() => promise);
+        stub = sinon.stub(AjaxService.service, 'request').callsFake(() => promise);
         const expectedActions = [
             { type: "SUBMIT_APPLICATION_PENDING" },
             { type: "SUBMIT_APPLICATION_REJECTED", payload: error.response.data }
@@ -96,7 +97,7 @@ describe('Application Actions', () => {
             username: "wrong"
         };
         promise = Promise.resolve({});
-        stub = sinon.stub(axios, 'post').callsFake(() => promise);
+        stub = sinon.stub(AjaxService.service, 'request').callsFake(() => promise);
         const expectedActions = [
             { type: "RESET_ERROR_MSG" },
             { type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"] }

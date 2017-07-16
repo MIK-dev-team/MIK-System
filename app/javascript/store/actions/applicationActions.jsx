@@ -2,8 +2,8 @@
  * Created by owlaukka on 30/06/17.
  */
 import React from 'react';
-import axios from 'axios';
 
+import AjaxService from '../../services/ajax_service';
 import { allFieldsValid } from './applicationValidationActions';
 
 export function submitApplication(app, repeatEmail, event) {
@@ -16,15 +16,19 @@ export function submitApplication(app, repeatEmail, event) {
         }
         dispatch({type: "SUBMIT_APPLICATION_PENDING"});
         window.scrollTo(0, 0);
-        axios.post('/membership_applications.json', app)
-            .then(() => {
+
+        AjaxService.post(
+            '/membership_applications.json',
+            app,
+            (status, data) => {
                 const success = "Hakemuksenne on lähetetty onnistuneesti."
                 dispatch({type: "SUBMIT_APPLICATION_FULFILLED", payload: success});
                 setTimeout(() => window.location.replace('/'), 5000);
-            })
-            .catch((err) => {
-                dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: err.response.data});
-            });
+            },
+            (status, err) => {
+                dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: err});
+            }
+        );
     }
 }
 

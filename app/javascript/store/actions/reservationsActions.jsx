@@ -2,26 +2,29 @@
  * Created by owlaukka on 18/06/17.
  */
 import React from 'react';
-import axios from 'axios';
 import moment from 'moment';
+
+import AjaxService from '../../services/ajax_service';
 
 moment.locale('fi');
 
 export function fetchReservations() {
     return function(dispatch) {
         dispatch({type: "FETCH_RESERVATIONS_PENDING"});
-        axios.get('/reservations.json')
-            .then((response) => {
-                response.data.map((res) => {
+        AjaxService.get(
+            '/reservations.json',
+            (status, data) => {
+                data.map((res) => {
                     res.key = res.id;
                     res.start = moment(res.start).toDate();
                     res.end = moment(res.end).toDate();
                 });
-                dispatch({type: "FETCH_RESERVATIONS_FULFILLED", payload: response.data})
-            })
-            .catch((err) => {
+                dispatch({type: "FETCH_RESERVATIONS_FULFILLED", payload: data})
+            },
+            (status, err) => {
                 dispatch({type: "FETCH_RESERVATIONS_REJECTED", payload: err})
-            })
+            }
+        );
     }
 }
 
@@ -37,15 +40,18 @@ export function submitReservation(event, start, end, plane, type, desc) {
     event.preventDefault();
     return function(dispatch) {
         dispatch({type: "SUBMIT_RESERVATION_PENDING"});
-        axios.post('/reservations.json', reservation)
-            .then(response => {
+        AjaxService.post(
+            '/reservations.json',
+            reservation,
+            (status, data) => {
                 dispatch({type: "SUBMIT_RESERVATION_FULFILLED"});
                 dispatch({type: "RESET_NEW_RESERVATION"});
                 dispatch(fetchReservations());
-            })
-            .catch(err => {
-                dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: err.response.data})
-            })
+            },
+            (status, err) => {
+                dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: err})
+            }
+        );
     }
 }
 
@@ -82,14 +88,17 @@ export function fillForm(timeSlot) {
 }
 
 export function mapReservations(reservations) {
-    return reservations.map((res) =>
-        <tr key={res.id}>
-            <td>{res.id}</td>
-            <td>{moment(res.start).format('lll')}</td>
-            <td>{moment(res.end).format('lll')}</td>
-            <td>{res.plane_id}</td>
-            <td>{res.reservation_type}</td>
-        </tr>
-
-    )
+    if (reservations === undefined || reservations[0].id === undefined) {
+        return <tr key="empty"></tr>
+    } else {
+        return reservations.map((res) =>
+            <tr key={res.id}>
+                <td>{res.id}</td>
+                <td>{moment(res.start).format('lll')}</td>
+                <td>{moment(res.end).format('lll')}</td>
+                <td>{res.plane_id}</td>
+                <td>{res.reservation_type}</td>
+            </tr>
+        )
+    }
 }

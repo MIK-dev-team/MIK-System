@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/packs-test/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 735);
+/******/ 	return __webpack_require__(__webpack_require__.s = 736);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -34959,13 +34959,13 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _axios = __webpack_require__(360);
-
-var _axios2 = _interopRequireDefault(_axios);
-
 var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
+
+var _ajax_service = __webpack_require__(656);
+
+var _ajax_service2 = _interopRequireDefault(_ajax_service);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34975,14 +34975,14 @@ _moment2.default.locale('fi'); /**
 function fetchReservations() {
     return function (dispatch) {
         dispatch({ type: "FETCH_RESERVATIONS_PENDING" });
-        _axios2.default.get('/reservations.json').then(function (response) {
-            response.data.map(function (res) {
+        _ajax_service2.default.get('/reservations.json', function (status, data) {
+            data.map(function (res) {
                 res.key = res.id;
                 res.start = (0, _moment2.default)(res.start).toDate();
                 res.end = (0, _moment2.default)(res.end).toDate();
             });
-            dispatch({ type: "FETCH_RESERVATIONS_FULFILLED", payload: response.data });
-        }).catch(function (err) {
+            dispatch({ type: "FETCH_RESERVATIONS_FULFILLED", payload: data });
+        }, function (status, err) {
             dispatch({ type: "FETCH_RESERVATIONS_REJECTED", payload: err });
         });
     };
@@ -34999,12 +34999,12 @@ function submitReservation(event, start, end, plane, type, desc) {
     event.preventDefault();
     return function (dispatch) {
         dispatch({ type: "SUBMIT_RESERVATION_PENDING" });
-        _axios2.default.post('/reservations.json', reservation).then(function (response) {
+        _ajax_service2.default.post('/reservations.json', reservation, function (status, data) {
             dispatch({ type: "SUBMIT_RESERVATION_FULFILLED" });
             dispatch({ type: "RESET_NEW_RESERVATION" });
             dispatch(fetchReservations());
-        }).catch(function (err) {
-            dispatch({ type: "SUBMIT_RESERVATION_REJECTED", payload: err.response.data });
+        }, function (status, err) {
+            dispatch({ type: "SUBMIT_RESERVATION_REJECTED", payload: err });
         });
     };
 }
@@ -35042,37 +35042,41 @@ function fillForm(timeSlot) {
 }
 
 function mapReservations(reservations) {
-    return reservations.map(function (res) {
-        return _react2.default.createElement(
-            'tr',
-            { key: res.id },
-            _react2.default.createElement(
-                'td',
-                null,
-                res.id
-            ),
-            _react2.default.createElement(
-                'td',
-                null,
-                (0, _moment2.default)(res.start).format('lll')
-            ),
-            _react2.default.createElement(
-                'td',
-                null,
-                (0, _moment2.default)(res.end).format('lll')
-            ),
-            _react2.default.createElement(
-                'td',
-                null,
-                res.plane_id
-            ),
-            _react2.default.createElement(
-                'td',
-                null,
-                res.reservation_type
-            )
-        );
-    });
+    if (reservations === undefined || reservations[0].id === undefined) {
+        return _react2.default.createElement('tr', { key: 'empty' });
+    } else {
+        return reservations.map(function (res) {
+            return _react2.default.createElement(
+                'tr',
+                { key: res.id },
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    res.id
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    (0, _moment2.default)(res.start).format('lll')
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    (0, _moment2.default)(res.end).format('lll')
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    res.plane_id
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    res.reservation_type
+                )
+            );
+        });
+    }
 }
 
 /***/ }),
@@ -77727,7 +77731,135 @@ exports.default = ujs;
 /* 653 */,
 /* 654 */,
 /* 655 */,
-/* 656 */,
+/* 656 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }return function (Constructor, protoProps, staticProps) {
+        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+    };
+}(); /**
+      * Created by owlaukka on 15/07/17.
+      */
+
+var _axios = __webpack_require__(360);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+    }
+}
+
+// Wrapper class for ajax requests. Uses Axios, but can be changed to use any library to do requests if wanted.
+var AjaxService = function () {
+    function AjaxService() {
+        var _this = this;
+
+        _classCallCheck(this, AjaxService);
+
+        Object.defineProperty(this, 'handleError', {
+            enumerable: true,
+            writable: true,
+            value: function value(error) {
+                switch (error.response.status) {
+                    case 401:
+                        _this.redirectTo(document, '/');
+                        break;
+                    case 404:
+                        _this.redirectTo(document, '/404');
+                        break;
+                    default:
+                        _this.redirectTo(document, '/500');
+                        break;
+                }
+                return Promise.reject(error);
+            }
+        });
+        Object.defineProperty(this, 'redirectTo', {
+            enumerable: true,
+            writable: true,
+            value: function value(document, path) {
+                document.location = path;
+            }
+        });
+
+        var service = _axios2.default.create({
+            headers: { csrf: 'token' }
+        });
+        service.interceptors.response.use(this.handleSuccess, this.handleError);
+        this.service = service;
+    }
+
+    _createClass(AjaxService, [{
+        key: 'handleSuccess',
+        value: function handleSuccess(response) {
+            return response;
+        }
+
+        // TODO: Check if default case makes it skip errorCallbacks in request functions
+
+    }, {
+        key: 'get',
+        value: function get(path, callback, errorCallback) {
+            return this.service.get(path).then(function (response) {
+                callback(response.status, response.data);
+            }).catch(function (err) {
+                errorCallback(err.response.status, err.response.data);
+            });
+        }
+    }, {
+        key: 'patch',
+        value: function patch(path, payload, callback, errorCallback) {
+            return this.service.request({
+                method: 'PATCH',
+                url: path,
+                responseType: 'json',
+                data: payload
+            }).then(function (response) {
+                callback(response.status, response.data);
+            }).catch(function (err) {
+                errorCallback(err.response.status, err.response.data);
+            });
+        }
+    }, {
+        key: 'post',
+        value: function post(path, payload, callback, errorCallback) {
+            return this.service.request({
+                method: 'POST',
+                url: path,
+                responseType: 'json',
+                data: payload
+            }).then(function (response) {
+                callback(response.status, response.data);
+            }).catch(function (err) {
+                errorCallback(err.response.status, err.response.data);
+            });
+        }
+    }]);
+
+    return AjaxService;
+}();
+
+exports.default = new AjaxService();
+
+/***/ }),
 /* 657 */,
 /* 658 */,
 /* 659 */,
@@ -77795,7 +77927,8 @@ exports.default = ujs;
 /* 721 */,
 /* 722 */,
 /* 723 */,
-/* 724 */
+/* 724 */,
+/* 725 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77814,7 +77947,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(135);
 
-var _res_page = __webpack_require__(731);
+var _res_page = __webpack_require__(732);
 
 var _res_page2 = _interopRequireDefault(_res_page);
 
@@ -77856,13 +77989,13 @@ var ReservationsIndex = function (_React$Component) {
 exports.default = ReservationsIndex;
 
 /***/ }),
-/* 725 */,
 /* 726 */,
 /* 727 */,
 /* 728 */,
 /* 729 */,
 /* 730 */,
-/* 731 */
+/* 731 */,
+/* 732 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77881,7 +78014,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactBootstrap = __webpack_require__(145);
 
-var _reservation_table = __webpack_require__(732);
+var _reservation_table = __webpack_require__(733);
 
 var _reservation_table2 = _interopRequireDefault(_reservation_table);
 
@@ -77919,7 +78052,7 @@ var ReservationsPage = function (_React$Component) {
 exports.default = ReservationsPage;
 
 /***/ }),
-/* 732 */
+/* 733 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77938,7 +78071,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactBootstrap = __webpack_require__(145);
 
-var _reactLoading = __webpack_require__(874);
+var _reactLoading = __webpack_require__(875);
 
 var _reactLoading2 = _interopRequireDefault(_reactLoading);
 
@@ -77946,7 +78079,7 @@ var _reactRedux = __webpack_require__(135);
 
 var _reservationsActions = __webpack_require__(347);
 
-var _reservation_table_content = __webpack_require__(733);
+var _reservation_table_content = __webpack_require__(734);
 
 var _reservation_table_content2 = _interopRequireDefault(_reservation_table_content);
 
@@ -78059,7 +78192,7 @@ exports.default = (0, _reactRedux.connect)(function (store) {
 })(ReservationTable);
 
 /***/ }),
-/* 733 */
+/* 734 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78112,14 +78245,14 @@ var ReservationTableContent = function (_React$Component) {
 exports.default = ReservationTableContent;
 
 /***/ }),
-/* 734 */,
-/* 735 */
+/* 735 */,
+/* 736 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(724);
+var _index = __webpack_require__(725);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -78132,7 +78265,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _webpackerReact2.default.setup({ ReservationsIndex: _index2.default });
 
 /***/ }),
-/* 736 */,
 /* 737 */,
 /* 738 */,
 /* 739 */,
@@ -78270,7 +78402,8 @@ _webpackerReact2.default.setup({ ReservationsIndex: _index2.default });
 /* 871 */,
 /* 872 */,
 /* 873 */,
-/* 874 */
+/* 874 */,
+/* 875 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {

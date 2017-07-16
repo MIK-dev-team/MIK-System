@@ -27,19 +27,19 @@ let reservations = [
 ];
 
 beforeEach(() => {
-    tableContent = shallow(<ReservationTableContent reservations={[]} />);
+    tableContent = shallow(<ReservationTableContent reservations={[{}]} />);
 });
 
 afterEach(() => {
-    tableContent.setProps({ reservations: [] });
+    tableContent.setProps({ reservations: [{}] });
 });
 
 describe('Reservation table content', () => {
 
     it('displays nothing extra if no props given', () => {
-        expect(tableContent.find('tr').length).toEqual(0);
+        expect(tableContent.find('tr').length).toEqual(1);
         expect(tableContent.find('td').length).toEqual(0);
-    })
+    });
 
     it('displays correct amount of rows', () => {
         tableContent.setProps({ reservations: reservations });

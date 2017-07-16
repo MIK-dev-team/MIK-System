@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/packs-test/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 734);
+/******/ 	return __webpack_require__(__webpack_require__.s = 735);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -77611,7 +77611,8 @@ exports.default = ujs;
 /* 674 */,
 /* 675 */,
 /* 676 */,
-/* 677 */
+/* 677 */,
+/* 678 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77762,7 +77763,6 @@ function phoneNumberIsValid(number) {
 }
 
 /***/ }),
-/* 678 */,
 /* 679 */,
 /* 680 */,
 /* 681 */,
@@ -77807,7 +77807,8 @@ function phoneNumberIsValid(number) {
 /* 720 */,
 /* 721 */,
 /* 722 */,
-/* 723 */
+/* 723 */,
+/* 724 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77826,7 +77827,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(135);
 
-var _membership_app_page = __webpack_require__(729);
+var _membership_app_page = __webpack_require__(730);
 
 var _membership_app_page2 = _interopRequireDefault(_membership_app_page);
 
@@ -77871,12 +77872,12 @@ var MembershipAppIndex = function (_React$Component) {
 exports.default = MembershipAppIndex;
 
 /***/ }),
-/* 724 */,
 /* 725 */,
 /* 726 */,
 /* 727 */,
 /* 728 */,
-/* 729 */
+/* 729 */,
+/* 730 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77895,7 +77896,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactBootstrap = __webpack_require__(145);
 
-var _membership_form = __webpack_require__(730);
+var _membership_form = __webpack_require__(731);
 
 var _membership_form2 = _interopRequireDefault(_membership_form);
 
@@ -77971,7 +77972,7 @@ var MembershipAppPage = function (_React$Component) {
 exports.default = MembershipAppPage;
 
 /***/ }),
-/* 730 */
+/* 731 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77992,11 +77993,11 @@ var _reactRedux = __webpack_require__(135);
 
 var _reactBootstrap = __webpack_require__(145);
 
-var _applicationActions = __webpack_require__(737);
+var _applicationActions = __webpack_require__(738);
 
 var actions = _interopRequireWildcard(_applicationActions);
 
-var _applicationValidationActions = __webpack_require__(677);
+var _applicationValidationActions = __webpack_require__(678);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -78025,7 +78026,7 @@ var MembershipForm = exports.MembershipForm = function (_React$Component) {
     _createClass(MembershipForm, [{
         key: 'componentWillUpdate',
         value: function componentWillUpdate(nextProps, nextState) {
-            if (nextProps.successMsg !== null) {
+            if (nextProps.successMsg !== null && nextProps.successMsg !== undefined) {
                 alert = _react2.default.createElement(
                     _reactBootstrap.Alert,
                     { bsStyle: 'success' },
@@ -78040,7 +78041,7 @@ var MembershipForm = exports.MembershipForm = function (_React$Component) {
                         'Vahvistuss\xE4hk\xF6posti on l\xE4hetetty antamaanne s\xE4hk\xF6postiosoitteeseen. Teid\xE4t uudelleenohjataan etusivulle piakkoin'
                     )
                 );
-            } else if (nextProps.submitError !== null) {
+            } else if (nextProps.submitError !== null && nextProps.submitError !== undefined) {
                 alert = _react2.default.createElement(
                     _reactBootstrap.Alert,
                     { bsStyle: 'danger' },
@@ -78456,16 +78457,16 @@ exports.default = (0, _reactRedux.connect)(function (store) {
 })(MembershipForm);
 
 /***/ }),
-/* 731 */,
 /* 732 */,
 /* 733 */,
-/* 734 */
+/* 734 */,
+/* 735 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(723);
+var _index = __webpack_require__(724);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -78481,9 +78482,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _webpackerReact2.default.setup({ MembershipAppIndex: _index2.default });
 
 /***/ }),
-/* 735 */,
 /* 736 */,
-/* 737 */
+/* 737 */,
+/* 738 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78519,7 +78520,7 @@ var _axios = __webpack_require__(360);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _applicationValidationActions = __webpack_require__(677);
+var _applicationValidationActions = __webpack_require__(678);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

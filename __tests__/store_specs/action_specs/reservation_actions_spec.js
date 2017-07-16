@@ -2,9 +2,9 @@ import React from 'react';
 import sinon from 'sinon';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import axios from 'axios';
 import moment from 'moment';
 
+import AjaxService from '../../../app/javascript/services/ajax_service';
 import * as actions from '../../../app/javascript/store/actions/reservationsActions';
 
 const middlewares = [thunk];
@@ -57,7 +57,7 @@ describe('Reservation action', () => {
 
     it('fetchReservations dispatches correct actions on succesful request', () => {
         promise = Promise.resolve(response);
-        stub = sinon.stub(axios, 'get').callsFake(() => promise);
+        stub = sinon.stub(AjaxService.service, 'get').callsFake(() => promise);
         const expectedActions = [
             { type: "FETCH_RESERVATIONS_PENDING" },
             { type: "FETCH_RESERVATIONS_FULFILLED", payload: response.data }
@@ -76,7 +76,7 @@ describe('Reservation action', () => {
             { type: "FETCH_RESERVATIONS_REJECTED", payload: error }
         ];
         promise = Promise.resolve(error);
-        stub = sinon.stub(axios, 'get').callsFake(() => promise);
+        stub = sinon.stub(AjaxService, 'get').callsFake(() => promise);
 
         store.dispatch(actions.fetchReservations());
         return promise.catch(() => {
@@ -101,12 +101,12 @@ describe('Reservation action', () => {
 
     it('submitReservation dispatches correct actions on successful save', () => {
         promise = Promise.resolve({});
-        stub = sinon.stub(axios, 'post').callsFake(() => promise);
+        stub = sinon.stub(AjaxService.service, 'request').callsFake(() => promise);
         const expectedActions = [
             { type: "SUBMIT_RESERVATION_PENDING" },
-            { type: "SUBMIT_RESERVATION_FULFILLED"},
-            { type: "RESET_NEW_RESERVATION"},
-            { type: "FETCH_RESERVATIONS_PENDING"}
+            { type: "SUBMIT_RESERVATION_FULFILLED" },
+            { type: "RESET_NEW_RESERVATION" },
+            { type: "FETCH_RESERVATIONS_PENDING" }
         ];
 
         store.dispatch(actions.submitReservation({preventDefault: () => {}}));
@@ -118,7 +118,7 @@ describe('Reservation action', () => {
     it('submitReservation dispatches correct actions on incorrect request', () => {
         const error = {response: {status: 422, data: {some: "data here"}}};
         promise = Promise.resolve(error);
-        stub = sinon.stub(axios, 'post').callsFake(() => promise);
+        stub = sinon.stub(AjaxService, 'post').callsFake(() => promise);
         const expectedActions = [
             { type: "SUBMIT_RESERVATION_PENDING" },
             { type: "SUBMIT_RESERVATION_REJECTED", payload: error.response.data }
