@@ -35432,9 +35432,16 @@ _moment2.default.locale('fi'); /**
                                 * Created by owlaukka on 18/06/17.
                                 */
 function fetchReservations() {
+    var plane = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+    var route = '/api/v1/reservations';
+    if (plane !== undefined) {
+        route = 'api/v1/planes/' + plane + '/reservations';
+        console.log(route);
+    }
     return function (dispatch) {
         dispatch({ type: "FETCH_RESERVATIONS_PENDING" });
-        _ajax_service2.default.get('/api/v1/reservations', function (status, data) {
+        _ajax_service2.default.get(route, function (status, data) {
             data.map(function (res) {
                 res.key = res.id;
                 res.title = res.reservation_type;
@@ -82901,7 +82908,7 @@ var Calendar = exports.Calendar = function (_React$Component) {
                             onSelectSlot: function onSelectSlot(timeSlot) {
                                 return _this2.fillFormView(timeSlot);
                             },
-                            views: ["week", "day", "agenda"],
+                            views: ["month", "week", "day", "agenda"],
                             eventPropGetter: this.eventStyleGetter,
                             messages: { next: "seuraava", previous: "edellinen", today: "tämä päivä", week: "viikko", day: "päivä", agenda: "varaukset" }
                         }))
@@ -82981,7 +82988,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var kone1 = 1,
     kone2 = 2,
-    kone3 = 3;
+    kone3 = 3,
+    all = undefined;
 
 var CalendarPage = exports.CalendarPage = function (_React$Component) {
     _inherits(CalendarPage, _React$Component);
@@ -83084,6 +83092,13 @@ var CalendarPage = exports.CalendarPage = function (_React$Component) {
                                             return _this2.props.dispatch((0, _reservationsActions.selectPlane)(kone3));
                                         }, className: this.props.selectedPlane === kone3 ? "active" : "" },
                                     'Kone 3'
+                                ),
+                                _react2.default.createElement(
+                                    _reactBootstrap.Button,
+                                    { onClick: function onClick() {
+                                            return _this2.props.dispatch((0, _reservationsActions.selectPlane)(all));
+                                        }, className: this.props.selectedPlane === undefined ? "active" : "" },
+                                    'N\xE4yt\xE4 kaikki'
                                 )
                             )
                         )
@@ -83162,9 +83177,16 @@ var ReservationFetcher = exports.ReservationFetcher = function (_React$Component
     }
 
     _createClass(ReservationFetcher, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (this.props.plane !== nextProps.plane) {
+                this.props.dispatch((0, _reservationsActions.fetchReservations)(nextProps.plane));
+            }
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.props.dispatch((0, _reservationsActions.fetchReservations)());
+            this.props.dispatch((0, _reservationsActions.fetchReservations)(this.props.plane));
         }
     }, {
         key: 'render',
@@ -83177,7 +83199,9 @@ var ReservationFetcher = exports.ReservationFetcher = function (_React$Component
 }(_react2.default.Component);
 
 exports.default = (0, _reactRedux.connect)(function (store) {
-    return {};
+    return {
+        plane: store.reservations.plane
+    };
 })(ReservationFetcher);
 
 /***/ }),

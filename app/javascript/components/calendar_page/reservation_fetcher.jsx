@@ -5,8 +5,14 @@ import { fetchReservations } from '../../store/actions/reservationsActions';
 import Calendar from './calendar';
 
 export class ReservationFetcher extends React.Component {
+    componentWillReceiveProps(nextProps) {
+        if (this.props.plane !== nextProps.plane) {
+            this.props.dispatch(fetchReservations(nextProps.plane));
+        }
+    }
+
     componentDidMount() {
-        this.props.dispatch(fetchReservations());
+        this.props.dispatch(fetchReservations(this.props.plane));
     }
 
     render() {
@@ -17,5 +23,7 @@ export class ReservationFetcher extends React.Component {
 }
 
 export default connect((store) => {
-    return {}
+    return {
+        plane: store.reservations.plane
+    }
 })(ReservationFetcher)

@@ -34973,9 +34973,16 @@ _moment2.default.locale('fi'); /**
                                 * Created by owlaukka on 18/06/17.
                                 */
 function fetchReservations() {
+    var plane = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+    var route = '/api/v1/reservations';
+    if (plane !== undefined) {
+        route = 'api/v1/planes/' + plane + '/reservations';
+        console.log(route);
+    }
     return function (dispatch) {
         dispatch({ type: "FETCH_RESERVATIONS_PENDING" });
-        _ajax_service2.default.get('/api/v1/reservations', function (status, data) {
+        _ajax_service2.default.get(route, function (status, data) {
             data.map(function (res) {
                 res.key = res.id;
                 res.title = res.reservation_type;

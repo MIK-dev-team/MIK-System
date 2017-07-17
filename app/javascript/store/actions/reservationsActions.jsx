@@ -8,11 +8,16 @@ import AjaxService from '../../services/ajax_service';
 
 moment.locale('fi');
 
-export function fetchReservations() {
+export function fetchReservations(plane=undefined) {
+    let route = '/api/v1/reservations';
+    if (plane !== undefined) {
+        route = `api/v1/planes/${plane}/reservations`
+        console.log(route);
+    }
     return function(dispatch) {
         dispatch({type: "FETCH_RESERVATIONS_PENDING"});
         AjaxService.get(
-            '/api/v1/reservations',
+            route,
             (status, data) => {
                 data.map((res) => {
                     res.key = res.id;

@@ -99,7 +99,7 @@ export class Calendar extends React.Component {
                             scrollToTime={initTime}
                             onSelectEvent={(event) => alert("Tehdään tähän vaikka modaali tai muu ikkuna joka kertoo kaikki tiedot", event)}
                             onSelectSlot={(timeSlot) => this.fillFormView(timeSlot)}
-                            views={["week", "day", "agenda"]}
+                            views={["month", "week", "day", "agenda"]}
                             eventPropGetter={this.eventStyleGetter}
                             messages={{next: "seuraava", previous: "edellinen", today: "tämä päivä", week: "viikko", day: "päivä", agenda: "varaukset"}}
                         />

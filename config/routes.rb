@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :membership_applications, only: [:create, :show]
       resources :reservations, only: [:create, :index]
+      get 'planes/:id/reservations', to: 'planes#reservations'
     end
   end
 

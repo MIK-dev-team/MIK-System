@@ -7,7 +7,8 @@ import ReservationFetcher from "./reservation_fetcher";
 
 const kone1 = 1,
     kone2 = 2,
-    kone3 = 3;
+    kone3 = 3,
+    all = undefined;
 
 export class CalendarPage extends React.Component {
     render() {
@@ -40,6 +41,7 @@ export class CalendarPage extends React.Component {
                                 <Button onClick={() => this.props.dispatch(selectPlane(kone1))} className={(this.props.selectedPlane === kone1) ? "active" : ""}>Kone 1</Button>
                                 <Button onClick={() => this.props.dispatch(selectPlane(kone2))} className={(this.props.selectedPlane === kone2) ? "active" : ""}>Kone 2</Button>
                                 <Button onClick={() => this.props.dispatch(selectPlane(kone3))} className={(this.props.selectedPlane === kone3) ? "active" : ""}>Kone 3</Button>
+                                <Button onClick={() => this.props.dispatch(selectPlane(all))} className={(this.props.selectedPlane === undefined) ? "active" : ""}>Näytä kaikki</Button>
                             </ButtonGroup>
                         </ButtonToolbar>
                     </Col>
