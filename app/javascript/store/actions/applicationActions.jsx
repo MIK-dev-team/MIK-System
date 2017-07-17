@@ -18,14 +18,15 @@ export function submitApplication(app, repeatEmail, event) {
         window.scrollTo(0, 0);
 
         AjaxService.post(
-            '/membership_applications.json',
+            '/api/v1/membership_applications',
             app,
             (status, data) => {
-                const success = "Hakemuksenne on lähetetty onnistuneesti."
+                const success = "Hakemuksenne on lähetetty onnistuneesti.";
                 dispatch({type: "SUBMIT_APPLICATION_FULFILLED", payload: success});
                 setTimeout(() => window.location.replace('/'), 5000);
             },
             (status, err) => {
+                console.log('ERROR:', status)
                 dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: err});
             }
         );

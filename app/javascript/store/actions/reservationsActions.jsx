@@ -12,10 +12,11 @@ export function fetchReservations() {
     return function(dispatch) {
         dispatch({type: "FETCH_RESERVATIONS_PENDING"});
         AjaxService.get(
-            '/reservations.json',
+            '/api/v1/reservations',
             (status, data) => {
                 data.map((res) => {
                     res.key = res.id;
+                    res.title = res.reservation_type;
                     res.start = moment(res.start).toDate();
                     res.end = moment(res.end).toDate();
                 });
@@ -41,7 +42,7 @@ export function submitReservation(event, start, end, plane, type, desc) {
     return function(dispatch) {
         dispatch({type: "SUBMIT_RESERVATION_PENDING"});
         AjaxService.post(
-            '/reservations.json',
+            '/api/v1/reservations',
             reservation,
             (status, data) => {
                 dispatch({type: "SUBMIT_RESERVATION_FULFILLED"});

@@ -1,4 +1,4 @@
-class PlanesController < ApplicationController
+class Website::PlanesController < ApplicationController
   before_action :set_plane, only: [:show, :reservations]
 
   # GET /reservations/1

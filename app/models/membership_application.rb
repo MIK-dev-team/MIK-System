@@ -6,7 +6,7 @@ class MembershipApplication < ApplicationRecord
   validates :username, uniqueness: { allow_blank: true }
   validates :postal_code, length: { is: 5 }
   validates :postal_code, numericality: true
-  validates :member_type, inclusion: { in: ["Täysjäsen", "NuorisoJäsen (alle 18v)", "Kannatusjäsen"],
+  validates :member_type, inclusion: { in: ["Täysjäsen", "Nuorisojäsen (alle 18v)", "Kannatusjäsen"],
     message: "Valitse jäsenyyden tyyppi" }
   validate :username_blank_or_between_8_and_25_characters
 

@@ -1,28 +1,16 @@
-class MembershipApplicationsController < ApplicationController
-  before_action :set_membership_application, only: [:show]
-
-  def join
-  end
-
-  def show
-  end
-
+class Api::V1::MembershipApplicationsController < ApiController
   def create
     @membership_application = MembershipApplication.new(application_params)
     @membership_application.user_id = 1
     @membership_application.pending = true
 
-    respond_to do |format|
-      if @membership_application.save
-        MembershipAppMailer.application_received(@membership_application).deliver_later
-        MembershipAppMailer.application_received_mod(@membership_application).deliver_later
+    if @membership_application.save
+      MembershipAppMailer.application_received(@membership_application).deliver_later
+      MembershipAppMailer.application_received_mod(@membership_application).deliver_later
 
-        format.html { redirect_to root_path, notice: 'Application was successfully created.' }
-        format.json { render @membership_application, status: :created }
-      else
-        format.html { render :new }
-        format.json { render json: @membership_application.errors.full_messages, status: :unprocessable_entity }
-      end
+      render json: @membership_application, status: :created
+    else
+      render json: @membership_application.errors.full_messages, status: :unprocessable_entity
     end
   end
 
