@@ -35437,7 +35437,6 @@ function fetchReservations() {
     var route = '/api/v1/reservations';
     if (plane !== undefined) {
         route = 'api/v1/planes/' + plane + '/reservations';
-        console.log(route);
     }
     return function (dispatch) {
         dispatch({ type: "FETCH_RESERVATIONS_PENDING" });
@@ -35509,7 +35508,7 @@ function fillForm(timeSlot) {
 }
 
 function mapReservations(reservations) {
-    if (reservations === undefined || reservations[0].id === undefined) {
+    if (reservations === undefined || reservations.length === 0 || reservations[0].id === undefined) {
         return _react2.default.createElement('tr', { key: 'empty' });
     } else {
         return reservations.map(function (res) {
@@ -35534,7 +35533,7 @@ function mapReservations(reservations) {
                 _react2.default.createElement(
                     'td',
                     null,
-                    res.plane_id
+                    res.plane.name
                 ),
                 _react2.default.createElement(
                     'td',
@@ -37309,7 +37308,7 @@ exports.default = reducer;
  */
 function reducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-        reservations: [{}],
+        reservations: [],
         fetching: false,
         fetched: false,
         fetchError: null,
@@ -82663,7 +82662,6 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 

@@ -21,8 +21,7 @@
       {
         "spec": true
       }
-    ],
-    "transform-decorators-legacy"
+    ]
   ],
   "env": {
     "test": {
