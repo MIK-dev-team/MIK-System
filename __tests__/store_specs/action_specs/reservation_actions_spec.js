@@ -18,14 +18,14 @@ describe('Reservation action', () => {
                 id: 1,
                 start: moment("2017-06-10T18:00:00+03:00").toDate(),
                 end: moment("2017-06-10T20:00:00+03:00").toDate(),
-                plane_id: 2,
+                plane: { id: 2, name: "ES1234" },
                 reservation_type: "opetus"
             },
             {
                 id: 2,
                 start: moment("2017-06-09T10:30:00+03:00").toDate(),
                 end: moment("2017-06-09T20:00:00+03:00").toDate(),
-                plane_id: 1,
+                plane: { id: 1, name: "YG5463" },
                 reservation_type: "harraste"
             }
         ]
@@ -91,7 +91,7 @@ describe('Reservation action', () => {
                 <td>{res.id}</td>
                 <td>{moment(res.start).format('lll')}</td>
                 <td>{moment(res.end).format('lll')}</td>
-                <td>{res.plane_id}</td>
+                <td>{res.plane.name}</td>
                 <td>{res.reservation_type}</td>
             </tr>)
         );

@@ -33,4 +33,13 @@ class Reservation < ApplicationRecord
       errors.add(:start_date_before_end_date, 'Lopetuksen pitää olla aloituksen jälkeen')
     end
   end
+
+  def as_json(options={})
+    super(only: [:id, :start, :end, :reservation_type],
+          include: {
+              plane: {only: [:id, :name]},
+              # user: {only: [:id, :full_name]}
+          }
+    )
+  end
 end

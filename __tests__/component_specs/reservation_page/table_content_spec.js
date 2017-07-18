@@ -14,24 +14,24 @@ let reservations = [
         id: 1,
         start: moment("2017-06-10T18:00:00+03:00").toDate(),
         end: moment("2017-06-10T20:00:00+03:00").toDate(),
-        plane_id: 2,
+        plane: { id: 2, name: "ES1234" },
         reservation_type: "opetus"
     },
     {
         id: 2,
         start: moment("2017-06-09T10:30:00+03:00").toDate(),
         end: moment("2017-06-09T20:00:00+03:00").toDate(),
-        plane_id: 1,
+        plane: { id: 1, name: "YG9324" },
         reservation_type: "harraste"
     }
 ];
 
 beforeEach(() => {
-    tableContent = shallow(<ReservationTableContent reservations={[{}]} />);
+    tableContent = shallow(<ReservationTableContent reservations={[]} />);
 });
 
 afterEach(() => {
-    tableContent.setProps({ reservations: [{}] });
+    tableContent.setProps({ reservations: [] });
 });
 
 describe('Reservation table content', () => {

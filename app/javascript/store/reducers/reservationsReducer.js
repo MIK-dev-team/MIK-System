@@ -2,7 +2,7 @@
  * Created by owlaukka on 18/06/17.
  */
 export default function reducer(state = {
-    reservations: [{}],
+    reservations: [],
     fetching: false,
     fetched: false,
     fetchError: null,

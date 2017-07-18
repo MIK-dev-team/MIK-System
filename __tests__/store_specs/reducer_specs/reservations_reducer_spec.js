@@ -1,7 +1,7 @@
 import reducer from '../../../app/javascript/store/reducers/reservationsReducer';
 
 const initialState = {
-    reservations: [{}],
+    reservations: [],
     fetching: false,
     fetched: false,
     fetchError: null,

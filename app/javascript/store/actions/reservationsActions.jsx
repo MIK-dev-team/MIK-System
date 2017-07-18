@@ -11,8 +11,7 @@ moment.locale('fi');
 export function fetchReservations(plane=undefined) {
     let route = '/api/v1/reservations';
     if (plane !== undefined) {
-        route = `api/v1/planes/${plane}/reservations`
-        console.log(route);
+        route = `api/v1/planes/${plane}/reservations`;
     }
     return function(dispatch) {
         dispatch({type: "FETCH_RESERVATIONS_PENDING"});
@@ -94,7 +93,7 @@ export function fillForm(timeSlot) {
 }
 
 export function mapReservations(reservations) {
-    if (reservations === undefined || reservations[0].id === undefined) {
+    if (reservations === undefined || reservations.length === 0 || reservations[0].id === undefined) {
         return <tr key="empty"></tr>
     } else {
         return reservations.map((res) =>
@@ -102,7 +101,7 @@ export function mapReservations(reservations) {
                 <td>{res.id}</td>
                 <td>{moment(res.start).format('lll')}</td>
                 <td>{moment(res.end).format('lll')}</td>
-                <td>{res.plane_id}</td>
+                <td>{res.plane.name}</td>
                 <td>{res.reservation_type}</td>
             </tr>
         )
