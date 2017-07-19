@@ -1,8 +1,9 @@
 import React from 'react';
-import axios from 'axios';
-import moment from 'moment';
+//import AjaxService from '../../services/ajax_service';
 
-export function loginUser() {
+export function loginUser(email, password, event) {
+    event.preventDefault();
+
     return function(dispatch) {
         dispatch({type: "LOGIN_USER"});
         axios.get('/reservations.json')
