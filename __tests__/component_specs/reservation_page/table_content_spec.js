@@ -14,14 +14,14 @@ let reservations = [
         id: 1,
         start: moment("2017-06-10T18:00:00+03:00").toDate(),
         end: moment("2017-06-10T20:00:00+03:00").toDate(),
-        plane_id: 2,
+        plane: { id: 2, name: "ES1234" },
         reservation_type: "opetus"
     },
     {
         id: 2,
         start: moment("2017-06-09T10:30:00+03:00").toDate(),
         end: moment("2017-06-09T20:00:00+03:00").toDate(),
-        plane_id: 1,
+        plane: { id: 1, name: "YG9324" },
         reservation_type: "harraste"
     }
 ];
@@ -37,9 +37,9 @@ afterEach(() => {
 describe('Reservation table content', () => {
 
     it('displays nothing extra if no props given', () => {
-        expect(tableContent.find('tr').length).toEqual(0);
+        expect(tableContent.find('tr').length).toEqual(1);
         expect(tableContent.find('td').length).toEqual(0);
-    })
+    });
 
     it('displays correct amount of rows', () => {
         tableContent.setProps({ reservations: reservations });

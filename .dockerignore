@@ -1,6 +1,5 @@
 node_modules
 Dockerfile
 var
-vendor
 *.log
 public/assets

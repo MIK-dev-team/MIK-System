@@ -1,0 +1,15 @@
+version: '3'
+services:
+  db:
+    image: postgres
+  web:
+    build:
+      context: .
+      dockerfile: containers/development/Dockerfile
+    command: containers/development/entrypoint
+    volumes:
+      - .:/mik-system
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
