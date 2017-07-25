@@ -9,7 +9,7 @@ import { ReservationForm } from "../../../app/javascript/components/calendar_pag
 let form;
 describe('Reservation form', () => {
     beforeAll(() => {
-        form = shallow(<ReservationForm />);
+        form = shallow(<ReservationForm planes={[{ id: 1, name: "something" }]}/>);
     });
 
     it('has a panel header with right props', () => {
@@ -21,17 +21,16 @@ describe('Reservation form', () => {
     });
 
     it('has select for planes', () => {
-        form.setProps({plane: "kone1"});
+        form.setProps({selectedPlane: { id: 2, name: "something else!"}});
         form.update();
         expect(form.find('FormControl').at(2).props().componentClass).toEqual("select");
-        expect(form.find('FormControl').at(2).props().value).toEqual("kone1");
+        expect(form.find('FormControl').at(2).props().value).toEqual(2);
     });
 
     it('has select with correct options for selecting plane', () => {
-        expect(form.find('FormGroup#selectPlane > FormControl > option').length).toEqual(3);
-        expect(form.find('FormGroup#selectPlane > FormControl > option').first().props().value).toEqual(1);
-        expect(form.find('FormGroup#selectPlane > FormControl > option').at(1).props().value).toEqual(2);
-        expect(form.find('FormGroup#selectPlane > FormControl > option').at(2).props().value).toEqual(3);
+        expect(form.find('FormGroup#selectPlane > FormControl > option').length).toEqual(2);
+        expect(form.find('FormGroup#selectPlane > FormControl > option').first().props().value).toEqual('null');
+        expect(form.find('FormGroup#selectPlane > FormControl > option').at(1).props().value).toEqual(1);
     });
 
     it('has select with correct options for selecting type', () => {
@@ -47,7 +46,7 @@ describe('Reservation form', () => {
 
     it('changing type in form changes calls dispatch', () => {
         const spy = sinon.spy();
-        form = shallow(<ReservationForm dispatch={spy}/>);
+        form = shallow(<ReservationForm dispatch={spy} planes={[{ id: 1, name: "something" }]}/>);
         expect(spy.calledOnce).toBe(false);
         expect(form.find('FormGroup#selectType > FormControl').length).toEqual(1);
         form.find('FormGroup#selectType > FormControl').simulate('change', {target: {
@@ -58,7 +57,7 @@ describe('Reservation form', () => {
 
     it('submitting form calls dispatch', () => {
         const spy = sinon.spy();
-        form = shallow(<ReservationForm dispatch={spy}/>);
+        form = shallow(<ReservationForm dispatch={spy} planes={[{ id: 1, name: "something" }]}/>);
         expect(spy.calledOnce).toBe(false);
         form.find('form').simulate('submit', {preventDefault: () => {}});
         expect(spy.calledOnce).toBe(true);

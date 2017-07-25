@@ -32,7 +32,7 @@ describe('ReservationFetcher', () => {
 
     it('calls dispatch with correct action when plane changes', () => {
         expect(fetchStub.calledOnce).toBe(false);
-        fetcher.setProps({plane: 2});
+        fetcher.setProps({selectedPlane: 2});
         fetcher.update();
         expect(fetchStub.calledOnce).toBe(true);
         expect(dispatchSpy.calledOnce).toBe(true);

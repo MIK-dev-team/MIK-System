@@ -15,10 +15,21 @@ export class ReservationForm extends React.Component {
             return "";
     }
 
+    mapPlanesToOptions() {
+        return (
+            <FormControl disabled componentClass="select" value={this.props.selectedPlane !== undefined ? this.props.selectedPlane.id : 'null'}>
+                <option value='null'>*** Valitse kone ***</option>
+                {this.props.planes.map((plane) =>
+                    <option key={plane.id} value={plane.id}>{plane.name}</option>
+                )}
+            </FormControl>
+        )
+    }
+
     render() {
         return (
             <Panel header={<h3>Tee varaus</h3>}>
-                <form onSubmit={(event) => this.props.dispatch(submitReservation(event, this.props.start, this.props.end, this.props.plane, this.props.reservation_type, description))}>
+                <form onSubmit={(event) => this.props.dispatch(submitReservation(event, this.props.start, this.props.end, this.props.selectedPlane, this.props.reservation_type, description))}>
                     <FormGroup controlId="1">
                         <ControlLabel>Lennon alku</ControlLabel>
                         <FormControl disabled type="text" value={this.formatTimes(this.props.start)} />
@@ -29,11 +40,7 @@ export class ReservationForm extends React.Component {
                     </FormGroup>
                     <FormGroup id="selectPlane" controlId="selectPlane">
                         <ControlLabel>Lentokone</ControlLabel>
-                        <FormControl disabled componentClass="select" value={this.props.plane}>
-                            <option value={1}>Kone 1</option>
-                            <option value={2}>Kone 2</option>
-                            <option value={3}>Kone 3</option>
-                        </FormControl>
+                        {this.mapPlanesToOptions()}
                     </FormGroup>
                     <FormGroup id="selectType" controlId="selectType">
                         <ControlLabel>Lennon tyyppi</ControlLabel>
@@ -57,7 +64,8 @@ export default connect((store) => {
     return {
         start: store.reservations.start,
         end: store.reservations.end,
-        plane: store.reservations.plane,
         reservation_type: store.reservations.reservation_type,
+        selectedPlane: store.planes.selectedPlane,
+        planes: store.planes.planes,
     }
 })(ReservationForm)

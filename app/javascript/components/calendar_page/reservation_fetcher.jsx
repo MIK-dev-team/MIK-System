@@ -6,13 +6,13 @@ import Calendar from './calendar';
 
 export class ReservationFetcher extends React.Component {
     componentWillReceiveProps(nextProps) {
-        if (this.props.plane !== nextProps.plane) {
-            this.props.dispatch(fetchReservations(nextProps.plane));
+        if (this.props.selectedPlane !== nextProps.selectedPlane) {
+            this.props.dispatch(fetchReservations(nextProps.selectedPlane));
         }
     }
 
     componentDidMount() {
-        this.props.dispatch(fetchReservations(this.props.plane));
+        this.props.dispatch(fetchReservations(this.props.selectedPlane));
     }
 
     render() {
@@ -24,6 +24,6 @@ export class ReservationFetcher extends React.Component {
 
 export default connect((store) => {
     return {
-        plane: store.reservations.plane
+        selectedPlane: store.planes.selectedPlane
     }
 })(ReservationFetcher)

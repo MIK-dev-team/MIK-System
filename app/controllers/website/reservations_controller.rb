@@ -4,6 +4,7 @@ class Website::ReservationsController < ApplicationController
   # GET /reservations
   # GET /reservations.json
   def index
+    @planes = Plane.all
   end
 
   # GET /reservations/1

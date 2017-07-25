@@ -17,7 +17,7 @@ export class Calendar extends React.Component {
     constructor() {
         super();
         this.state = {
-            reservations: [{}]
+            reservations: []
         };
 
         this.fillFormView = this.fillFormView.bind(this);
@@ -62,6 +62,13 @@ export class Calendar extends React.Component {
 
         this.setState({reservations: newArray});
         this.props.dispatch(fillForm(timeSlot))
+    }
+
+    isButtonDisabled() {
+        if (this.state.reservations.length !== 0 && this.state.reservations[this.state.reservations.length-1].title === '<valittu aika>') {
+            return true;
+        }
+        return false;
     }
 
 
@@ -111,7 +118,7 @@ export class Calendar extends React.Component {
                 <br />
                 <Row>
                     <Col lg={12} md={12} sm={12}>
-                        <Button disabled={this.state.reservations[this.state.reservations.length-1].title === '<valittu aika>'} onClick={() => this.props.dispatch(setCollapsed(this.props.collapsed))}>
+                        <Button disabled={this.isButtonDisabled()} onClick={() => this.props.dispatch(setCollapsed(this.props.collapsed))}>
                             {this.props.collapsed ? "Näytä varauksesi tiedot" : "Piilota varauksesi tiedot"}
                         </Button>
                     </Col>

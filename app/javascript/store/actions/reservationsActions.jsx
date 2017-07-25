@@ -33,16 +33,21 @@ export function fetchReservations(plane=undefined) {
     }
 }
 
-
 export function submitReservation(event, start, end, plane, type, desc) {
+    event.preventDefault();
+    if (plane === undefined) {
+        return (dispatch) => {
+            dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: "Valitse kone"});
+        }
+    }
     const reservation = {
         start: start,
         end: end,
-        plane_id: plane,
+        plane_id: plane.id,
         reservation_type: type,
         description: desc,
     };
-    event.preventDefault();
+    console.log(reservation);
     return function(dispatch) {
         dispatch({type: "SUBMIT_RESERVATION_PENDING"});
         AjaxService.post(
@@ -57,12 +62,6 @@ export function submitReservation(event, start, end, plane, type, desc) {
                 dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: err})
             }
         );
-    }
-}
-
-export function selectPlane(plane) {
-    return (dispatch) => {
-        dispatch({type: "SELECT_PLANE", payload: plane});
     }
 }
 

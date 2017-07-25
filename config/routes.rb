@@ -11,7 +11,6 @@ Rails.application.routes.draw do
     resources :membership_applications, only: [:create, :show]
     resources :reservations, only: [:index]
     resources :planes, only: [:show]
-    get '/planes/:id/reservations.json', to: 'planes#reservations'
     get 'hello/index'
     root 'hello#index'
     get 'membership_applications/show'

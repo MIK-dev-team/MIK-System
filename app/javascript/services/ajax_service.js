@@ -20,12 +20,12 @@ class AjaxService {
     // TODO: Check if default case makes it skip errorCallbacks in request functions
     handleError = (error) => {
         switch (error.response.status) {
-            case 401:
-                this.redirectTo(document, '/');
-                break;
-            case 404:
-                this.redirectTo(document, '/404');
-                break;
+            // case 401:
+            //     this.redirectTo(document, '/');
+            //     break;
+            // case 404:
+            //     this.redirectTo(document, '/404');
+            //     break;
             // default:
             //     this.redirectTo(document, '/500');
             //     break;

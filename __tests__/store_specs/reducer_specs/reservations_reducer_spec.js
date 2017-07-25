@@ -8,7 +8,6 @@ const initialState = {
     sending: false,
     sent: false,
     submitError: null,
-    plane: 1,
     reservation_type: "harraste",
     start: "",
     end: "",
@@ -51,7 +50,7 @@ describe('Reservations reducer', () => {
                 fetching: false,
                 fetched: true,
             })
-    })
+    });
 
     it('should handle SUBMIT_RESERVATION_PENDING correctly', () => {
         expect(
@@ -82,16 +81,6 @@ describe('Reservations reducer', () => {
             ...initialState,
             sending: false,
             sent: true,
-        })
-    });
-
-    it("should handle SELECT_PLANE correctly", () => {
-        const plane = 2;
-        expect(
-            reducer(undefined, {type: "SELECT_PLANE", payload: plane})
-        ).toEqual({
-            ...initialState,
-            plane: plane,
         })
     });
 

@@ -9,7 +9,6 @@ export default function reducer(state = {
     sending: false,
     sent: false,
     submitError: null,
-    plane: 1,
     reservation_type: "harraste",
     start: "",
     end: "",
@@ -54,13 +53,7 @@ export default function reducer(state = {
             }
         }
 
-        case "SELECT_PLANE": {
-            // TODO: later take plane_id
-            return {
-                ...state,
-                plane: action.payload
-            }
-        }
+
         case "SET_TYPE": {
             return {
                 ...state,
@@ -84,7 +77,6 @@ export default function reducer(state = {
             return {
                 ...state,
                 submitError: null,
-                plane: 1,
                 reservation_type: "harraste",
                 start: "",
                 end: "",

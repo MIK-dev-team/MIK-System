@@ -33,17 +33,17 @@ describe('Reservation action', () => {
 
     beforeEach(() => {
         store = mockStore({
-            reservations: [{}],
+            reservations: [],
             fetching: false,
             fetched: false,
             fetchError: null,
             sending: false,
             sent: false,
             submitError: null,
-            plane: 1,
             reservation_type: "harraste",
             start: "",
             end: "",
+            desc: "",
             collapsed: true,
         });
 
@@ -109,7 +109,7 @@ describe('Reservation action', () => {
             { type: "FETCH_RESERVATIONS_PENDING" }
         ];
 
-        store.dispatch(actions.submitReservation({preventDefault: () => {}}));
+        store.dispatch(actions.submitReservation({preventDefault: () => {}}, undefined, undefined, { id: 1, name: "something" }));
         return promise.then(() => {
             expect(store.getActions()).toEqual(expectedActions);
         });
@@ -131,15 +131,6 @@ describe('Reservation action', () => {
         })
     });
 
-    it("selectPlane dispatches correct actions", () => {
-        const plane = "cool Plane";
-        const expectedActions = [
-            { type: "SELECT_PLANE", payload: plane }
-        ];
-        store.dispatch(actions.selectPlane(plane));
-        expect(store.getActions()).toEqual(expectedActions);
-    });
-
     it("setType dispatches correct actions", () => {
         const event = {target: {value: "great value"}};
         const expectedActions = [
@@ -156,7 +147,7 @@ describe('Reservation action', () => {
         ];
         store.dispatch(actions.setCollapsed(collapsed));
         expect(store.getActions()).toEqual(expectedActions);
-    })
+    });
 
     it("fillForm dispatches correct actions", () => {
         const timeSlot = {start: "2017-06-10T18:00:00+03:00", end: "2017-06-10T20:00:00+03:00"};

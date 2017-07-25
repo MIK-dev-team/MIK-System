@@ -1,8 +1,7 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
+import { shallow } from "enzyme";
 import sinon from "sinon";
 import moment from "moment";
-import axios from "axios";
 import { Calendar } from "../../../app/javascript/components/calendar_page/calendar";
 /**
  * Created by owlaukka on 17/06/17.
@@ -17,11 +16,11 @@ describe('Calendar', () => {
     afterEach(() => {
         calendar.setProps({reservations: [{}]});
         calendar.update();
-    })
+    });
 
     it('sets initial state correctly', () => {
         const expectedState = {
-            reservations: [{}],
+            reservations: [],
         };
         expect(calendar.state()).toEqual(expectedState)
     });

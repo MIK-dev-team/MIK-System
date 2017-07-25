@@ -27,15 +27,11 @@ describe('Calendar page', () => {
     });
 
     it('has correct mount of columns', () => {
-        expect(page.find('Col').length).toEqual(2);
+        expect(page.find('Col').length).toEqual(1);
     });
 
-    it('has buttongroup', () => {
-        expect(page.find('ButtonGroup').length).toEqual(1);
-    });
-
-    it('has buttongroup with correct amount of buttons', () => {
-        expect(page.find('ButtonGroup > Button').length).toEqual(4);
+    it('has no buttongroup', () => {
+        expect(page.find('ButtonGroup').length).toEqual(0);
     });
 
     it('has ReservationFetcher', () => {
@@ -45,30 +41,6 @@ describe('Calendar page', () => {
     it("doesn't have Alert box initially", () => {
         page.update();
         expect(page.find('Alert').length).toEqual(0);
-    });
-
-    it('triggers onclick function when button pressed', () => {
-        let spy = sinon.spy();
-        page = shallow(<CalendarPage dispatch={spy}/>);
-        page.find('ButtonGroup > Button').first().simulate('click');
-        page.find('ButtonGroup > Button').at(1).simulate('click');
-        page.find('ButtonGroup > Button').at(2).simulate('click');
-        page.find('ButtonGroup > Button').last().simulate('click');
-
-        expect(spy.callCount).toEqual(4);
-        page.setProps({dispatch: undefined});
-    });
-
-    it('dispatches correct action on click', () => {
-        const dispatchSpy = sinon.spy(),
-              actionStub = sinon.stub(actions, 'selectPlane');
-        page = shallow(<CalendarPage dispatch={dispatchSpy} />);
-        expect(dispatchSpy.calledOnce).toBe(false);
-        expect(actionStub.calledOnce).toBe(false);
-        page.find('ButtonGroup > Button').at(1).simulate('click');
-
-        expect(dispatchSpy.calledOnce).toBe(true);
-        expect(actionStub.calledOnce).toBe(true);
     });
 
     describe("with sent props set", () => {
@@ -106,37 +78,6 @@ describe('Calendar page', () => {
         it('shows error Alert', () => {
             expect(page.find('Alert').props().bsStyle).toEqual('danger');
             expect(page.find('Alert > h4').text()).toEqual('Kyseisen ajan varaaminen kyseiselle lentokoneelle ei onnistunut');
-        });
-    });
-
-    describe("with selectedPlane set", () => {
-        afterAll(() => {
-            page.setProps({selectedPlane: undefined});
-            page.update();
-        });
-
-        it("has correct Button as active initially", () => {
-            page.setProps({selectedPlane: 1});
-            page.update();
-            expect(page.find('ButtonGroup > Button').first().props().className).toEqual('active');
-            expect(page.find('ButtonGroup > Button').at(1).props().className).toEqual('');
-            expect(page.find('ButtonGroup > Button').last().props().className).toEqual('');
-        });
-
-        it("has correct Button as active when selected plane changes to 2", () => {
-            page.setProps({selectedPlane: 2});
-            page.update();
-            expect(page.find('ButtonGroup > Button').first().props().className).toEqual('');
-            expect(page.find('ButtonGroup > Button').at(1).props().className).toEqual('active');
-            expect(page.find('ButtonGroup > Button').last().props().className).toEqual('');
-        });
-
-        it("has correct Button as active when selected plane changes to 3", () => {
-            page.setProps({selectedPlane: 3});
-            page.update();
-            expect(page.find('ButtonGroup > Button').first().props().className).toEqual('');
-            expect(page.find('ButtonGroup > Button').at(1).props().className).toEqual('');
-            expect(page.find('ButtonGroup > Button').at(2).props().className).toEqual('active');
         });
     });
 });
