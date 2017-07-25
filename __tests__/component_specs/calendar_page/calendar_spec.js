@@ -2,6 +2,8 @@ import React from "react";
 import { shallow } from "enzyme";
 import sinon from "sinon";
 import moment from "moment";
+
+import * as reservationsActions from '../../../app/javascript/store/actions/reservationsActions';
 import { Calendar } from "../../../app/javascript/components/calendar_page/calendar";
 /**
  * Created by owlaukka on 17/06/17.
@@ -171,13 +173,17 @@ describe('Calendar', () => {
         spy.restore();
     });
 
-    it('has Button that calls dispatch', () => {
+    it('has Button that calls dispatch with correct action', () => {
         const dispatch = sinon.spy();
+        const setCollapsedStub = sinon.stub(reservationsActions, 'setCollapsed');
         calendar.setProps({dispatch: dispatch});
         calendar.update();
+        expect(dispatch.calledOnce).toBe(false);
+        expect(setCollapsedStub.calledOnce).toBe(false);
         calendar.find('Button').simulate('click');
         calendar.update();
         expect(dispatch.calledOnce).toBe(true);
+        expect(setCollapsedStub.calledOnce).toBe(true);
     });
 
     it('has eventStyleGetter method that returns a style object', () => {

@@ -38,6 +38,10 @@ describe('Calendar page', () => {
         expect(page.find('Connect(ReservationFetcher)').length).toEqual(1);
     });
 
+    it('has PlaneSelection child', () => {
+        expect(page.find('Connect(PlaneSelection)').length).toEqual(1);
+    });
+
     it("doesn't have Alert box initially", () => {
         page.update();
         expect(page.find('Alert').length).toEqual(0);
