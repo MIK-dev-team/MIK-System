@@ -2,8 +2,12 @@
  * Created by owlaukka on 13/06/17.
  */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { Provider } from 'react-redux';
+import { shallow, mount } from 'enzyme';
+import sinon from 'sinon';
 import moment from 'moment';
+
+import store from '../../../app/javascript/store/store';
 import { ReservationTable } from "../../../app/javascript/components/reservations_list/reservation_table";
 
 let table;
@@ -55,6 +59,13 @@ describe('Reservation table after fetching', () => {
         table.update();
         let content = table.find('ReservationTableContent');
         expect(content.props().reservations).toEqual(newRes);
+    })
+
+    it("calls dispatch after render", () => {
+        const dispatch = sinon.spy();
+        table = mount(<Provider store={store}><ReservationTable reservations={[{}]} dispatch={dispatch}/></Provider>)
+        expect(dispatch.calledOnce).toBe(true);
+        table.unmount();
     })
 });
 

@@ -13,7 +13,7 @@ class Reservation < ApplicationRecord
 
 
   scope :in_range, -> range {
-    where("(start BETWEEN ? AND ? OR \"end\" BETWEEN ? AND ?) OR (start <= ? AND \"end\" >= ?)", range.first, range.last, range.first, range.last, range.first, range.last)
+    where("(start BETWEEN ? AND ? OR \"end\" BETWEEN ? AND ?) OR (start < ? AND \"end\" > ?)", range.first, range.last, range.first, range.last, range.first, range.last)
   }
 
   scope :exclude_self, -> id { where.not(id: id) }
@@ -32,5 +32,14 @@ class Reservation < ApplicationRecord
     if self.start > self.end
       errors.add(:start_date_before_end_date, 'Lopetuksen pitää olla aloituksen jälkeen')
     end
+  end
+
+  def as_json(options={})
+    super(only: [:id, :start, :end, :reservation_type],
+          include: {
+              plane: {only: [:id, :name]},
+              # user: {only: [:id, :full_name]}
+          }
+    )
   end
 end

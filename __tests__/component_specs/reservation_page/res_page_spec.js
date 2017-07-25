@@ -1,8 +1,5 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
-import sinon from "sinon";
-import moment from "moment";
-import axios from "axios";
+import { shallow } from "enzyme";
 import ReservationsPage from "../../../app/javascript/components/reservations_list/res_page";
 /**
  * Created by owlaukka on 13/06/17.

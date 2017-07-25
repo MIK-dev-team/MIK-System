@@ -1,39 +1,13 @@
 import React from 'react';
 import moment from 'moment'
-import axios from 'axios';
 import { Panel, FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
-import ReservationCreator from './reservation_creator';
+import { connect } from 'react-redux';
+import { submitReservation, setType } from '../../store/actions/reservationsActions';
 
 moment.locale('fi');
 
-let reservation = {}
-export default class ReservationForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            type: "harraste",
-            submitted: false
-        }
-
-        this.submitReservation = this.submitReservation.bind(this);
-        this.setType = this.setType.bind(this);
-    }
-
-    submitReservation(event) {
-        this.setState({
-            submitted: true
-        });
-
-        const res = {
-            'start': this.props.timeSlot.start,
-            'end': this.props.timeSlot.end,
-            'reservation_type': this.state.type,
-            'plane_id': 1
-        };
-        reservation = res;
-        event.preventDefault();
-    }
-
+let description;
+export class ReservationForm extends React.Component {
     formatTimes(time) {
         if (time != "")
             return (moment(time).format('lll'));
@@ -41,39 +15,43 @@ export default class ReservationForm extends React.Component {
             return "";
     }
 
-    setType(event) {
-        this.setState({
-            type: event.target.value
-        });
+    mapPlanesToOptions() {
+        return (
+            <FormControl disabled componentClass="select" value={this.props.selectedPlane !== undefined ? this.props.selectedPlane.id : 'null'}>
+                <option value='null'>*** Valitse kone ***</option>
+                {this.props.planes.map((plane) =>
+                    <option key={plane.id} value={plane.id}>{plane.name}</option>
+                )}
+            </FormControl>
+        )
     }
 
     render() {
         return (
             <Panel header={<h3>Tee varaus</h3>}>
-                <ReservationCreator reservation={reservation} submitted={this.state.submitted} />
-                <form onSubmit={this.submitReservation}>
+                <form onSubmit={(event) => this.props.dispatch(submitReservation(event, this.props.start, this.props.end, this.props.selectedPlane, this.props.reservation_type, description))}>
                     <FormGroup controlId="1">
                         <ControlLabel>Lennon alku</ControlLabel>
-                        <FormControl disabled type="text" value={this.formatTimes(this.props.timeSlot.start)} />
+                        <FormControl disabled type="text" value={this.formatTimes(this.props.start)} />
                     </FormGroup>
                     <FormGroup controlId="2">
                         <ControlLabel>Lennon loppu</ControlLabel>
-                        <FormControl disabled type="text" value={this.formatTimes(this.props.timeSlot.end)} />
+                        <FormControl disabled type="text" value={this.formatTimes(this.props.end)} />
                     </FormGroup>
                     <FormGroup id="selectPlane" controlId="selectPlane">
                         <ControlLabel>Lentokone</ControlLabel>
-                        <FormControl disabled componentClass="select" value={this.props.plane}>
-                            <option value="kone1">Kone 1</option>
-                            <option value="kone2">Kone 2</option>
-                            <option value="kone3">Kone 3</option>
-                        </FormControl>
+                        {this.mapPlanesToOptions()}
                     </FormGroup>
                     <FormGroup id="selectType" controlId="selectType">
-                        <ControlLabel>Lentokone</ControlLabel>
-                        <FormControl componentClass="select" value={this.state.type} onChange={this.setType}>
+                        <ControlLabel>Lennon tyyppi</ControlLabel>
+                        <FormControl componentClass="select" value={this.props.reservation_type} onChange={(event) => this.props.dispatch(setType(event))}>
                             <option value="opetus">Opetuslento</option>
                             <option value="harraste">Harrastelento</option>
                         </FormControl>
+                    </FormGroup>
+                    <FormGroup controlId="setDesc">
+                        <ControlLabel>Lisätietoja</ControlLabel>
+                        <FormControl componentClass="textarea" onChange={(event) => description = event.target.value} />
                     </FormGroup>
                     <Button type="submit">Tee varaus</Button>
                 </form>
@@ -81,3 +59,13 @@ export default class ReservationForm extends React.Component {
         )
     }
 }
+
+export default connect((store) => {
+    return {
+        start: store.reservations.start,
+        end: store.reservations.end,
+        reservation_type: store.reservations.reservation_type,
+        selectedPlane: store.planes.selectedPlane,
+        planes: store.planes.planes,
+    }
+})(ReservationForm)

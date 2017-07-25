@@ -1,0 +1,12 @@
+fi:
+  activerecord:
+    attributes:
+      membership_application:
+        username: "Käyttäjänimi"
+        email: "Sähköpostiosoite"
+        member_type: ""
+        full_name: "Nimi"
+        birthday: "syntymäpäivä"
+        city: "Kaupunki"
+        postal_code: "Postinumero"
+        address: "Osoite"
