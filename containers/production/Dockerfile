@@ -1,4 +1,9 @@
 FROM ruby:2.4.1-slim
+
+ENV RAILS_ROOT=/mik-system
+ENV RAILS_ENV=production
+ENV NODE_ENV=production
+
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev
 # yarn
@@ -11,12 +16,13 @@ RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
     apt-get clean && \
     rm -rf /tmp/* /var/lib/apt/lists/*
 
-RUN mkdir /mik-system
-WORKDIR /mik-system
-ADD Gemfile /mik-system/Gemfile
-ADD Gemfile.lock /mik-system/Gemfile.lock
-RUN bundle install --without test
-ADD . /mik-system
-RUN DB_ADAPTER=nulldb bundle exec rails assets:precompile
+RUN mkdir -p $RAILS_ROOT/tmp/pids
+WORKDIR $RAILS_ROOT
+
+ADD Gemfile $RAILS_ROOT/Gemfile
+ADD Gemfile.lock $RAILS_ROOT/Gemfile.lock
+RUN bundle check || bundle install --without development test -j4
+ADD . $RAILS_ROOT
+RUN DB_ADAPTER=nulldb bundle exec rails assets:precompile RAILS_ENV=production NODE_ENV=production
 
 EXPOSE 3000
