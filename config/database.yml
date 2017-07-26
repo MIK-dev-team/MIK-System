@@ -86,5 +86,5 @@ test:
 production:
   <<: *default
   database: miksystem_production
-#  username: miksystem
-#  password: <%= ENV['MIKSYSTEM_DATABASE_PASSWORD'] %>
+  username: miksystem
+  password: <%= ENV["POSTGRES_PASSWORD"] %>

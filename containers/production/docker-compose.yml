@@ -1,7 +1,10 @@
 version: '3'
 services:
   db:
-    image: postgres
+    build:
+      context: .
+      dockerfile: containers/production/database/Dockerfile
+    image: production-db
     ports:
       - 5432:5432
     env_file:
