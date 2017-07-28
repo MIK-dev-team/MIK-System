@@ -47,7 +47,6 @@ export function submitReservation(event, start, end, plane, type, desc) {
         reservation_type: type,
         description: desc,
     };
-    console.log(reservation);
     return function(dispatch) {
         dispatch({type: "SUBMIT_RESERVATION_PENDING"});
         AjaxService.post(
@@ -77,7 +76,12 @@ export function setCollapsed(prev) {
     }
 }
 
-export function fillForm(timeSlot) {
+export function fillForm(timeSlot, reservations) {
+    if (!timeIsValid(timeSlot, reservations)) {
+        return reservations;
+    }
+
+    let newArray = refreshReservationList(timeSlot, reservations);
     return (dispatch) => {
         dispatch({
             type: "SET_TIMESLOT",
@@ -86,9 +90,9 @@ export function fillForm(timeSlot) {
                 end: moment(timeSlot.end).toDate(),
             }
         });
-
         dispatch({type: "SET_COLLAPSED", payload: false});
-    }
+        dispatch({type: "SET_RESERVATIONS", payload: newArray})
+    };
 }
 
 export function mapReservations(reservations) {
@@ -105,4 +109,44 @@ export function mapReservations(reservations) {
             </tr>
         )
     }
+}
+
+// --- LOCAL FUNCTIONS HERE ---
+
+function timeIsValid(timeSlot, reservations) {
+    if (timeSlot.start < new Date()) {
+        alert('Älä varaa aikaa menneisyydestä!');
+        return false;
+    }
+
+    for (let res of reservations) {
+        if ((timeSlot.end > res.start && timeSlot.end <= res.end) ||
+            (timeSlot.start >= res.start && timeSlot.start < res.end) ||
+            (timeSlot.start <= res.start && timeSlot.end >= res.end)) {
+            alert("Et voi varata jo varattua aikaa");
+            return false;
+        }
+    }
+    return true;
+}
+
+function refreshReservationList(timeSlot, reservations) {
+    let newArray = [];
+    for (let o of reservations) {
+        newArray.push(o);
+    }
+    if (reservations.length !== 0 &&
+        (reservations[reservations.length-1].title === '<valittu aika>'
+            || reservations[reservations.length-1].title === '<valittu aika tarkkailijalle>')) {
+        newArray.pop();
+    }
+
+    const res = {
+        title: "<valittu aika>",
+        start: timeSlot.start,
+        end: timeSlot.end,
+        reservation_type: 'selected',
+    };
+    newArray.push(res);
+    return newArray;
 }

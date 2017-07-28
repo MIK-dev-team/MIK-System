@@ -26,10 +26,6 @@ describe('Calendar page', () => {
         expect(page.find('Row').length).toEqual(1);
     });
 
-    it('has correct mount of columns', () => {
-        expect(page.find('Col').length).toEqual(1);
-    });
-
     it('has no buttongroup', () => {
         expect(page.find('ButtonGroup').length).toEqual(0);
     });

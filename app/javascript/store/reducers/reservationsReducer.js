@@ -84,6 +84,12 @@ export default function reducer(state = {
                 collapsed: true,
             }
         }
+        case "SET_RESERVATIONS": {
+            return {
+                ...state,
+                reservations: action.payload,
+            }
+        }
     }
 
     return state;

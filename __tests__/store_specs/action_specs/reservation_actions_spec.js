@@ -149,17 +149,28 @@ describe('Reservation action', () => {
         expect(store.getActions()).toEqual(expectedActions);
     });
 
-    it("fillForm dispatches correct actions", () => {
-        const timeSlot = {start: "2017-06-10T18:00:00+03:00", end: "2017-06-10T20:00:00+03:00"};
+    it("fillForm dispatches correct actions on appropriate parameters", () => {
+        const timeSlot = { start: "2017-06-10T18:00:00+03:00", end: "2017-06-10T20:00:00+03:00" };
+        let expectedSetReservationsPayload = [];
+        for (let res of response.data) {
+            expectedSetReservationsPayload.push(res)
+        }
+        expectedSetReservationsPayload.push({
+            title: '<valittu aika>',
+            start: timeSlot.start,
+            end: timeSlot.end,
+            reservation_type: "selected"
+        });
 
-        store.dispatch(actions.fillForm(timeSlot));
+        store.dispatch(actions.fillForm(timeSlot, response.data));
         expect(store.getActions()).toEqual([
             { type: "SET_TIMESLOT", payload: {
                     start: new Date(timeSlot.start),
                     end: new Date(timeSlot.end)
                 }
             },
-            { type: "SET_COLLAPSED", payload: false }
+            { type: "SET_COLLAPSED", payload: false },
+            { type: "SET_RESERVATIONS", payload: expectedSetReservationsPayload }
         ]);
     })
 });

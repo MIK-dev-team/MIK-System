@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { setCollapsed, fillForm } from '../../store/actions/reservationsActions';
+import { selectTimeForNotifier } from "../../store/actions/notifiersActions";
 
 import ReservationForm from "./reservation_form";
 
@@ -14,74 +15,45 @@ BigCalendar.setLocalizer(
 );
 
 export class Calendar extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            reservations: []
-        };
-
-        this.fillFormView = this.fillFormView.bind(this);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.reservations !== nextProps.reservations) {
-            this.setState({reservations: nextProps.reservations});
+    selectTimeSlot(timeSlot) {
+        if (this.props.notifierMode) {
+            this.props.dispatch(selectTimeForNotifier(timeSlot));
+        } else {
+            this.props.dispatch(fillForm(timeSlot, this.props.reservations));
         }
-    }
-
-    fillFormView(timeSlot) {
-        if (timeSlot.start < new Date()) {
-            alert('Älä varaa aikaa menneisyydestä!');
-            return;
-        }
-
-        for (let res of this.props.reservations) {
-            if ((timeSlot.end > res.start && timeSlot.end <= res.end) ||
-                (timeSlot.start >= res.start && timeSlot.start < res.end) ||
-                (timeSlot.start <= res.start && timeSlot.end >= res.end)) {
-                alert("Et voi varata jo varattua aikaa");
-                return;
-            }
-        }
-
-        let newArray = [];
-        for (let o of this.props.reservations) {
-            newArray.push(o);
-        }
-        if (this.props.reservations.length !== 0 && this.props.reservations[this.props.reservations.length-1].title === '<valittu aika>') {
-            newArray.pop();
-        }
-
-        const res = {
-            title: "<valittu aika>",
-            start: timeSlot.start,
-            end: timeSlot.end,
-            reservation_type: 'selected',
-        };
-        newArray.push(res);
-
-        this.setState({reservations: newArray});
-        this.props.dispatch(fillForm(timeSlot))
     }
 
     isButtonDisabled() {
-        if (this.state.reservations.length !== 0 && this.state.reservations[this.state.reservations.length-1].title === '<valittu aika>') {
-            return true;
-        }
-        return false;
+        return this.props.reservations.length !== 0 &&
+            this.props.reservations[this.props.reservations.length-1].reservation_type === 'selected'
+    }
+
+    toggleCollapse() {
+        return () =>
+            this.props.dispatch(setCollapsed(this.props.collapsed));
     }
 
 
-
+    // TODO: put this into it's own service/library function etc
     eventStyleGetter(event, start, end, isSelected) {
-        var background = "#ffffff",
+        var background,
             color = "#000000";
-        if (event.title === "<valittu aika>")
-            background = "#ff0000";
-        else if (event.reservation_type === "opetus")
-            background = "#ffe99a";
-        else
-            background = "#00eeee";
+        switch (event.reservation_type) {
+            case "selected": {
+                background = "#ff0000";
+                break;
+            }
+            case "observer": {
+                background = "#00ff5f";
+                break;
+            }
+            case "opetus": {
+                background = "#ffe99a";
+                break;
+            }
+            default:
+                background = "#00eeee";
+        }
 
         return ({
             style: {
@@ -101,14 +73,14 @@ export class Calendar extends React.Component {
                         <BigCalendar
                             selectable
                             {...this.props}
-                            events={this.state.reservations}
+                            events={this.props.reservations}
                             defaultView="week"
                             scrollToTime={initTime}
                             onSelectEvent={(event) => alert("Tehdään tähän vaikka modaali tai muu ikkuna joka kertoo kaikki tiedot", event)}
-                            onSelectSlot={(timeSlot) => this.fillFormView(timeSlot)}
+                            onSelectSlot={(timeSlot) => this.selectTimeSlot(timeSlot)}
                             views={["month", "week", "day", "agenda"]}
                             eventPropGetter={this.eventStyleGetter}
-                            messages={{next: "seuraava", previous: "edellinen", today: "tämä päivä", week: "viikko", day: "päivä", agenda: "varaukset"}}
+                            messages={{next: "seuraava", previous: "edellinen", today: "tämä päivä", month: "kuukausi", week: "viikko", day: "päivä", agenda: "varaukset"}}
                         />
                     </Col>
                     <Col id="sidebar" className={this.props.collapsed ? 'collapsed' : 'col-lg-4'}>
@@ -118,7 +90,7 @@ export class Calendar extends React.Component {
                 <br />
                 <Row>
                     <Col lg={12} md={12} sm={12}>
-                        <Button disabled={this.isButtonDisabled()} onClick={() => this.props.dispatch(setCollapsed(this.props.collapsed))}>
+                        <Button disabled={this.isButtonDisabled()} onClick={this.toggleCollapse()}>
                             {this.props.collapsed ? "Näytä varauksesi tiedot" : "Piilota varauksesi tiedot"}
                         </Button>
                     </Col>
@@ -133,5 +105,6 @@ export default connect((store) => {
         collapsed: store.reservations.collapsed,
         reservations: store.reservations.reservations,
         resChange: store.reservations.resChange,
+        notifierMode: store.notifiers.notifierMode,
     }
 })(Calendar)

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import ReservationFetcher from "./reservation_fetcher";
 import PlaneSelection from './plane_selection';
+import NotifierModeSelection from "./notifier_mode_selection";
 
 export class CalendarPage extends React.Component {
     render() {
@@ -31,9 +32,7 @@ export class CalendarPage extends React.Component {
                 <h1>Varauskalenteri</h1>
                 <Row>
                     <PlaneSelection/>
-                    <Col md={6}>
-                        <h3 style={{"textAlign": "center"}}>Tähän ohjeet</h3>
-                    </Col>
+                    <NotifierModeSelection/>
                 </Row>
                 <br />
                 {alert}

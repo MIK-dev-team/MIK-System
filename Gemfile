@@ -33,6 +33,8 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'wisper', '2.0.0'
+
 gem 'rails-i18n', '~> 5.0.0'
 
 gem 'activerecord-nulldb-adapter'
