@@ -3,9 +3,9 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import { Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+
 import { setCollapsed, fillForm } from '../../store/actions/reservationsActions';
 import { selectTimeForNotifier } from "../../store/actions/notifiersActions";
-
 import ReservationForm from "./reservation_form";
 
 moment.locale("fi");
@@ -17,7 +17,7 @@ BigCalendar.setLocalizer(
 export class Calendar extends React.Component {
     selectTimeSlot(timeSlot) {
         if (this.props.notifierMode) {
-            this.props.dispatch(selectTimeForNotifier(timeSlot));
+            this.props.dispatch(selectTimeForNotifier(timeSlot, this.props.reservations));
         } else {
             this.props.dispatch(fillForm(timeSlot, this.props.reservations));
         }
@@ -37,10 +37,10 @@ export class Calendar extends React.Component {
     // TODO: put this into it's own service/library function etc
     eventStyleGetter(event, start, end, isSelected) {
         var background,
-            color = "#000000";
+            color = "#000000CC";
         switch (event.reservation_type) {
             case "selected": {
-                background = "#ff0000";
+                background = "#ff00008C";
                 break;
             }
             case "observer": {
@@ -48,11 +48,11 @@ export class Calendar extends React.Component {
                 break;
             }
             case "opetus": {
-                background = "#ffe99a";
+                background = "#ffe99a8C";
                 break;
             }
             default:
-                background = "#00eeee";
+                background = "#00eeee8C";
         }
 
         return ({

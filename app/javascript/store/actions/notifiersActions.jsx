@@ -8,7 +8,12 @@ export function selectTimeForNotifier(timeSlot, reservations) {
         return reservations;
     }
 
-    return refreshReservationList(timeSlot, reservations)
+    let newArray = refreshEventsList(timeSlot, reservations);
+    return (dispatch) => {
+
+        dispatch({type: "SET_COLLAPSED", payload: true});
+        dispatch({type: "SET_RESERVATIONS", payload: newArray})
+    };
 }
 
 export function submitNotifier(event, notifier) {
@@ -40,16 +45,17 @@ function timeIsValid(timeSlot) {
         alert('Älä tarkkaile menneisyyttä!');
         return false;
     }
+    return true;
 }
 
-function refreshReservationList(timeSlot, reservations) {
+function refreshEventsList(timeSlot, events) {
     let newArray = [];
-    for (let o of reservations) {
+    for (let o of events) {
         newArray.push(o);
     }
-    if (reservations.length !== 0 &&
-        (reservations[reservations.length-1].title === '<valittu aika>'
-            || reservations[reservations.length-1].title === '<valittu aika tarkkailijalle>')) {
+    if (events.length !== 0 &&
+        (events[events.length-1].title === '<valittu aika>'
+            || events[events.length-1].title === '<valittu aika tarkkailijalle>')) {
         newArray.pop();
     }
 

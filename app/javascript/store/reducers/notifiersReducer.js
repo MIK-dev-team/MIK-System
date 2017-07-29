@@ -13,6 +13,13 @@ export default function reducer(state = initialState, action) {
         case "SET_NOTIFIER_MODE": {
             return {...state, notifierMode: !state.notifierMode}
         }
+        case "SET_NOTIFIER_TIMESLOT": {
+            return {
+                ...state,
+                start: action.payload.start,
+                end: action.payload.end
+            }
+        }
         case "RESET_NOTIFIER": {
             return {...initialState}
         }
