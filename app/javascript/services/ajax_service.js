@@ -72,6 +72,18 @@ class AjaxService {
             errorCallback(err.response.status, err.response.data)
         })
     };
+
+    destroy(path, callback, errorCallback) {
+        return this.service.request({
+            method: 'DELETE',
+            url: path,
+            responseType: 'json'
+        }).then((response) => {
+            callback(response.status, response.data)
+        }).catch((err) => {
+            errorCallback(err.response.status, err.response.data)
+        })
+    };
 }
 
 export default new AjaxService;

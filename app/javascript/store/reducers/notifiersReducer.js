@@ -3,8 +3,12 @@ const initialState = {
     submitting: false,
     submitted: false,
     submitError: null,
-    start: undefined,
-    end: undefined,
+    start: "",
+    end: "",
+    submitObject: {
+        plane_id: undefined,
+        notifier_type: 'all',
+    },
 };
 
 export default function reducer(state = initialState, action) {
@@ -13,11 +17,42 @@ export default function reducer(state = initialState, action) {
         case "SET_NOTIFIER_MODE": {
             return {...state, notifierMode: !state.notifierMode}
         }
-        case "SET_NOTIFIER_TIMESLOT": {
+        case "SET_NOTIFIER_START": {
             return {
                 ...state,
-                start: action.payload.start,
-                end: action.payload.end
+                start: action.payload,
+                submitObject: {
+                    ...state.submitObject,
+                    start: action.payload,
+                }
+            }
+        }
+        case "SET_NOTIFIER_END": {
+            return {
+                ...state,
+                end: action.payload,
+                submitObject: {
+                    ...state.submitObject,
+                    end: action.payload,
+                }
+            }
+        }
+        case "SET_NOTIFIER_PLANE": {
+            return {
+                ...state,
+                submitObject: {
+                    ...state.submitObject,
+                    plane_id: action.payload.id,
+                }
+            }
+        }
+        case "SET_NOTIFIER_TYPE": {
+            return {
+                ...state,
+                submitObject: {
+                    ...state.submitObject,
+                    notifier_type: action.payload,
+                }
             }
         }
         case "RESET_NOTIFIER": {

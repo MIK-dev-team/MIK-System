@@ -37,7 +37,10 @@ export class ReservationTable extends React.Component {
                 <div>
                     <Table striped hover responsive>
                         {header}
-                        <ReservationTableContent reservations={this.props.reservations}/>
+                        <ReservationTableContent
+                            reservations={this.props.reservations}
+                            dispatch={this.props.dispatch}
+                        />
                     </Table>
                 </div>
         }

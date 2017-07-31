@@ -1,1 +1,1 @@
-Reservation.subscribe(AvailabilityNotifier)
+Reservation.subscribe(AvailabilityListener)

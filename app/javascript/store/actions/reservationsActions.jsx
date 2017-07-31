@@ -2,6 +2,7 @@
  * Created by owlaukka on 18/06/17.
  */
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import moment from 'moment';
 
 import AjaxService from '../../services/ajax_service';
@@ -11,7 +12,7 @@ moment.locale('fi');
 export function fetchReservations(plane=undefined) {
     let route = '/api/v1/reservations';
     if (plane !== undefined) {
-        route = `api/v1/planes/${plane}/reservations`;
+        route = `api/v1/planes/${plane.id}/reservations`;
     }
     return function(dispatch) {
         dispatch({type: "FETCH_RESERVATIONS_PENDING"});
@@ -64,6 +65,23 @@ export function submitReservation(event, start, end, plane, type, desc) {
     }
 }
 
+export function destroyReservation(res) {
+    console.log(res.id)
+    return function(dispatch) {
+        dispatch({type: "DESTROY_RESERVATION_PENDING"});
+        AjaxService.destroy(
+            '/api/v1/reservations/' + res.id,
+            (status, data) => {
+                dispatch({type: "DESTROY_RESERVATION_FULFILLED"});
+                dispatch(fetchReservations());
+            },
+            (status, err) => {
+                dispatch({type: "DESTROY_RESERVATION_REJECTED", payload: err})
+            }
+        );
+    }
+}
+
 export function setType(event) {
     return (dispatch) => {
         dispatch({type: "SET_TYPE", payload: event.target.value});
@@ -95,7 +113,7 @@ export function fillForm(timeSlot, reservations) {
     };
 }
 
-export function mapReservations(reservations) {
+export function mapReservations(reservations, dispatch) {
     if (reservations === undefined || reservations.length === 0 || reservations[0].id === undefined) {
         return <tr key="empty"></tr>
     } else {
@@ -106,6 +124,7 @@ export function mapReservations(reservations) {
                 <td>{moment(res.end).format('lll')}</td>
                 <td>{res.plane.name}</td>
                 <td>{res.reservation_type}</td>
+                <td><Button onClick={() => dispatch(destroyReservation(res))} bsStyle="danger" bsSize="small">Poista</Button></td>
             </tr>
         )
     }

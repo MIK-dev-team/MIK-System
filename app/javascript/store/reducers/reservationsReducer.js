@@ -18,7 +18,7 @@ export default function reducer(state = {
 
     switch(action.type) {
         case "FETCH_RESERVATIONS_PENDING": {
-            return {...state, fetching: true};
+            return {...state, fetching: true, fetched: false};
         }
         case "FETCH_RESERVATIONS_REJECTED": {
             return {...state, fetching: false, fetchError: action.payload};
@@ -36,6 +36,7 @@ export default function reducer(state = {
             return {
                 ...state,
                 sending: true,
+                sent: false,
             }
         }
         case "SUBMIT_RESERVATION_REJECTED": {
@@ -49,6 +50,28 @@ export default function reducer(state = {
             return {
                 ...state,
                 sending: false,
+                sent: true,
+            }
+        }
+
+        case "DESTROY_RESERVATION_PENDING": {
+            return {
+                ...state,
+                sending: true,
+                sent: false,
+            }
+        }
+        case "DESTROY_RESERVATION_REJECTED": {
+            return {
+                ...state,
+                sending: false,
+                submitError: action.payload,
+            }
+        }
+        case "DESTROY_RESERVATION_FULFILLED": {
+            return {
+                ...state,
+                sending:false,
                 sent: true,
             }
         }

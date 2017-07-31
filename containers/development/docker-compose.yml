@@ -1,7 +1,7 @@
 version: '3'
 services:
   db:
-    image: postgres:10-alpine
+    image: postgres
   web:
     build:
       context: .

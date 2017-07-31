@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import ReservationFetcher from "./reservation_fetcher";
 import PlaneSelection from './plane_selection';
 import NotifierModeSelection from "./notifier_mode_selection";
+import NotifierForm from './notifier_form'
 
-let alert;
+let alert, notifierForm;
 export class CalendarPage extends React.Component {
     setAlertFrame() {
         if (this.props.sent) {
@@ -38,6 +39,14 @@ export class CalendarPage extends React.Component {
         }
     }
 
+    notifierForm() {
+        if (this.props.notifierMode) {
+            return <NotifierForm/>
+        } else {
+            return <div></div>
+        }
+    }
+
     render() {
         this.setAlertFrame();
         return (
@@ -51,7 +60,7 @@ export class CalendarPage extends React.Component {
                     <br />
                     {alert}
                     <br />
-
+                    {this.notifierForm()}
                     <ReservationFetcher/>
                 </div>
                 <br />

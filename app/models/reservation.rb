@@ -42,6 +42,6 @@ class Reservation < ApplicationRecord
 
   private
     def publish_reservation_destroyed
-      broadcast(:reservation_destroyed)
+      broadcast(:reservation_destroyed, self.start, self.end)
     end
 end
