@@ -1,0 +1,12 @@
+Aikoja vapautunut!
+===================================================
+
+<% if @notifier.notifier_type == 'all' %>
+    Kaikki varaukset välillä <%= "#{@notifier.start}-#{@notifier.end}" %> on peruttu.
+<% else %>
+    Varaus välillä <%= "#{@notifier.start}-#{@notifier.end}" %> on peruttu.
+<% end %>
+
+Käy varaamassa aika osoitteessa http://www.mik.fi/varauskalenteri
+
+Terveisin Malmin Ilmailukerho

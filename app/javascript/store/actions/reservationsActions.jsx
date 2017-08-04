@@ -66,7 +66,6 @@ export function submitReservation(event, start, end, plane, type, desc) {
 }
 
 export function destroyReservation(res) {
-    console.log(res.id)
     return function(dispatch) {
         dispatch({type: "DESTROY_RESERVATION_PENDING"});
         AjaxService.destroy(

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-type" />
+</head>
+<body>
+<h1>Aikoja vapautunut!</h1>
+
+<% if @notifier.notifier_type == 'all' %>
+  <p>Kaikki varaukset välillä <%= "#{@notifier.start}-#{@notifier.end}" %> on peruttu.</p>
+<% else %>
+    <p>Varaus välillä <%= "#{@notifier.start}-#{@notifier.end}" %> on peruttu.</p>
+<% end %>
+
+<p>Käy varaamassa aika osoitteessa <a href="http://www.mik.fi/varauskalenteri">mik.fi</a></p>
+
+<p>Terveisin Malmin Ilmailukerho</p>
+</body>
+</html>

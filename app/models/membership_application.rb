@@ -1,6 +1,6 @@
 class MembershipApplication < ApplicationRecord
   validates :email, :phone, :full_name, :birthday,
-            :address, :postal_code, :city, :user_id, presence: true
+            :address, :postal_code, :city, :member_type, presence: true
   validates :pending, inclusion: { in: [true, false] }
   validates :email, uniqueness: true
   validates :username, uniqueness: { allow_blank: true }

@@ -1,5 +1,6 @@
 import React from 'react';
 import sinon from 'sinon';
+import { Button } from 'react-bootstrap';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import moment from 'moment';
@@ -16,15 +17,15 @@ describe('Reservation action', () => {
         data: [
             {
                 id: 1,
-                start: moment("2017-06-10T18:00:00+03:00").toDate(),
-                end: moment("2017-06-10T20:00:00+03:00").toDate(),
+                start: moment().add({days: 5, hours: 5}).toDate(),
+                end: moment().add({days: 5, hours: 7}).toDate(),
                 plane: { id: 2, name: "ES1234" },
                 reservation_type: "opetus"
             },
             {
                 id: 2,
-                start: moment("2017-06-09T10:30:00+03:00").toDate(),
-                end: moment("2017-06-09T20:00:00+03:00").toDate(),
+                start: moment().add({days: 4, hours: 2}).toDate(),
+                end: moment().add({days: 4, hours: 3, minutes: 30}).toDate(),
                 plane: { id: 1, name: "YG5463" },
                 reservation_type: "harraste"
             }
@@ -93,10 +94,15 @@ describe('Reservation action', () => {
                 <td>{moment(res.end).format('lll')}</td>
                 <td>{res.plane.name}</td>
                 <td>{res.reservation_type}</td>
+                <td>
+                    <Button onClick={() => sinon.stub()} bsStyle="danger" bsSize="small">
+                        Poista
+                    </Button>
+                </td>
             </tr>)
         );
 
-        expect(returnedValue).toEqual(expectedValue);
+        expect(JSON.stringify(returnedValue)).toEqual(JSON.stringify(expectedValue));
     });
 
     it('submitReservation dispatches correct actions on successful save', () => {
@@ -124,6 +130,36 @@ describe('Reservation action', () => {
             { type: "SUBMIT_RESERVATION_REJECTED", payload: error.response.data }
         ];
 
+
+        store.dispatch(actions.submitReservation({preventDefault: () => {}}));
+        return promise.catch(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+        })
+    });
+
+    it('destroyReservation dispatches correct actions on successful save', () => {
+        promise = Promise.resolve({});
+        stub = sinon.stub(AjaxService.service, 'request').callsFake(() => promise);
+        const expectedActions = [
+            { type: "DESTROY_RESERVATION_PENDING" },
+            { type: "DESTROY_RESERVATION_FULFILLED" },
+            { type: "FETCH_RESERVATIONS_PENDING" },
+        ];
+
+        store.dispatch(actions.destroyReservation({ id: 1 }));
+        return promise.then(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
+    it('destroyReservation dispatches correct actions on incorrect request', () => {
+        const error = {response: {status: 422, data: {some: "data here"}}};
+        promise = Promise.resolve(error);
+        stub = sinon.stub(AjaxService, 'destroy').callsFake(() => promise);
+        const expectedActions = [
+            { type: "DESTROY_RESERVATION_PENDING" },
+            { type: "DESTROY_RESERVATION_REJECTED", payload: error.response.data }
+        ];
 
         store.dispatch(actions.submitReservation({preventDefault: () => {}}));
         return promise.catch(() => {
@@ -172,5 +208,56 @@ describe('Reservation action', () => {
             { type: "SET_COLLAPSED", payload: false },
             { type: "SET_RESERVATIONS", payload: expectedSetReservationsPayload }
         ]);
-    })
+    });
+
+    it('fillForm returns original reservations if time is in the past', () => {
+        const timeSlot = {
+            start: moment('2016-05-05T18:00:00+03:00').toDate(),
+            end: moment('2016-05-05T19:00:00+03:00').toDate(),
+        };
+
+        let result = actions.fillForm(timeSlot, response.data);
+        expect(result).toEqual(response.data);
+    });
+
+    it('fillForm returns original reservations if end of time slot is inside a reserved time', () => {
+        const timeSlot = {
+            start: moment().add({days: 5, hours: 3}).toDate(),
+            end: moment().add({days: 5, hours: 6}).toDate(),
+        };
+
+        let result = actions.fillForm(timeSlot, response.data);
+        expect(result).toEqual(response.data);
+    });
+
+
+    it('fillForm returns original reservations if start of time slot is inside a reserved time', () => {
+        const timeSlot = {
+            start: moment().add({days: 5, hours: 5, minutes: 30}).toDate(),
+            end: moment().add({days: 5, hours: 10}).toDate(),
+        };
+
+        let result = actions.fillForm(timeSlot, response.data);
+        expect(result).toEqual(response.data);
+    });
+
+    it('fillForm returns original reservations if time slot completely covers a reserved time', () => {
+        const timeSlot = {
+            start: moment().add({days: 5, hours: 4}).toDate(),
+            end: moment().add({days: 5, hours: 10}).toDate(),
+        };
+
+        let result = actions.fillForm(timeSlot, response.data);
+        expect(result).toEqual(response.data);
+    });
+
+    it('fillForm returns original reservations when trying to reserve an existing time', () => {
+        const timeSlot = {
+            start: moment().add({days: 5, hours: 5}).toDate(),
+            end: moment().add({days: 5, hours: 7}).toDate(),
+        };
+
+        let result = actions.fillForm(timeSlot, response.data);
+        expect(result).toEqual(response.data);
+    });
 });

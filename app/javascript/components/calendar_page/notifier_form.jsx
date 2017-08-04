@@ -9,7 +9,7 @@ import { submitNotifier, setStart, setEnd, setNotifierType } from '../../store/a
 
 moment.locale('fi');
 
-export class ReservationForm extends React.Component {
+export class NotifierForm extends React.Component {
     formatTimes(time) {
         if (time != "")
             return (moment(time).format('lll'));
@@ -67,10 +67,9 @@ export class ReservationForm extends React.Component {
 
 export default connect((store) => {
     return {
-        notifierMode: store.notifiers.notifierMode,
         start: store.notifiers.start,
         end: store.notifiers.end,
         submitObject: store.notifiers.submitObject,
         notifierType: store.notifiers.notifier_type,
     }
-})(ReservationForm)
+})(NotifierForm)

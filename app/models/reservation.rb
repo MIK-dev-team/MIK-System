@@ -9,9 +9,9 @@ class Reservation < ApplicationRecord
   validate :cannot_overlap_another_reservation
 
 
-  scope :in_range, -> range {
-    where("(start BETWEEN ? AND ? OR \"end\" BETWEEN ? AND ?) OR (start < ? AND \"end\" > ?)", range.first, range.last, range.first, range.last, range.first, range.last)
-  }
+  scope :in_range, -> range do
+    where("(start >= ? AND start < ?) OR (\"end\" > ? AND \"end\" <= ?) OR (start <= ? AND \"end\" >= ?)", range.first, range.last, range.first, range.last, range.first, range.last)
+  end
 
   scope :exclude_self, -> id { where.not(id: id) }
 
@@ -42,6 +42,6 @@ class Reservation < ApplicationRecord
 
   private
     def publish_reservation_destroyed
-      broadcast(:reservation_destroyed, self.start, self.end)
+      broadcast(:reservation_destroyed, self)
     end
 end

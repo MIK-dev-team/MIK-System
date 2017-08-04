@@ -12,9 +12,10 @@ Rails.application.routes.draw do
     resources :membership_applications, only: [:show]
     resources :reservations, only: [:index]
     resources :planes, only: [:show]
-    get 'hello/index'
+
     root 'reservations#index'
 
+    get 'varaukset', to: 'hello#index'
     get 'varauskalenteri', to: 'reservations#index'
     get 'liity', to: 'membership_applications#join'
   end

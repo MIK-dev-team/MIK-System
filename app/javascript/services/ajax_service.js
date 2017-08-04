@@ -9,7 +9,7 @@ class AjaxService {
         let service = axios.create({
             headers: {csrf: 'token'}
         });
-        service.interceptors.response.use(this.handleSuccess, this.handleError)
+        // service.interceptors.response.use(this.handleSuccess, this.handleError);
         this.service = service;
     }
 
@@ -17,7 +17,7 @@ class AjaxService {
         return response;
     }
 
-    // TODO: Check if default case makes it skip errorCallbacks in request functions
+    // Left this here in case something like this is needed later as a template
     handleError = (error) => {
         switch (error.response.status) {
             // case 401:
@@ -30,6 +30,7 @@ class AjaxService {
             //     this.redirectTo(document, '/500');
             //     break;
         }
+        //return error;
         return Promise.reject(error)
     };
 
@@ -69,6 +70,7 @@ class AjaxService {
         }).then((response) => {
             callback(response.status, response.data)
         }).catch((err) => {
+            console.log('in catch of post');
             errorCallback(err.response.status, err.response.data)
         })
     };

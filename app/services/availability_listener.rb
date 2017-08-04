@@ -1,24 +1,30 @@
 class AvailabilityListener
-  # TODO: put this somewhere more approriate instead of models
-  def self.reservation_destroyed (deleted_start, deleted_end)
-    @reservations = Reservation.where("start >= ?", DateTime.now)
-    # using push here because it does not create a new array so it works better in case there are larger arrays
-    clean_notifiers_from_all = all_reservations_cancelled_during_notifier_time_frame
-    clean_notifiers_from_any = any_reservation_cancelled_during_notifier_time_frame deleted_start, deleted_end
-    clean_notifiers = clean_notifiers_from_all.push(*clean_notifiers_from_any)
-    clean_notifiers_from_any.unshift(*clean_notifiers_from_all)
+  def self.reservation_destroyed (reservation)
+    @reservations = get_appropriate_reservations reservation.plane_id
+    clean_notifiers = get_clean_notifiers reservation.start, reservation.end
 
-    # MAIL clean_notifiers
-    clean_notifiers.each do |noti|
-      puts "mailing to #{noti.user_id} whose notifier_type is #{noti.notifier_type}"
-    end
-
-    delete_clean_notifiers_with_type_all clean_notifiers_from_all
-    delete_clean_notifiers_with_type_any clean_notifiers_from_any
+    mail_people clean_notifiers
+    delete_completed_notifiers clean_notifiers
   end
 
+
   private
-  def self.all_reservations_cancelled_during_notifier_time_frame
+  def self.get_appropriate_reservations (plane_id)
+    if plane_id == nil
+      Reservation.where("start >= ?", DateTime.now)
+    else
+      Reservation.where("start >= ? AND plane_id = ?", DateTime.now, plane_id)
+    end
+  end
+
+  def self.get_clean_notifiers(res_start, res_end)
+    clean_notifiers_from_all = completely_clean_notifiers
+    clean_notifiers_from_any = notifiers_with_cancelled_reservation res_start, res_end
+    clean_notifiers_from_all.push(*clean_notifiers_from_any)
+  end
+
+
+  def self.completely_clean_notifiers
     notifiers = AvailabilityNotifier.where("start >= ? AND notifier_type = ?", DateTime.now, 'all')
     clean_notifiers = Array.new
 
@@ -30,7 +36,7 @@ class AvailabilityListener
     clean_notifiers
   end
 
-  def self.any_reservation_cancelled_during_notifier_time_frame (deleted_start, deleted_end)
+  def self.notifiers_with_cancelled_reservation (deleted_start, deleted_end)
     notifiers = AvailabilityNotifier.where("start >= ? AND notifier_type = ?", DateTime.now, 'any')
     clean_notifiers = Array.new
 
@@ -46,32 +52,33 @@ class AvailabilityListener
     @reservations.each do |res|
       if (notifier.start >= res.start and notifier.start <= res.end) or
           (notifier.end >= res.start and notifier.end <= res.end)
-        true
+        return true
       end
     end
     false
   end
 
   def self.reservation_was_removed_from_notifier_time_frame? (notifier, res_start, res_end)
-    if (notifier.start >= res_start and notifier.start <= res_end) or
+    (notifier.start >= res_start and notifier.start <= res_end) or
         (notifier.end >= res_start and notifier.end <= res_end)
-      true
-    else
-      false
+  end
+
+  def self.delete_completed_notifiers (notifiers)
+    notifiers.each do |noti|
+      if noti.notifier_type == 'all'
+        puts "gonna delete notifier for all: #{noti}"
+        noti.destroy
+      elsif noti.end < DateTime.now
+        puts "gonna delete notifier for any: #{noti}"
+        noti.destroy
+      end
     end
   end
 
-  def self.delete_clean_notifiers_with_type_all notifiers
-    # Maybe do like this: notifiers.destroy_all
-    notifiers.each{ |noti| puts "gonna delete notifier for all: #{noti}" }
-  end
-
-  def self.delete_clean_notifiers_with_type_any notifiers
-    # Mayve do like this: notifiers.where("end <= ?", DateTime.now).destroy_all
+  def self.mail_people(notifiers)
     notifiers.each do |noti|
-      if noti.end < DateTime.now
-        puts "gonna delete notifier for any: #{noti}"
-      end
+      puts "mailing to #{noti.user_id} whose notifier_type is #{noti.notifier_type}"
+      Api::V1::AvailabilityNotifierMailer.time_available(noti).deliver_later
     end
   end
 end
