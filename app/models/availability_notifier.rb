@@ -6,7 +6,7 @@ class AvailabilityNotifier < ApplicationRecord
   validate :not_in_the_past
 
   def not_in_the_past
-    if self.start < DateTime.now
+    if not self.start.nil? and self.start < DateTime.now
       errors.add(:observing_the_past, 'Älä tarkkaile menneisyyttä')
     end
   end

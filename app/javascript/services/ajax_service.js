@@ -70,7 +70,6 @@ class AjaxService {
         }).then((response) => {
             callback(response.status, response.data)
         }).catch((err) => {
-            console.log('in catch of post');
             errorCallback(err.response.status, err.response.data)
         })
     };
