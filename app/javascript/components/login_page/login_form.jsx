@@ -6,30 +6,41 @@ import * as actions from '../../store/actions/loginActions';
 import * as validators from '../../store/actions/loginValidationActions';
 
 export class LoginForm extends React.Component {
-  render() {
-    return(
-      <form>
-          <FormGroup controlId="username">
-                      <ControlLabel>Käyttäjätunnus/Sähköposti</ControlLabel>
-                      <FormControl type="text"/>
-          </FormGroup>
 
-          <FormGroup controlId="username">
-                      <ControlLabel>Salasana</ControlLabel>
-                      <FormControl type="password"/>
-          </FormGroup>
+    handleFormSubmit = (e) => {this.props.dispatch(actions.loginUser(this.props.username, this.props.password, e))};
 
-          <Button type="submit">
-              Kirjaudu
-          </Button>
-      </form>
-    )
-    }
+    render() {
+        let successElement;
+        if (this.props.isLoginSuccess) {
+            successElement = <div>Submitted. {this.props.username} - {this.props.password}</div>
+        }
+
+        return (
+            <div>
+                {successElement}
+                <form onSubmit={this.handleFormSubmit}>
+                    <FormGroup controlId="username">
+                        <ControlLabel>Käyttäjätunnus/Sähköposti</ControlLabel>
+                        <FormControl type="text" value={this.props.username} onChange={(e) => this.props.dispatch(actions.handleUsernameValueChange(e))}/>
+                    </FormGroup>
+
+                    <FormGroup controlId="password">
+                        <ControlLabel>Salasana</ControlLabel>
+                        <FormControl type="password" value={this.props.password} onChange={(e) => this.props.dispatch(actions.handlePasswordValueChange(e))}/>
+                    </FormGroup>
+
+                    <Button type="submit">Kirjaudu</Button>
+                </form>
+            </div>
+        );
+    };
+
 }
 
 export default connect((store) => {
     return {
-        //applications: store.applications,
-        //submitObject: store.applications.submitObject,
+      isLoginSuccess: store.login.isLoginSuccess,
+      username: store.login.username,
+      password: store.login.password
     }
 })(LoginForm)

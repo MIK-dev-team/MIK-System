@@ -1,0 +1,1 @@
+json.extract! membership_application, :id

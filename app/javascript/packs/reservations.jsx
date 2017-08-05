@@ -1,5 +1,4 @@
-import CalendarPage from 'components/calendar_page/calendar_page';
-import ReservationsIndex from 'components/reservations_list/index';
+import CalendarIndex from 'components/calendar_page/index';
 import WebpackerReact from 'webpacker-react';
 
-WebpackerReact.setup({CalendarPage, ReservationsIndex});
+WebpackerReact.setup({CalendarIndex});

@@ -2,90 +2,54 @@
  * Created by owlaukka on 15/06/17.
  */
 import React from 'react';
-import axios from 'axios';
-import moment from 'moment';
+import { Provider } from 'react-redux';
 import { mount, shallow } from 'enzyme';
-import sinon from 'sinon';
-import ReservationFetcher from "../../../app/javascript/components/calendar_page/reservation_fetcher";
+import { spy, stub } from 'sinon';
 
-let fetcher;
-const plane = "kone1";
+import * as actions from '../../../app/javascript/store/actions/reservationsActions';
+import store from '../../../app/javascript/store/store';
+import { ReservationFetcher } from "../../../app/javascript/components/calendar_page/reservation_fetcher";
+
+let fetcher, dispatchSpy, fetchStub;
 describe('ReservationFetcher', () => {
-    describe('initially', () => {
-        beforeAll(() => {
-            fetcher = shallow(<ReservationFetcher plane={plane}/>);
-        });
-
-        it('has correct state initially', () => {
-            expect(fetcher.state()).toEqual({reservations: [{}], plane: plane});
-        });
-
-        it('has Calendar component', () => {
-            expect(fetcher.find('Calendar').length).toEqual(1);
-        });
-
-        it('sets Calendar props correctly initially', () => {
-            let calendar = fetcher.find('Calendar');
-            expect(calendar.props().plane).toEqual(plane);
-            expect(calendar.props().reservations).toEqual([{}]);
-        })
+    beforeAll(() => {
+        dispatchSpy = spy();
+        fetchStub = stub(actions, 'fetchReservations');
     });
 
-    describe('uses ajax', () => {
-        let stub;
-        let promise;
-        const response = {
-            data: [
-                {
-                    id: 1,
-                    start: moment("2017-06-10T18:00:00+03:00").toDate(),
-                    end: moment("2017-06-10T20:00:00+03:00").toDate(),
-                    plane_id: 2,
-                    reservation_type: "opetus"
-                },
-                {
-                    id: 2,
-                    start: moment("2017-06-09T10:30:00+03:00").toDate(),
-                    end: moment("2017-06-09T20:00:00+03:00").toDate(),
-                    plane_id: 1,
-                    reservation_type: "harraste"
-                }
-            ]
-        };
+    beforeEach(() => {
+        fetcher = shallow(<ReservationFetcher dispatch={dispatchSpy}/>);
+    });
 
-        beforeAll(() => {
-            promise = Promise.resolve(response);
-            stub = sinon.stub(axios, 'get').callsFake(() => promise);
-            fetcher = mount(<ReservationFetcher plane={plane}/>);
-        });
+    afterEach(() => {
+        dispatchSpy.reset();
+        fetchStub.reset();
+    });
 
-        afterAll(() => {
-            stub.restore();
-            fetcher.unmount();
-        });
+    it('has Calendar', () => {
+        expect(fetcher.find('Connect(Calendar)').length).toEqual(1);
+    });
 
-        it('once', () => {
-            expect(stub.calledOnce).toBe(true);
-        });
+    it('calls dispatch with correct action when plane changes', () => {
+        expect(fetchStub.calledOnce).toBe(false);
+        fetcher.setProps({selectedPlane: 2});
+        fetcher.update();
+        expect(fetchStub.calledOnce).toBe(true);
+        expect(dispatchSpy.calledOnce).toBe(true);
+    });
 
-        it('and returns correct data', () => {
-            return promise.then((res) => {
-                expect(res.data).toEqual(response.data);
-            });
-        });
+    it('does not call dispatch when props other than plane change', () => {
+        expect(fetchStub.calledOnce).toBe(false);
+        fetcher.setProps({somethingElse: 2});
+        fetcher.update();
+        expect(fetchStub.calledOnce).toBe(false);
+        expect(dispatchSpy.calledOnce).toBe(false);
+    });
 
-        it('and sets fetched data to state', () => {
-            return promise.then(() => {
-                fetcher.update();
-                expect(fetcher.state()).toEqual({plane: plane, reservations: response.data});
-            });
-        });
-
-        it("and sets fetched data to Calendar's props correctly", () => {
-            return promise.then(() => {
-                fetcher.update();
-                expect(fetcher.find('Calendar').first().props()).toEqual({plane: plane, reservations: response.data});
-            })
-        });
+    it('calls dispatch with correct action when mounted', () => {
+        fetcher = mount(<Provider store={store}><ReservationFetcher dispatch={dispatchSpy}/></Provider>)
+        expect(dispatchSpy.calledOnce).toBe(true);
+        expect(fetchStub.calledOnce).toBe(true);
+        fetcher.unmount();
     });
 });

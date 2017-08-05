@@ -33,6 +33,8 @@ GEM
       activemodel (= 5.1.1)
       activesupport (= 5.1.1)
       arel (~> 8.0)
+    activerecord-nulldb-adapter (0.3.7)
+      activerecord (>= 2.0.0)
     activesupport (5.1.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -65,6 +67,11 @@ GEM
     diff-lcs (1.3)
     erubi (1.6.0)
     execjs (2.7.0)
+    factory_girl (4.8.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.8.0)
+      factory_girl (~> 4.8.0)
+      railties (>= 3.0.0)
     ffi (1.9.18)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
@@ -117,6 +124,9 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    rails-i18n (5.0.4)
+      i18n (~> 0.7)
+      railties (~> 5.0)
     railties (5.1.1)
       actionpack (= 5.1.1)
       activesupport (= 5.1.1)
@@ -195,17 +205,20 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-nulldb-adapter
   bcrypt (~> 3.1.7)
   byebug
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
   database_cleaner
+  factory_girl_rails
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   pg (~> 0.18)
   poltergeist
   puma (~> 3.7)
   rails (~> 5.1.1)
+  rails-i18n (~> 5.0.0)
   rspec-rails
   sass-rails (~> 5.0)
   spring
@@ -218,4 +231,4 @@ DEPENDENCIES
   webpacker-react
 
 BUNDLED WITH
-   1.15.1
+   1.15.2

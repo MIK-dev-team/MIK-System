@@ -4,21 +4,12 @@
 import React from 'react';
 import { shallow } from "enzyme";
 import sinon from 'sinon';
-import ReservationForm from "../../../app/javascript/components/calendar_page/reservation_form";
+import { ReservationForm } from "../../../app/javascript/components/calendar_page/reservation_form";
 
 let form;
 describe('Reservation form', () => {
-    let timeSlot;
-    beforeEach(() => {
-        timeSlot = {
-            start: "",
-            end: ""
-        };
-        form = shallow(<ReservationForm timeSlot={timeSlot} plane="kone 1" />);
-    });
-
-    it('has correct initial state', () => {
-        expect(form.state()).toEqual({type: 'harraste', submitted: false});
+    beforeAll(() => {
+        form = shallow(<ReservationForm planes={[{ id: 1, name: "something" }]}/>);
     });
 
     it('has a panel header with right props', () => {
@@ -26,19 +17,20 @@ describe('Reservation form', () => {
     });
 
     it('has correct amount of form groups', () => {
-        expect(form.find('FormGroup').length).toEqual(4);
+        expect(form.find('FormGroup').length).toEqual(5);
     });
 
     it('has select for planes', () => {
+        form.setProps({selectedPlane: { id: 2, name: "something else!"}});
+        form.update();
         expect(form.find('FormControl').at(2).props().componentClass).toEqual("select");
-        expect(form.find('FormControl').at(2).props().value).toEqual("kone 1");
+        expect(form.find('FormControl').at(2).props().value).toEqual(2);
     });
 
     it('has select with correct options for selecting plane', () => {
-        expect(form.find('FormGroup#selectPlane > FormControl > option').length).toEqual(3);
-        expect(form.find('FormGroup#selectPlane > FormControl > option').first().props().value).toEqual("kone1");
-        expect(form.find('FormGroup#selectPlane > FormControl > option').at(1).props().value).toEqual("kone2");
-        expect(form.find('FormGroup#selectPlane > FormControl > option').at(2).props().value).toEqual("kone3");
+        expect(form.find('FormGroup#selectPlane > FormControl > option').length).toEqual(2);
+        expect(form.find('FormGroup#selectPlane > FormControl > option').first().props().value).toEqual('null');
+        expect(form.find('FormGroup#selectPlane > FormControl > option').at(1).props().value).toEqual(1);
     });
 
     it('has select with correct options for selecting type', () => {
@@ -52,76 +44,46 @@ describe('Reservation form', () => {
         expect(form.find('Button').first().props().type).toEqual('submit');
     });
 
-    it('has 1 ReservationCreator', () => {
-        expect(form.find('ReservationCreator').length).toEqual(1);
-    });
-
-    it('sets correct props to ReservationCreator initially', () => {
-        expect(form.find('ReservationCreator').props()).toEqual({
-            reservation: {},
-            submitted: false
-        })
-    });
-
-    it('sets correct props to ReservationCreator when state changes change', () => {
-        form.setState({
-            submitted: true
-        });
-        form.update();
-        expect(form.find('ReservationCreator').props()).toEqual({
-            reservation: {},
-            submitted: true
-        })
-    })
-
-    it('changing type in form changes state', () => {
+    it('changing type in form changes calls dispatch', () => {
+        const spy = sinon.spy();
+        form = shallow(<ReservationForm dispatch={spy} planes={[{ id: 1, name: "something" }]}/>);
+        expect(spy.calledOnce).toBe(false);
         expect(form.find('FormGroup#selectType > FormControl').length).toEqual(1);
         form.find('FormGroup#selectType > FormControl').simulate('change', {target: {
             value: 'opetus'
         }});
-        form.update();
-        expect(form.state().type).toEqual("opetus");
+        expect(spy.calledOnce).toBe(true);
     });
 
-    it('shows start adn end time as empty initially', () => {
-        expect(form.find('FormControl').first().props().value).toEqual("");
-        expect(form.find('FormControl').at(1).props().value).toEqual("");
+    it('submitting form calls dispatch', () => {
+        const spy = sinon.spy();
+        form = shallow(<ReservationForm dispatch={spy} planes={[{ id: 1, name: "something" }]}/>);
+        expect(spy.calledOnce).toBe(false);
+        form.find('form').simulate('submit', {preventDefault: () => {}});
+        expect(spy.calledOnce).toBe(true);
     });
 
-    it('shows start and end times when given as props in the correct format', () => {
-        form.setProps({timeSlot: {
-            start: "2017-06-06T20:00:00+03:00",
-            end: "2017-06-06T20:30:00+03:00"
-        }});
-        form.update();
-        expect(form.find('FormControl').first().props().value).toEqual("6. kesä 2017, klo 17.00");
-        expect(form.find('FormControl').at(1).props().value).toEqual("6. kesä 2017, klo 17.30");
-    });
-
-    it('sets state correctly when submitting form', () => {
-        form.find('form').simulate('submit', { preventDefault() {} });
-        form.update();
-        expect(form.state().submitted).toBe(true);
-    });
-
-    it('sets ReservationCreator props correctly when submitting form', () => {
-        form.setState({
-            type: "opetus"
+    describe("with start and end times", () => {
+        afterEach(() => {
+            form.setProps({start: undefined, end: undefined});
+            form.update();
         });
-        form.setProps({timeSlot: {
-            start: "2017-06-06T20:00:00+03:00",
-            end: "2017-06-06T20:30:00+03:00"
-        }});
-        form.find('form').simulate('submit', { preventDefault() {} });
-        form.update();
-        expect(form.find('ReservationCreator').props()).toEqual({
-            reservation: {
+
+        it('shows start adn end time as empty initially', () => {
+            form.setProps({start: "", end: ""});
+            form.update();
+            expect(form.find('FormControl').first().props().value).toEqual("");
+            expect(form.find('FormControl').at(1).props().value).toEqual("");
+        });
+
+        it('shows start and end times when given as props in the correct format', () => {
+            form.setProps({
                 start: "2017-06-06T20:00:00+03:00",
-                end: "2017-06-06T20:30:00+03:00",
-                reservation_type: "opetus",
-                plane_id: 1
-            },
-            submitted: true
+                end: "2017-06-06T20:30:00+03:00"
+            });
+            form.update();
+            expect(form.find('FormControl').first().props().value).toEqual("6. kesä 2017, klo 17.00");
+            expect(form.find('FormControl').at(1).props().value).toEqual("6. kesä 2017, klo 17.30");
         });
     });
 });
