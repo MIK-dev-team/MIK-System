@@ -36019,7 +36019,6 @@ var AjaxService = function () {
             }).then(function (response) {
                 callback(response.status, response.data);
             }).catch(function (err) {
-                console.log('in catch of post');
                 errorCallback(err.response.status, err.response.data);
             });
         }
