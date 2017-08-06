@@ -19,7 +19,7 @@ describe('Login page', () => {
     });
 
     it('has correct h1 header', () => {
-        expect(page.find('Jumbotron > h1').text()).toEqual('Liity jäseneksi!');
+        expect(page.find('Jumbotron > h1').text()).toEqual('Kirjaudu sisään');
     });
 
     it('has LoginForm', () => {
@@ -28,10 +28,6 @@ describe('Login page', () => {
 
     it('has Jumbotron with correct style', () => {
         expect(page.find('Jumbotron').props().style).toEqual({'borderRadius': '0px'})
-    });
-
-    it("has correct style for <p> inside jumbotron", () => {
-        expect(page.find('Jumbotron > p').props().style).toEqual({'lineHeight': '25px'});
     });
 
     it("has correct style for <Col>", () => {
