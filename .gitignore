@@ -27,6 +27,7 @@
 .env
 .byebug_history
 /public/packs
+/containers/production/database/init*
 
 # Test and misc stuff
 .rspec
