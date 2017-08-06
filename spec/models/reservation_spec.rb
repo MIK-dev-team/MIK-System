@@ -25,5 +25,15 @@ RSpec.describe Reservation, type: :model do
       expect(reservation).not_to be_valid
       expect(Reservation.count).to eq(1)
     end
+
+    it 'calls publishing method when destroyed' do
+      reservation = Reservation.create reservation_type: 'opetus',
+                                       start: '2017-05-05 12:00:00',
+                                       end: '2017-05-05 14:00:00',
+                                       user_id: 1,
+                                       plane: plane1
+      expect(reservation).to receive(:publish_reservation_destroyed).with(no_args)
+      reservation.destroy
+    end
   end
 end

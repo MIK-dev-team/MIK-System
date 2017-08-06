@@ -16,7 +16,6 @@ RSpec.describe 'Membership Application page', js: true do
   end
 
   it 'saves a new application in the db when form filled with valid fields' do
-
     fill_form valid_app
 
     click_button('Lähetä hakemus')
@@ -26,9 +25,31 @@ RSpec.describe 'Membership Application page', js: true do
     expect(MembershipApplication.count).to eq(1)
     expect(MembershipApplication.first.username).to eq(valid_app.username)
     expect(MembershipApplication.first.email).to eq(valid_app.email)
+
   end
 
-  it 'saves optional detail '
+  it 'sends two emails when application is succesfully saved' do
+    message_delivery = instance_double(ActionMailer::MessageDelivery)
+    allow(message_delivery).to receive(:deliver_later)
+    fill_form valid_app
+
+    click_button('Lähetä hakemus')
+
+    expect(Api::V1::MembershipAppMailer).to receive(:application_received).and_return(message_delivery)
+    expect(Api::V1::MembershipAppMailer).to receive(:application_received_mod).and_return(message_delivery)
+  end
+
+  it 'saves optional detail in the database if given as well' do
+    fill_form valid_app
+    fill_in 'Nykyiset lupakirjaluokat', with: 'some kinda licences'
+
+    click_button('Lähetä hakemus')
+
+    expect(page).to have_content('Hakemuksenne on onnistuneesti lähetetty')
+
+    expect(MembershipApplication.count).to eq(1)
+    expect(MembershipApplication.first.licences).to eq('some kinda licences')
+  end
 
   it 'displays error when a field is not valid' do
     valid_app.username = 'short'

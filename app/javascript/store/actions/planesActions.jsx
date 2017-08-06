@@ -12,5 +12,6 @@ export function setPlanes(planes) {
 export function selectPlane(plane) {
     return (dispatch) => {
         dispatch({type: "SELECT_PLANE", payload: plane});
+        dispatch({type: "SET_NOTIFIER_PLANE", payload: plane})
     }
 }
