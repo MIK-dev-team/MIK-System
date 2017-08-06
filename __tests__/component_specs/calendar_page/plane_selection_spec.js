@@ -30,7 +30,7 @@ describe('PlaneSelection', () => {
     });
 
     it('has ButtonGroup with correct size', () => {
-        expect(planeSelection.find('ButtonGroup').props().bsSize).toEqual('large');
+        expect(planeSelection.find('ButtonGroup').props().bsSize).toEqual('md');
     });
 
     describe('with existing planes', () => {

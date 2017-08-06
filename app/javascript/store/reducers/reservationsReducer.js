@@ -90,6 +90,18 @@ export default function reducer(state = {
                 end: action.payload.end,
             }
         }
+        case "SET_RESERVATION_START": {
+            return {
+                ...state,
+                start: action.payload,
+            }
+        }
+        case "SET_RESERVATION_END": {
+            return {
+                ...state,
+                end: action.payload,
+            }
+        }
         case "SET_COLLAPSED": {
             return {...state, collapsed: action.payload}
         }

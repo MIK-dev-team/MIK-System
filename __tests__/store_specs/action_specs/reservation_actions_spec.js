@@ -17,15 +17,15 @@ describe('Reservation action', () => {
         data: [
             {
                 id: 1,
-                start: moment().add({days: 5, hours: 5}).toDate(),
-                end: moment().add({days: 5, hours: 7}).toDate(),
+                start: moment().add({days: 5, hours: 5}).format(),
+                end: moment().add({days: 5, hours: 7}).format(),
                 plane: { id: 2, name: "ES1234" },
                 reservation_type: "opetus"
             },
             {
                 id: 2,
-                start: moment().add({days: 4, hours: 2}).toDate(),
-                end: moment().add({days: 4, hours: 3, minutes: 30}).toDate(),
+                start: moment().add({days: 4, hours: 2}).format(),
+                end: moment().add({days: 4, hours: 3, minutes: 30}).format(),
                 plane: { id: 1, name: "YG5463" },
                 reservation_type: "harraste"
             }
@@ -186,11 +186,15 @@ describe('Reservation action', () => {
     });
 
     it("fillForm dispatches correct actions on appropriate parameters", () => {
-        const timeSlot = { start: "2017-06-10T18:00:00+03:00", end: "2017-06-10T20:00:00+03:00" };
+        const timeSlot = {
+            start: moment().add(3, 'hours').format(),
+            end: moment().add({hours: 4, minutes: 30}).format()
+        };
         let expectedSetReservationsPayload = [];
         for (let res of response.data) {
             expectedSetReservationsPayload.push(res)
         }
+
         expectedSetReservationsPayload.push({
             title: '<valittu aika>',
             start: timeSlot.start,
@@ -201,8 +205,8 @@ describe('Reservation action', () => {
         store.dispatch(actions.fillForm(timeSlot, response.data));
         expect(store.getActions()).toEqual([
             { type: "SET_TIMESLOT", payload: {
-                    start: new Date(timeSlot.start),
-                    end: new Date(timeSlot.end)
+                    start: timeSlot.start,
+                    end: timeSlot.end
                 }
             },
             { type: "SET_COLLAPSED", payload: false },
@@ -212,8 +216,8 @@ describe('Reservation action', () => {
 
     it('fillForm returns original reservations if time is in the past', () => {
         const timeSlot = {
-            start: moment('2016-05-05T18:00:00+03:00').toDate(),
-            end: moment('2016-05-05T19:00:00+03:00').toDate(),
+            start: moment('2016-05-05T18:00:00+03:00').format(),
+            end: moment('2016-05-05T19:00:00+03:00').format(),
         };
 
         let result = actions.fillForm(timeSlot, response.data);

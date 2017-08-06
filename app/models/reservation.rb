@@ -13,11 +13,15 @@ class Reservation < ApplicationRecord
     where("(start >= ? AND start < ?) OR (\"end\" > ? AND \"end\" <= ?) OR (start <= ? AND \"end\" >= ?)", range.first, range.last, range.first, range.last, range.first, range.last)
   end
 
+  scope :same_plane, -> plane do
+    where(plane: plane)
+  end
+
   scope :exclude_self, -> id { where.not(id: id) }
 
   def cannot_overlap_another_reservation
     range = Range.new self.start, self.end
-    overlaps = Reservation.exclude_self(id).in_range(range)
+    overlaps = Reservation.exclude_self(id).same_plane(plane).in_range(range)
     overlap_error unless overlaps.empty?
   end
 

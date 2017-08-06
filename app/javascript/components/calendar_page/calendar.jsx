@@ -23,6 +23,19 @@ export class Calendar extends React.Component {
         }
     }
 
+    convertReservationsToCalendarEvents() {
+        let newArray = [];
+        for (let res of this.props.reservations) {
+            newArray.push({
+                title: res.reservation_type,
+                start: moment(res.start).toDate(),
+                end: moment(res.end).toDate(),
+                reservation_type: res.reservation_type
+            })
+        }
+        return newArray;
+    }
+
     isButtonDisabled() {
         return this.props.reservations.length !== 0 &&
             this.props.reservations[this.props.reservations.length-1].reservation_type === 'selected'
@@ -64,8 +77,13 @@ export class Calendar extends React.Component {
     }
 
     render() {
-        let initTime = new Date();
-        initTime.setHours(8, 30);
+        let initTime = moment();
+        if (initTime.hours() < 9 || initTime.hours() > 21) {
+            initTime.hours(7).minutes(30);
+        } else {
+            initTime.subtract(5, 'hours');
+        }
+        initTime = initTime.toDate();
         return (
             <div>
                 <Row id="row-main">
@@ -73,7 +91,7 @@ export class Calendar extends React.Component {
                         <BigCalendar
                             selectable
                             {...this.props}
-                            events={this.props.reservations}
+                            events={this.convertReservationsToCalendarEvents()}
                             defaultView="week"
                             scrollToTime={initTime}
                             onSelectEvent={(event) => alert("Tehdään tähän vaikka modaali tai muu ikkuna joka kertoo kaikki tiedot", event)}

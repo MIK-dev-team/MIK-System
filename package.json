@@ -32,6 +32,8 @@
     "react": "^15.5.4",
     "react-big-calendar": "^0.14.0",
     "react-bootstrap": "^0.31.0",
+    "react-bootstrap-time-picker": "^1.0.3",
+    "react-datepicker": "^0.52.0",
     "react-dom": "^15.5.4",
     "react-loading": "^0.1.4",
     "react-redux": "^5.0.5",

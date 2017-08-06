@@ -9,7 +9,7 @@ class Api::V1::ReservationsController < ApiController
   def create
     @reservation = Reservation.new(reservation_params)
 
-    # This has to be changed when we get an actual user control system. Taken from current_user mnost likely
+    # TODO: This has to be changed when we get an actual user control system. Taken from current_user mnost likely
     @reservation.user_id = 1
 
     if @reservation.save

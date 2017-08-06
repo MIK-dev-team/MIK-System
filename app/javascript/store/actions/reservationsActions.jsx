@@ -19,12 +19,6 @@ export function fetchReservations(plane=undefined) {
         AjaxService.get(
             route,
             (status, data) => {
-                data.map((res) => {
-                    res.key = res.id;
-                    res.title = res.reservation_type;
-                    res.start = moment(res.start).toDate();
-                    res.end = moment(res.end).toDate();
-                });
                 dispatch({type: "FETCH_RESERVATIONS_FULFILLED", payload: data})
             },
             (status, err) => {
@@ -42,8 +36,8 @@ export function submitReservation(event, start, end, plane, type, desc) {
         }
     }
     const reservation = {
-        start: start,
-        end: end,
+        start: moment(start).toDate(),
+        end: moment(end).toDate(),
         plane_id: plane.id,
         reservation_type: type,
         description: desc,
@@ -93,20 +87,55 @@ export function setCollapsed(prev) {
     }
 }
 
+export function setReservationStart(start, reservations) {
+    let updatedReservations = refreshReservationListOnStartChange(start, reservations);
+    return (dispatch) => {
+        dispatch({type: "SET_RESERVATION_START", payload: start});
+        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
+    }
+}
+
+export function setReservationEnd(end, reservations) {
+    let updatedReservations = refreshReservationListOnEndChange(end, reservations);
+    console.log('reservations:', reservations, 'updated:', updatedReservations);
+    return (dispatch) => {
+        dispatch({type: "SET_RESERVATION_END", payload: end});
+        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
+    }
+}
+
+export function changeStartTime(time, previousTime, reservations) {
+    const newTime = moment(previousTime).startOf('day').add(time, 'seconds');
+    let updatedReservations = refreshReservationListOnStartChange(newTime, reservations);
+    return (dispatch) => {
+        dispatch({type: "SET_RESERVATION_START", payload: newTime});
+        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
+    }
+}
+
+export function changeEndTime(time, previousTime, reservations) {
+    const newTime = moment(previousTime).startOf('day').add(time, 'seconds');
+    const updatedReservations = refreshReservationListOnEndChange(newTime, reservations);
+    return (dispatch) => {
+        dispatch({type: "SET_RESERVATION_END", payload: newTime});
+        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
+    }
+}
+
 export function fillForm(timeSlot, reservations) {
     if (!timeIsValid(timeSlot, reservations)) {
         return reservations;
     }
-
     let newArray = refreshReservationList(timeSlot, reservations);
     return (dispatch) => {
         dispatch({
             type: "SET_TIMESLOT",
             payload: {
-                start: moment(timeSlot.start).toDate(),
-                end: moment(timeSlot.end).toDate(),
+                start: moment(timeSlot.start).format(),
+                end: moment(timeSlot.end).format(),
             }
         });
+
         dispatch({type: "SET_COLLAPSED", payload: false});
         dispatch({type: "SET_RESERVATIONS", payload: newArray})
     };
@@ -132,20 +161,56 @@ export function mapReservations(reservations, dispatch) {
 // --- LOCAL FUNCTIONS HERE ---
 
 function timeIsValid(timeSlot, reservations) {
-    if (timeSlot.start < new Date()) {
+    // if (moment(timeSlot.start).toDate() < moment().toDate()) {
+    if (moment(timeSlot.start).isBefore(moment())) {
         alert('Älä varaa aikaa menneisyydestä!');
         return false;
     }
 
     for (let res of reservations) {
-        if ((timeSlot.end > res.start && timeSlot.end <= res.end) ||
-            (timeSlot.start >= res.start && timeSlot.start < res.end) ||
-            (timeSlot.start <= res.start && timeSlot.end >= res.end)) {
+        if ((moment(timeSlot.end).isAfter(res.start) && moment(timeSlot.end).isSameOrBefore(res.end)) ||
+            (moment(timeSlot.start).isSameOrAfter(res.start) && moment(timeSlot.start).isBefore(res.end)) ||
+            (moment(timeSlot.start).isSameOrBefore(res.start) && moment(timeSlot.end).isSameOrAfter(res.end))) {
             alert("Et voi varata jo varattua aikaa");
             return false;
         }
     }
     return true;
+}
+
+function refreshReservationListOnStartChange(start, reservations) {
+    let newArray = [];
+    let topReservation;
+    for (let o of reservations) {
+        newArray.push(o);
+    }
+    if (reservations.length !== 0 &&
+        (reservations[reservations.length-1].reservation_type === 'selected'
+            || reservations[reservations.length-1].reservation_type === 'observer')) {
+        topReservation = reservations[reservations.length-1];
+        newArray.pop();
+    }
+    topReservation.start = start;
+    newArray.push(topReservation);
+    return newArray;
+}
+
+function refreshReservationListOnEndChange(end, reservations) {
+    let newArray = [];
+    let topReservation;
+    for (let o of reservations) {
+        newArray.push(o);
+    }
+    if (reservations.length !== 0 &&
+        (reservations[reservations.length-1].reservation_type === 'selected'
+            || reservations[reservations.length-1].reservation_type === 'observer')) {
+        topReservation = reservations[reservations.length-1];
+        newArray.pop();
+    }
+
+    topReservation.end = end;
+    newArray.push(topReservation);
+    return newArray;
 }
 
 function refreshReservationList(timeSlot, reservations) {
@@ -162,7 +227,7 @@ function refreshReservationList(timeSlot, reservations) {
     const res = {
         title: "<valittu aika>",
         start: timeSlot.start,
-        end: timeSlot.end,
+        end:timeSlot.end,
         reservation_type: 'selected',
     };
     newArray.push(res);
