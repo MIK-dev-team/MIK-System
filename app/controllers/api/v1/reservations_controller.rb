@@ -1,4 +1,6 @@
 class Api::V1::ReservationsController < ApiController
+  before_action :set_reservation, only: [:destroy]
+
   def index
     reservations = Reservation.all
     render json: reservations
@@ -15,6 +17,12 @@ class Api::V1::ReservationsController < ApiController
     else
       render json: @reservation.errors, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    # TODO: when users exist, change this to make sure user is allowed to destroy (remember admins too)
+    @reservation.destroy
+    render json: { status: :no_content }
   end
 
   private

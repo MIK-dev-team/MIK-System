@@ -30,7 +30,8 @@ describe('Plane action', () => {
     it("selectPlane dispatches correct actions", () => {
         const selectedPlane = { id:1, name: "test plane" };
         const expectedActions = [
-            { type: "SELECT_PLANE", payload: selectedPlane }
+            { type: "SELECT_PLANE", payload: selectedPlane },
+            { type: "SET_NOTIFIER_PLANE", payload: selectedPlane }
         ];
         store.dispatch(actions.selectPlane(selectedPlane));
         expect(store.getActions()).toEqual(expectedActions);

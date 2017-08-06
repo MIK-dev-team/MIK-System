@@ -84,6 +84,38 @@ describe('Reservations reducer', () => {
         })
     });
 
+    it('should handle DESTROY_RESERVATION_PENDING correctly', () => {
+        expect(
+            reducer(undefined, {type: "DESTROY_RESERVATION_PENDING"})
+        ).toEqual({
+            ...initialState,
+            sending: true,
+            sent: false,
+        })
+    });
+
+    it('should handle DESTROY_RESERVATION_REJECTED correctly', () => {
+        const payload = "Some sorta error";
+        expect(
+            reducer(undefined, {type: "DESTROY_RESERVATION_REJECTED",
+                                payload: payload})
+        ).toEqual({
+            ...initialState,
+            sending: false,
+            submitError: payload,
+        })
+    });
+
+    it('should handle DESTROY_RESERVATION_FULFILLED correctly', () => {
+        expect(
+            reducer(undefined, {type: "DESTROY_RESERVATION_FULFILLED"})
+        ).toEqual({
+            ...initialState,
+            sending:false,
+            sent: true,
+        })
+    });
+
     it("should handle SET_TYPE correctly", () => {
         const type = "opetus";
         expect(
@@ -132,5 +164,15 @@ describe('Reservations reducer', () => {
             ...initialState,
             desc: desc,
         })
-    })
+    });
+
+    it("should handle SET_RESERVATIONS correctly", () => {
+        const reservations = ['some', 'reservations', 'here'];
+        expect(
+            reducer(undefined, {type: "SET_RESERVATIONS", payload: reservations})
+        ).toEqual({
+            ...initialState,
+            reservations: reservations,
+        })
+    });
 });

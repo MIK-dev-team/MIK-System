@@ -4,6 +4,7 @@ import sinon from "sinon";
 import moment from "moment";
 
 import * as reservationsActions from '../../../app/javascript/store/actions/reservationsActions';
+import * as notifiersActions from '../../../app/javascript/store/actions/notifiersActions';
 import { Calendar } from "../../../app/javascript/components/calendar_page/calendar";
 /**
  * Created by owlaukka on 17/06/17.
@@ -12,28 +13,12 @@ import { Calendar } from "../../../app/javascript/components/calendar_page/calen
 let calendar;
 describe('Calendar', () => {
     beforeAll(() => {
-        calendar = shallow(<Calendar reservations={[{}]}/>);
+        calendar = shallow(<Calendar reservations={[]}/>);
     });
 
     afterEach(() => {
-        calendar.setProps({reservations: [{}]});
+        calendar.setProps({reservations: []});
         calendar.update();
-    });
-
-    it('sets initial state correctly', () => {
-        const expectedState = {
-            reservations: [],
-        };
-        expect(calendar.state()).toEqual(expectedState)
-    });
-
-    it('changes state when new props are received', () => {
-        const newReservations = [{some: "field", another: "field"}, {second: "object", fooor: "testing"}];
-        calendar.setProps({reservations: newReservations});
-        calendar.update();
-        expect(calendar.state()).toEqual({
-            reservations: newReservations,
-        });
     });
 
     it('has one element with id content', () => {
@@ -46,131 +31,6 @@ describe('Calendar', () => {
 
     it("has Button that isn't disabled initially", () => {
         expect(calendar.find('Button').hasClass('disabled')).toBe(false);
-    });
-
-
-    it('has method fillFormView that pushes new reservation to reservations state correctly', () => {
-        const dispatch = sinon.spy();
-        const timeSlot = {
-            start: moment().add(1, 'days').format(),
-            end: moment().add(1, 'days').add(2, 'hours').format()
-        };
-        expect(calendar.state().reservations).toEqual([{}]);
-        calendar.setProps({dispatch: dispatch, reservations: [{}, {
-                    'title': 'opetus',
-                    'start': "2017-06-10T18:00:00+03:00",
-                    'end': "2017-06-10T20:00:00+03:00",
-                    reservation_type: 'opetus'
-                }
-            ]
-        });
-        calendar.update();
-        expect(calendar.state().reservations).toEqual([{}, {
-            'title': 'opetus',
-            'start': "2017-06-10T18:00:00+03:00",
-            'end': "2017-06-10T20:00:00+03:00",
-            reservation_type: 'opetus'
-        }
-        ]);
-
-        calendar.instance().fillFormView(timeSlot);
-        expect(calendar.state().reservations).toEqual([{}, {
-            'title': 'opetus',
-            'start': "2017-06-10T18:00:00+03:00",
-            'end': "2017-06-10T20:00:00+03:00",
-            reservation_type: 'opetus'
-        },
-            {
-                'title': '<valittu aika>',
-                'start': timeSlot.start,
-                'end': timeSlot.end,
-                reservation_type: 'selected'
-            }
-            ]);
-    });
-
-    it('fillForm pops a reservation out of the list if another is selected', () => {
-        const dispatch = sinon.spy();
-        calendar.setProps({dispatch: dispatch})
-        const timeSlot = {
-                start: moment().add(1, 'days').format(),
-                end: moment().add(1, 'days').add(2, 'hours').format()
-        },
-        anotherTimeSlot = {
-            start: moment().add(1, 'days').add(2, 'hours').format(),
-            end: moment().add(1, 'days').add(4, 'hours').format()
-        };
-        expect(calendar.state().reservations).toEqual([{}]);
-        calendar.instance().fillFormView(timeSlot);
-        calendar.update();
-
-        expect(calendar.state().reservations).toEqual([{}, {
-            'title': '<valittu aika>',
-            'start': timeSlot.start,
-            'end': timeSlot.end,
-            reservation_type: 'selected'
-        }]);
-
-        calendar.instance().fillFormView(anotherTimeSlot);
-        calendar.update();
-
-        expect(calendar.state().reservations).toEqual([{}, {
-            'title': '<valittu aika>',
-            'start': anotherTimeSlot.start,
-            'end': anotherTimeSlot.end,
-            reservation_type: 'selected'
-        }]);
-    });
-
-    it("fillFormView doesn't allow reservations in the past", () => {
-        const dispatch = sinon.spy();
-        const timeSlot = {
-            'start': new Date("2016-06-10T18:00:00+03:00"),
-            'end': new Date("2016-06-10T20:00:00+03:00"),
-        };
-        calendar.setProps({dispatch: dispatch, reservations: [{}, {
-                'title': 'opetus',
-                'start': "2017-06-10T18:00:00+03:00",
-                'end': "2017-06-10T20:00:00+03:00",
-                reservation_type: 'opetus'
-            }
-        ]});
-        calendar.instance().fillFormView(timeSlot);
-        calendar.update();
-
-        expect(calendar.state().reservations).toEqual([{}, {
-                'title': 'opetus',
-                'start': "2017-06-10T18:00:00+03:00",
-                'end': "2017-06-10T20:00:00+03:00",
-                reservation_type: 'opetus'
-            }
-        ]);
-    });
-
-    it("fillForm doesn't allow overlapping reservations", () => {
-        let spy = sinon.spy(window, 'alert');
-        const timeSlot = {
-                start: moment().add(1, 'days').add(1, 'hours').format(),
-                end: moment().add(1, 'days').add(1, 'hours').add(30, 'minutes').format()
-        },
-        reservation = {
-            title: 'opetus',
-            start: moment().add(1, 'days').format(),
-            end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'opetus'
-        };
-        calendar.setProps({reservations: [{}, reservation]});
-        calendar.update();
-        calendar.instance().fillFormView(timeSlot);
-        calendar.update();
-        expect(spy.calledOnce).toBe(true);
-        expect(calendar.state().reservations).toEqual([{}, {
-            title: 'opetus',
-            start: moment().add(1, 'days').format(),
-            end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'opetus'
-        }]);
-        spy.restore();
     });
 
     it('has Button that calls dispatch with correct action', () => {
@@ -186,6 +46,40 @@ describe('Calendar', () => {
         expect(setCollapsedStub.calledOnce).toBe(true);
     });
 
+    it('has selectTimeSlot function that triggers correct function when notifierMode is on', () => {
+        const dispatchSpy = sinon.spy(),
+              selectTimeForNotifier = sinon.stub(notifiersActions, 'selectTimeForNotifier');
+        calendar.setProps({dispatch: dispatchSpy, notifierMode: true});
+        calendar.update();
+        const timeSlot = {
+            start: moment().add(1, 'days').toDate(),
+            end: moment().add(2, 'days').toDate(),
+        };
+        expect(dispatchSpy.calledOnce).toBe(false);
+        expect(selectTimeForNotifier.calledOnce).toBe(false);
+
+        calendar.instance().selectTimeSlot(timeSlot);
+        expect(dispatchSpy.calledOnce).toBe(true);
+        expect(selectTimeForNotifier.calledOnce).toBe(true);
+    });
+
+    it('has selectTimeSlot function that triggers correct function when notifierMode is off', () => {
+        const dispatchSpy = sinon.spy(),
+            fillFormNotifier = sinon.stub(reservationsActions, 'fillForm');
+        calendar.setProps({dispatch: dispatchSpy, notifierMode: false});
+        calendar.update();
+        const timeSlot = {
+            start: moment().add(1, 'days').toDate(),
+            end: moment().add(2, 'days').toDate(),
+        };
+        expect(dispatchSpy.calledOnce).toBe(false);
+        expect(fillFormNotifier.calledOnce).toBe(false);
+
+        calendar.instance().selectTimeSlot(timeSlot);
+        expect(dispatchSpy.calledOnce).toBe(true);
+        expect(fillFormNotifier.calledOnce).toBe(true);
+    });
+
     it('has eventStyleGetter method that returns a style object', () => {
         const reservation = {
             title: 'opetus',
@@ -196,8 +90,8 @@ describe('Calendar', () => {
         const expectedStyle = calendar.instance().eventStyleGetter(reservation, null, null, null);
         expect(expectedStyle).toEqual({
             style: {
-                backgroundColor: "#ffe99a",
-                color: "#000000"
+                backgroundColor: "#ffe99a8C",
+                color: "#000000CC"
             }
         });
     });
@@ -212,8 +106,8 @@ describe('Calendar', () => {
         const expectedStyle = calendar.instance().eventStyleGetter(reservation, null, null, null);
         expect(expectedStyle).toEqual({
             style: {
-                backgroundColor: "#00eeee",
-                color: "#000000"
+                backgroundColor: "#00eeee8C",
+                color: "#000000CC"
             }
         });
     });
@@ -223,14 +117,58 @@ describe('Calendar', () => {
             title: '<valittu aika>',
             start: moment().add(1, 'days').format(),
             end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'opetus'
+            reservation_type: 'selected'
         };
         const expectedStyle = calendar.instance().eventStyleGetter(reservation, null, null, null);
         expect(expectedStyle).toEqual({
             style: {
-                backgroundColor: "#ff0000",
-                color: "#000000"
+                backgroundColor: "#ff00008C",
+                color: "#000000CC"
             }
         });
+    });
+
+    it('has eventStyleGetter method that returns a correct style object for selected observer timeSlot', () => {
+        const reservation = {
+            title: '<valittu aika tarkkailijalle>',
+            start: moment().add(1, 'days').format(),
+            end: moment().add(1, 'days').add(2, 'hours').format(),
+            reservation_type: 'observer'
+        };
+        const expectedStyle = calendar.instance().eventStyleGetter(reservation, null, null, null);
+        expect(expectedStyle).toEqual({
+            style: {
+                backgroundColor: "#00ff5f",
+                color: "#000000CC"
+            }
+        });
+    });
+
+    it('has isDisabled function that return true if last reservation in props is of selected type', () => {
+        const reservations = [{
+            title: '<valittu aika>',
+            start: moment().add(1, 'days').format(),
+            end: moment().add(1, 'days').add(2, 'hours').format(),
+            reservation_type: 'selected'
+        }];
+        calendar.setProps({reservations: reservations});
+        calendar.update();
+
+        const isButtonDisabledReturn = calendar.instance().isButtonDisabled();
+        expect(isButtonDisabledReturn).toBe(true);
+    });
+
+    it('has isDisabled function that return false if last reservation in props is not of selected type', () => {
+        const reservations = [{
+            title: '<valittu aika>',
+            start: moment().add(1, 'days').format(),
+            end: moment().add(1, 'days').add(2, 'hours').format(),
+            reservation_type: 'opetus'
+        }];
+        calendar.setProps({reservations: reservations});
+        calendar.update();
+
+        const isButtonDisabledReturn = calendar.instance().isButtonDisabled();
+        expect(isButtonDisabledReturn).toBe(false);
     });
 });

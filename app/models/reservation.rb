@@ -1,20 +1,17 @@
 class Reservation < ApplicationRecord
+  include Wisper::Publisher
   belongs_to :plane
 
-  validates :start, presence: true
-  validates :end, presence: true
-  validates :plane_id, presence: true
-  validates :reservation_type, presence: true
-  validates :user_id, presence: true
+  after_destroy :publish_reservation_destroyed, on: :destroy
 
+  validates :start, :end, :plane_id, :reservation_type, :user_id, presence: true
   validate :start_date_before_end_date
   validate :cannot_overlap_another_reservation
 
 
-
-  scope :in_range, -> range {
-    where("(start BETWEEN ? AND ? OR \"end\" BETWEEN ? AND ?) OR (start < ? AND \"end\" > ?)", range.first, range.last, range.first, range.last, range.first, range.last)
-  }
+  scope :in_range, -> range do
+    where("(start >= ? AND start < ?) OR (\"end\" > ? AND \"end\" <= ?) OR (start <= ? AND \"end\" >= ?)", range.first, range.last, range.first, range.last, range.first, range.last)
+  end
 
   scope :exclude_self, -> id { where.not(id: id) }
 
@@ -42,4 +39,9 @@ class Reservation < ApplicationRecord
           }
     )
   end
+
+  private
+    def publish_reservation_destroyed
+      broadcast(:reservation_destroyed, self)
+    end
 end

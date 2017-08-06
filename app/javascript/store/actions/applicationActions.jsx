@@ -26,7 +26,6 @@ export function submitApplication(app, repeatEmail, event) {
                 setTimeout(() => window.location.replace('/'), 5000);
             },
             (status, err) => {
-                console.log('ERROR:', status)
                 dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: err});
             }
         );

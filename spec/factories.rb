@@ -10,7 +10,6 @@ FactoryGirl.define do
     city "Helsinki"
     phone "+358501234567"
     pending 'false'
-    user_id 1
   end
 
   factory :membership_application2, class: MembershipApplication do
@@ -24,7 +23,6 @@ FactoryGirl.define do
     city "Vantaa"
     phone "+358501234569"
     pending 'true'
-    user_id 2
   end
 
   factory :plane do
@@ -36,6 +34,14 @@ FactoryGirl.define do
     start "2018-06-07 15:42:00+03:00"
     self.end "2018-06-07 17:42:00+03:00"
     user_id 1
+    plane
+  end
+
+  factory :availability_notifier do
+    start "2018-06-07 12:00:00+03:00"
+    self.end "2018-06-07 18:00:00+03:00"
+    user_id 1
+    notifier_type 'all'
     plane
   end
 end

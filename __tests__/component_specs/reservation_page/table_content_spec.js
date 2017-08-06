@@ -49,7 +49,7 @@ describe('Reservation table content', () => {
     it('displays correct amount of columns', () => {
         expect(tableContent.find('td').length).toEqual(0);
         tableContent.setProps({ reservations: reservations });
-        expect(tableContent.find('td').length).toEqual(10);
+        expect(tableContent.find('td').length).toEqual(12);
     });
 
     it('displays all reservations', () => {

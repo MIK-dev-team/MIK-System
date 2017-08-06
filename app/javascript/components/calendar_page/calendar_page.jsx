@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 
 import ReservationFetcher from "./reservation_fetcher";
 import PlaneSelection from './plane_selection';
+import NotifierModeSelection from "./notifier_mode_selection";
+import NotifierForm from './notifier_form'
 
+let alert, notifierForm;
 export class CalendarPage extends React.Component {
-    render() {
-        let alert;
+    setAlertFrame() {
         if (this.props.sent) {
             alert = (<Alert bsStyle="success" onDismiss={() => true}>
                 <h4>Varaus tallennettu!</h4>
@@ -25,20 +27,42 @@ export class CalendarPage extends React.Component {
         } else {
             alert = <div></div>
         }
+    }
 
+    notifierIndicationStyle() {
+        if (this.props.notifierMode) {
+            return {
+                backgroundColor: "#90FF4480"
+            }
+        } else {
+            return {}
+        }
+    }
+
+    notifierForm() {
+        if (this.props.notifierMode) {
+            return <NotifierForm/>
+        } else {
+            return <div></div>
+        }
+    }
+
+    render() {
+        this.setAlertFrame();
         return (
             <Grid>
                 <h1>Varauskalenteri</h1>
-                <Row>
-                    <PlaneSelection/>
-                    <Col md={6}>
-                        <h3 style={{"textAlign": "center"}}>Tähän ohjeet</h3>
-                    </Col>
-                </Row>
-                <br />
-                {alert}
-                <br />
-                <ReservationFetcher/>
+                <div id="calendarWrapper" style={this.notifierIndicationStyle()}>
+                    <Row>
+                        <PlaneSelection/>
+                        <NotifierModeSelection/>
+                    </Row>
+                    <br />
+                    {alert}
+                    <br />
+                    {this.notifierForm()}
+                    <ReservationFetcher/>
+                </div>
                 <br />
             </Grid>
         )
@@ -49,5 +73,6 @@ export default connect((store) => {
     return {
         sent: store.reservations.sent,
         error: store.reservations.submitError,
+        notifierMode: store.notifiers.notifierMode,
     }
 })(CalendarPage)

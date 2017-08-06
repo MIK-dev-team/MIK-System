@@ -39,7 +39,7 @@ const initialProps = {
         submitObject: {}
     },
     submitObject: {},
-}
+};
 
 let form;
 describe("Membership form", () => {
