@@ -5,8 +5,8 @@ class Api::V1::MembershipApplicationsController < ApiController
     @membership_application.pending = true
 
     if @membership_application.save
-      MembershipAppMailer.application_received(@membership_application).deliver_later
-      MembershipAppMailer.application_received_mod(@membership_application).deliver_later
+      Api::V1::MembershipAppMailer.application_received(@membership_application).deliver_later
+      Api::V1::MembershipAppMailer.application_received_mod(@membership_application).deliver_later
 
       render json: @membership_application, status: :created
     else

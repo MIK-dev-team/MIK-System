@@ -1,8 +1,6 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
-import sinon from 'sinon';
+import { shallow } from "enzyme";
 
-import * as actions from '../../../app/javascript/store/actions/reservationsActions'
 import { CalendarPage } from "../../../app/javascript/components/calendar_page/calendar_page";
 /**
  * Created by owlaukka on 16/06/17.
@@ -26,10 +24,6 @@ describe('Calendar page', () => {
         expect(page.find('Row').length).toEqual(1);
     });
 
-    it('has correct mount of columns', () => {
-        expect(page.find('Col').length).toEqual(1);
-    });
-
     it('has no buttongroup', () => {
         expect(page.find('ButtonGroup').length).toEqual(0);
     });
@@ -47,6 +41,11 @@ describe('Calendar page', () => {
         expect(page.find('Alert').length).toEqual(0);
     });
 
+    it('notifierIndicationStyle returns correct style object', () => {
+        const returnedValue = page.instance().notifierIndicationStyle();
+        expect(returnedValue).toEqual({});
+    });
+
     describe("with sent props set", () => {
         beforeAll(() => {
             page.setProps({sent: true});
@@ -54,7 +53,7 @@ describe('Calendar page', () => {
         });
 
         afterAll(() => {
-            page.setProps({sent: undefined})
+            page.setProps({sent: undefined});
             page.update();
         });
 
@@ -70,12 +69,12 @@ describe('Calendar page', () => {
 
     describe("with error set", () => {
         beforeAll(() => {
-            page.setProps({error: "something"})
+            page.setProps({error: "something"});
             page.update();
         });
 
         afterAll(() => {
-            page.setProps({error: undefined})
+            page.setProps({error: undefined});
             page.update();
         });
 
@@ -84,4 +83,27 @@ describe('Calendar page', () => {
             expect(page.find('Alert > h4').text()).toEqual('Kyseisen ajan varaaminen kyseiselle lentokoneelle ei onnistunut');
         });
     });
+
+    describe("with notifierMode on", () => {
+        beforeAll(() => {
+            page.setProps({notifierMode: true});
+            page.update();
+        });
+
+        afterAll(() => {
+            page.setProps({notifierMode: undefined});
+            page.update();
+        });
+
+        it('has NotifierForm component', () => {
+            expect(page.find('Connect(NotifierForm)').length).toEqual(1);
+        });
+
+        it('notifierIndicationStyle returns correct style object', () => {
+            const returnedValue = page.instance().notifierIndicationStyle();
+            expect(returnedValue).toEqual({
+                backgroundColor: "#90FF4480"
+            });
+        });
+    })
 });

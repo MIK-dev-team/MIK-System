@@ -1,12 +1,12 @@
 version: '3'
 services:
   db:
-    image: postgres
+    image: postgres:10-alpine
   web:
     build:
       context: .
       dockerfile: containers/development/Dockerfile
-    command: containers/development/entrypoint
+    command: containers/scripts/wait-for-it.sh db:5432 -- containers/development/entrypoint
     volumes:
       - .:/mik-system
     ports:

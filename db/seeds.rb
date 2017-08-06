@@ -8,9 +8,10 @@
 
 
 
-1.upto(10) do |i|
-  Plane.create(:name => "Esimerkki #{i}")
+1.upto(5) do |i|
+  Plane.create(:name => "Kone #{i}")
 end
+
 Reservation.create reservation_type: "1", start: "2017-06-07 15:42:00+03:00", end: "2017-06-08 15:42:00+03:00", user_id: 1, plane_id: 1
 Reservation.create reservation_type: "1", start: "2017-06-09 15:42:00+03:00", end: "2017-06-10 15:42:00+03:00", user_id: 3, plane_id: 2
 Reservation.create reservation_type: "1", start: "2017-06-11 15:42:00+03:00", end: "2017-06-12 15:42:00+03:00", user_id: 1, plane_id: 3

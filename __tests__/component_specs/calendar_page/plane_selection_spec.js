@@ -63,7 +63,7 @@ describe('PlaneSelection', () => {
             let dispatch, actionStub;
             beforeEach(() => {
                 dispatch = sinon.spy();
-                planeSelection.setProps({dispatch: dispatch})
+                planeSelection.setProps({dispatch: dispatch});
                 planeSelection.update();
             });
 
@@ -87,7 +87,7 @@ describe('PlaneSelection', () => {
 
                 expect(dispatch.calledOnce).toBe(false);
                 expect(actionStub.calledOnce).toBe(false);
-                planeSelection.find('Button').first().simulate('click');
+                planeSelection.find('Button').last().simulate('click');
                 expect(dispatch.calledOnce).toBe(true);
                 expect(actionStub.calledOnce).toBe(true);
             });

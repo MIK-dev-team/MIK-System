@@ -9,7 +9,7 @@ export default class ReservationTableContent extends React.Component {
     render() {
         return (
             <tbody>
-                {mapReservations(this.props.reservations)}
+                {mapReservations(this.props.reservations, this.props.dispatch)}
             </tbody>
         )
     }
