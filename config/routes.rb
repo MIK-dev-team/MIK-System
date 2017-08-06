@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     get 'varauskalenteri', to: 'reservations#index'
     get 'liity', to: 'membership_applications#join'
     get 'kirjaudu', to: 'auth#show'
+    post 'kirjaudu', to: 'auth#login'
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

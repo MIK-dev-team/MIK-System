@@ -10,10 +10,10 @@ class Website::AuthController < ApplicationController
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      response = {:success => true}
+      response = {:success => true, :id => user.id}
       render :json => response
     else
-      flash.now.notice = 'Email or password is invalid'
+      response = {:success => false}
       render :json => response, :status => 401
     end
   end

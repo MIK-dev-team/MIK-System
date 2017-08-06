@@ -11,8 +11,11 @@ export class LoginForm extends React.Component {
 
     render() {
         let successElement;
+        if (this.props.isLoginFailed) {
+            successElement = <h4>Kirjautumistiedoissa on virhe!</h4>
+        }
         if (this.props.isLoginSuccess) {
-            successElement = <div>Submitted. {this.props.username} - {this.props.password}</div>
+            successElement = <h4>Olet kirjautunut sisään.</h4>
         }
 
         return (
@@ -32,8 +35,8 @@ export class LoginForm extends React.Component {
                     <Button type="submit">Kirjaudu</Button>
                 </form>
             </div>
-        );
-    };
+        )
+    }
 
 }
 
@@ -41,6 +44,7 @@ export default connect((store) => {
     return {
       isLoginSuccess: store.login.isLoginSuccess,
       username: store.login.username,
-      password: store.login.password
+      password: store.login.password,
+      isLoginFailed: store.login.isLoginFailed
     }
 })(LoginForm)

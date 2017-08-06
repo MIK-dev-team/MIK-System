@@ -1,11 +1,24 @@
 import React from 'react';
-//import AjaxService from '../../services/ajax_service';
+import AjaxService from '../../services/ajax_service';
 
 export function loginUser(email, password, event) {
     event.preventDefault();
-
+    let route = '/kirjaudu';
+    const auth_details = {
+        email: email,
+        password: password
+    };
     return function(dispatch) {
-        dispatch({type: "SUBMIT_LOGIN"});
+        AjaxService.post(
+            route,
+            auth_details,
+            (status, data) => {
+                dispatch({type: "SUBMIT_LOGIN", payload: data})
+            },
+            (status, err) => {
+                dispatch({type: "LOGIN_FAILED"})
+            }
+        );
     }
 }
 
