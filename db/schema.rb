@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170707145139) do
+ActiveRecord::Schema.define(version: 20170730211759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "availability_notifiers", force: :cascade do |t|
+    t.datetime "start"
+    t.datetime "end"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "notifier_type"
+    t.integer "plane_id"
+  end
 
   create_table "membership_applications", force: :cascade do |t|
     t.string "username", limit: 20

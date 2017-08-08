@@ -7,6 +7,7 @@ import sinon from 'sinon';
 
 import { ReservationForm } from "../../../app/javascript/components/calendar_page/reservation_form";
 import * as reservationActions from '../../../app/javascript/store/actions/reservationsActions';
+import * as planesActions from '../../../app/javascript/store/actions/planesActions';
 
 let form;
 describe('Reservation form', () => {
@@ -78,9 +79,11 @@ describe('Reservation form', () => {
             actionStub = sinon.stub(reservationActions, 'setReservationStart');
             expect(actionStub.notCalled).toBe(true);
 
-            form.find('#startDate').simulate('change', { target: { value: new Date() } });
+            const changedValue = new Date();
+            form.find('#startDate').simulate('change', changedValue);
             expect(dispatchSpy.calledOnce).toBe(true);
             expect(actionStub.calledOnce).toBe(true);
+            expect(actionStub.calledWith(changedValue))
         });
 
         it('for changing date in end date picker', () => {
@@ -89,7 +92,6 @@ describe('Reservation form', () => {
 
             const changedValue = new Date();
             form.find('#endDate').simulate('change', changedValue);
-            console.log(actionStub.getCall(0).args)
             expect(actionStub.calledWith(changedValue, undefined)).toBe(true);
             expect(dispatchSpy.calledOnce).toBe(true);
             expect(actionStub.calledOnce).toBe(true);
@@ -99,9 +101,54 @@ describe('Reservation form', () => {
             actionStub = sinon.stub(reservationActions, 'changeStartTime');
             expect(actionStub.notCalled).toBe(true);
 
-            form.find('#startTime').simulate('change', { target: { value: '12:56' } });
+            const changedValue = '12:56';
+            form.find('#startTime').simulate('change', changedValue);
             expect(dispatchSpy.calledOnce).toBe(true);
             expect(actionStub.calledOnce).toBe(true);
+            expect(actionStub.calledWith(changedValue))
+        });
+
+        it('for changing time in end time picker', () => {
+            actionStub = sinon.stub(reservationActions, 'changeEndTime');
+            expect(actionStub.notCalled).toBe(true);
+
+            const changedValue = '12:56';
+            form.find('#endTime').simulate('change', changedValue);
+            expect(dispatchSpy.calledOnce).toBe(true);
+            expect(actionStub.calledOnce).toBe(true);
+            expect(actionStub.calledWith(changedValue))
+        });
+
+        it('for changing plane in form', () => {
+            actionStub = sinon.stub(form.instance(), 'handlePlaneChange');
+            form.setProps({planes: [{ id: 1, name: "something" }]});
+
+            expect(actionStub.notCalled).toBe(true);
+            form.find('FormGroup#selectPlane > FormControl').simulate('change', { target: { value: 1 } });
+            expect(actionStub.calledOnce).toBe(true);
+            expect(actionStub.calledWith({ target: { value: 1 } })).toBe(true);
+        });
+
+        it('for changing plane in store through dispatch', () => {
+            actionStub = sinon.stub(planesActions, 'selectPlane');
+            form.setProps({planes: [{ id: 1, name: "something" }]});
+
+            expect(actionStub.notCalled).toBe(true);
+            form.find('FormGroup#selectPlane > FormControl').simulate('change', { target: { value: 1 } });
+            expect(actionStub.calledOnce).toBe(true);
+            expect(actionStub.calledWith({ id: 1, name: "something" })).toBe(true);
+        });
+
+        it('for changing plane to null in store through class function (handlePlaneChange)', () => {
+            actionStub = sinon.stub(planesActions, 'selectPlane');
+            form.setProps({planes: [{ id: 1, name: "something" }]});
+
+            expect(actionStub.notCalled).toBe(true);
+            form.find('FormGroup#selectPlane > FormControl').simulate('change', { target: { value: 1 } });
+            form.find('FormGroup#selectPlane > FormControl').simulate('change', { target: { value: 'null' } });
+            expect(actionStub.calledTwice).toBe(true);
+            expect(actionStub.calledWith({ id: 1, name: "something" })).toBe(true);
+            expect(actionStub.calledWith(undefined)).toBe(true);
         });
 
         it('for changing type in form', () => {
@@ -114,6 +161,7 @@ describe('Reservation form', () => {
             }});
             expect(actionStub.calledOnce).toBe(true);
             expect(dispatchSpy.calledOnce).toBe(true)
+            expect(actionStub.calledWith('opetus'));
         });
 
         it('for submitting form', () => {
@@ -124,30 +172,19 @@ describe('Reservation form', () => {
             expect(actionStub.calledOnce).toBe(true);
             expect(dispatchSpy.calledOnce).toBe(true);
         });
-
     });
 
-    describe("with start and end times", () => {
-        afterEach(() => {
-            form.setProps({start: undefined, end: undefined});
-            form.update();
-        });
-
-        it('shows start adn end time as empty initially', () => {
-            form.setProps({start: "", end: ""});
-            form.update();
-            expect(form.find('FormControl').first().props().value).toEqual("");
-            expect(form.find('FormControl').at(1).props().value).toEqual("");
-        });
-
-        it('shows start and end times when given as props in the correct format', () => {
-            form.setProps({
-                start: "2017-06-06T20:00:00+03:00",
-                end: "2017-06-06T20:30:00+03:00"
+    describe('has class function', () => {
+        describe('formatTime that', () => {
+            it('returns undefined when given time is undefined', () => {
+                expect(form.instance().formatTime()).toEqual(undefined);
             });
-            form.update();
-            expect(form.find('FormControl').first().props().value).toEqual("6. kesä 2017, klo 17.00");
-            expect(form.find('FormControl').at(1).props().value).toEqual("6. kesä 2017, klo 17.30");
+
+            it('returns properly formatted string (HH:mm) when given a datetime string', () => {
+                expect(form.instance().formatTime("2017-06-06T20:00:00+03:00")).toEqual('17:00');
+            });
         });
+
+
     });
 });

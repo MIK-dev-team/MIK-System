@@ -97,7 +97,6 @@ export function setReservationStart(start, reservations) {
 
 export function setReservationEnd(end, reservations) {
     let updatedReservations = refreshReservationListOnEndChange(end, reservations);
-    console.log('reservations:', reservations, 'updated:', updatedReservations);
     return (dispatch) => {
         dispatch({type: "SET_RESERVATION_END", payload: end});
         dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
@@ -180,36 +179,28 @@ function timeIsValid(timeSlot, reservations) {
 
 function refreshReservationListOnStartChange(start, reservations) {
     let newArray = [];
-    let topReservation;
     for (let o of reservations) {
         newArray.push(o);
     }
     if (reservations.length !== 0 &&
         (reservations[reservations.length-1].reservation_type === 'selected'
             || reservations[reservations.length-1].reservation_type === 'observer')) {
-        topReservation = reservations[reservations.length-1];
-        newArray.pop();
+        newArray[newArray.length-1].start = start;
     }
-    topReservation.start = start;
-    newArray.push(topReservation);
     return newArray;
 }
 
 function refreshReservationListOnEndChange(end, reservations) {
     let newArray = [];
-    let topReservation;
     for (let o of reservations) {
         newArray.push(o);
     }
     if (reservations.length !== 0 &&
         (reservations[reservations.length-1].reservation_type === 'selected'
             || reservations[reservations.length-1].reservation_type === 'observer')) {
-        topReservation = reservations[reservations.length-1];
-        newArray.pop();
+        newArray[newArray.length-1].end = end;
     }
 
-    topReservation.end = end;
-    newArray.push(topReservation);
     return newArray;
 }
 

@@ -185,6 +185,202 @@ describe('Reservation action', () => {
         expect(store.getActions()).toEqual(expectedActions);
     });
 
+    it('setReservationStart dispatches correct actions when no reservations exist', () => {
+        const start = 'some start';
+        const expectedActions = [
+            { type: "SET_RESERVATION_START", payload: start },
+            { type: "SET_RESERVATIONS", payload: [] },
+        ];
+
+        store.dispatch(actions.setReservationStart(start, []));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('setReservationStart dispatches correct actions when given reservations', () => {
+        const start = 'some start';
+        const expectedActions = [
+            { type: "SET_RESERVATION_START", payload: start },
+            { type: "SET_RESERVATIONS", payload: response.data },
+        ];
+
+        store.dispatch(actions.setReservationStart(start, response.data));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('setReservationStart dispatches correct actions when last reservation is not from db', () => {
+        const start = 'some start',
+            inputReservations = [{simulated: 'reservation'}, {
+                start: moment().add({days: 6, hours: 5}).format(),
+                end: moment().add({days: 6, hours: 7}).format(),
+                plane: { id: 2, name: "ES1234" },
+                reservation_type: "selected"
+            }],
+            expectedReservations = [{simulated: 'reservation'}, {
+                start: start,
+                end: moment().add({days: 6, hours: 7}).format(),
+                plane: { id: 2, name: "ES1234" },
+                reservation_type: "selected"
+            }];
+        const expectedActions = [
+            { type: "SET_RESERVATION_START", payload: start },
+            { type: "SET_RESERVATIONS", payload: expectedReservations },
+        ];
+
+        store.dispatch(actions.setReservationStart(start, inputReservations));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('setReservationEnd dispatches correct actions when no reservations exist', () => {
+        const end = 'some start';
+        const expectedActions = [
+            { type: "SET_RESERVATION_END", payload: end },
+            { type: "SET_RESERVATIONS", payload: [] },
+        ];
+
+        store.dispatch(actions.setReservationEnd(end, []));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('setReservationEnd dispatches correct actions when given reservations', () => {
+        const end = 'some end';
+        const expectedActions = [
+            { type: "SET_RESERVATION_END", payload: end },
+            { type: "SET_RESERVATIONS", payload: response.data },
+        ];
+
+        store.dispatch(actions.setReservationEnd(end, response.data));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('setReservationEnd dispatches correct actions when last reservation is not from db', () => {
+        const end = 'some end',
+            inputReservations = [{simulated: 'reservation'}, {
+                start: moment().add({days: 6, hours: 5}).format(),
+                end: moment().add({days: 6, hours: 7}).format(),
+                plane: { id: 2, name: "ES1234" },
+                reservation_type: "selected"
+            }],
+            expectedReservations = [{simulated: 'reservation'}, {
+                start: moment().add({days: 6, hours: 5}).format(),
+                end: end,
+                plane: { id: 2, name: "ES1234" },
+                reservation_type: "selected"
+            }];
+        const expectedActions = [
+            { type: "SET_RESERVATION_END", payload: end },
+            { type: "SET_RESERVATIONS", payload: expectedReservations },
+        ];
+
+        store.dispatch(actions.setReservationEnd(end, inputReservations));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('changeStartTime dispatches correct actions when no reservations exist', () => {
+        const newTimeInSeconds = 60,
+            previousTime = moment().add({days: 6, hours: 5}).format();
+        const expectedNewDateTime = moment(previousTime).startOf('day').add(newTimeInSeconds, 'seconds'),
+            expectedActions = [
+            { type: "SET_RESERVATION_START", payload: expectedNewDateTime },
+            { type: "SET_RESERVATIONS", payload: [] },
+        ];
+
+        store.dispatch(actions.changeStartTime(newTimeInSeconds, previousTime, []));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('changeStartTime dispatches correct actions when given reservations', () => {
+        const newTimeInSeconds = 60,
+            previousTime = moment().add({days: 6, hours: 5}).format();
+        const expectedNewDateTime = moment(previousTime).startOf('day').add(newTimeInSeconds, 'seconds'),
+            expectedActions = [
+                { type: "SET_RESERVATION_START", payload: expectedNewDateTime },
+                { type: "SET_RESERVATIONS", payload: response.data },
+            ];
+
+        store.dispatch(actions.changeStartTime(newTimeInSeconds, previousTime, response.data));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('changeStartTime dispatches correct actions when last reservation is not from db', () => {
+        const newTimeInSeconds = 60,
+            previousTime = moment().add({days: 6, hours: 5}).format();
+        const expectedNewDateTime = moment(previousTime).startOf('day').add(newTimeInSeconds, 'seconds'),
+            inputReservations = [{simulated: 'reservation'}, {
+                start: moment().add({days: 6, hours: 5}).format(),
+                end: moment().add({days: 6, hours: 7}).format(),
+                plane: { id: 2, name: "ES1234" },
+                reservation_type: "selected"
+            }],
+            expectedReservations = [{simulated: 'reservation'}, {
+                start: expectedNewDateTime,
+                end: moment().add({days: 6, hours: 7}).format(),
+                plane: { id: 2, name: "ES1234" },
+                reservation_type: "selected"
+            }],
+            expectedActions = [
+                { type: "SET_RESERVATION_START", payload: expectedNewDateTime },
+                { type: "SET_RESERVATIONS", payload: expectedReservations },
+            ];
+
+        store.dispatch(actions.changeStartTime(newTimeInSeconds, previousTime, inputReservations));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+
+
+    it('changeEndTime dispatches correct actions when no reservations exist', () => {
+        const newTimeInSeconds = 60,
+            previousTime = moment().add({days: 6, hours: 5}).format();
+        const expectedNewDateTime = moment(previousTime).startOf('day').add(newTimeInSeconds, 'seconds'),
+            expectedActions = [
+                { type: "SET_RESERVATION_END", payload: expectedNewDateTime },
+                { type: "SET_RESERVATIONS", payload: [] },
+            ];
+
+        store.dispatch(actions.changeEndTime(newTimeInSeconds, previousTime, []));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('changeEndTime dispatches correct actions when given reservations', () => {
+        const newTimeInSeconds = 60,
+            previousTime = moment().add({days: 6, hours: 5}).format();
+        const expectedNewDateTime = moment(previousTime).startOf('day').add(newTimeInSeconds, 'seconds'),
+            expectedActions = [
+                { type: "SET_RESERVATION_END", payload: expectedNewDateTime },
+                { type: "SET_RESERVATIONS", payload: response.data },
+            ];
+
+        store.dispatch(actions.changeEndTime(newTimeInSeconds, previousTime, response.data));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('changeEndTime dispatches correct actions when last reservation is not from db', () => {
+        const newTimeInSeconds = 60,
+            previousTime = moment().add({days: 6, hours: 5}).format();
+        const expectedNewDateTime = moment(previousTime).startOf('day').add(newTimeInSeconds, 'seconds'),
+            inputReservations = [{simulated: 'reservation'}, {
+                start: moment().add({days: 6, hours: 5}).format(),
+                end: moment().add({days: 6, hours: 7}).format(),
+                plane: { id: 2, name: "ES1234" },
+                reservation_type: "selected"
+            }],
+            expectedReservations = [{simulated: 'reservation'}, {
+                start: moment().add({days: 6, hours: 5}).format(),
+                end: expectedNewDateTime,
+                plane: { id: 2, name: "ES1234" },
+                reservation_type: "selected"
+            }],
+            expectedActions = [
+                { type: "SET_RESERVATION_END", payload: expectedNewDateTime },
+                { type: "SET_RESERVATIONS", payload: expectedReservations },
+            ];
+
+        store.dispatch(actions.changeEndTime(newTimeInSeconds, previousTime, inputReservations));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+
+
     it("fillForm dispatches correct actions on appropriate parameters", () => {
         const timeSlot = {
             start: moment().add(3, 'hours').format(),

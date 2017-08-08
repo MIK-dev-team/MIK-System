@@ -140,6 +140,26 @@ describe('Reservations reducer', () => {
         })
     });
 
+    it('should handle SET_RESERVATION_START correctly', () => {
+        const start = 'start';
+        expect(
+            reducer(undefined, {type: "SET_RESERVATION_START", payload: start})
+        ).toEqual({
+            ...initialState,
+            start: start,
+        });
+    });
+
+    it('should handle SET_RESERVATION_END correctly', () => {
+        const end = 'end';
+        expect(
+            reducer(undefined, {type: "SET_RESERVATION_END", payload: end})
+        ).toEqual({
+            ...initialState,
+            end: end,
+        });
+    });
+
     it("should handle SET_COLLAPSED correctly", () => {
         const collapsed = false;
         expect(
