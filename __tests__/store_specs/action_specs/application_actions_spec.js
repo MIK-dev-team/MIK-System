@@ -102,7 +102,7 @@ describe('Application Actions', () => {
         const expectedActions = [
             { type: "RESET_ERROR_MSG" },
             { type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"] },
-            { type: "SET_ERROR", payload: { header: "Tarkista täyttämäsi kentät", data: [] } },
+            { type: "SET_ERROR", payload: { header: "Tarkasta täyttämäsi kentät", data: [] } },
         ];
 
         store.dispatch(actions.submitApplication(submitObject, null, {preventDefault: () => {}}));

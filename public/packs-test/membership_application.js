@@ -78091,7 +78091,7 @@ var Notifications = exports.Notifications = function (_React$Component) {
             var _this2 = this;
 
             var alert = _react2.default.createElement('div', null);
-            if (this.props.success !== null) {
+            if (this.props.success !== null && this.props.success !== undefined) {
                 alert = _react2.default.createElement(
                     _reactBootstrap.Alert,
                     { bsStyle: 'success', onDismiss: function onDismiss() {
@@ -78106,9 +78106,20 @@ var Notifications = exports.Notifications = function (_React$Component) {
                         'p',
                         null,
                         this.props.success.text
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        _react2.default.createElement(
+                            _reactBootstrap.Button,
+                            { onClick: function onClick() {
+                                    return _this2.props.dispatch((0, _notificationsActions.resetNotifications)());
+                                }, bsStyle: 'info' },
+                            'Piilota'
+                        )
                     )
                 );
-            } else if (this.props.error !== null) {
+            } else if (this.props.error !== null && this.props.error !== undefined) {
                 alert = _react2.default.createElement(
                     _reactBootstrap.Alert,
                     { bsStyle: 'danger', onDismiss: function onDismiss() {
@@ -78117,9 +78128,9 @@ var Notifications = exports.Notifications = function (_React$Component) {
                     _react2.default.createElement(
                         'h4',
                         null,
-                        'Jotain meni vikaan'
+                        this.props.error.header
                     ),
-                    this.props.error.map(function (error, index) {
+                    this.props.error.data.map(function (error, index) {
                         return _react2.default.createElement(
                             'p',
                             { key: index },
@@ -78138,7 +78149,7 @@ var Notifications = exports.Notifications = function (_React$Component) {
                         )
                     )
                 );
-            } else if (this.props.info !== null) {
+            } else if (this.props.info !== null && this.props.info !== undefined) {
                 alert = _react2.default.createElement(
                     _reactBootstrap.Alert,
                     { bsStyle: 'info', onDismiss: function onDismiss() {
@@ -78147,7 +78158,18 @@ var Notifications = exports.Notifications = function (_React$Component) {
                     _react2.default.createElement(
                         'h4',
                         null,
-                        this.props.info
+                        this.props.info.header
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        _react2.default.createElement(
+                            _reactBootstrap.Button,
+                            { onClick: function onClick() {
+                                    return _this2.props.dispatch((0, _notificationsActions.resetNotifications)());
+                                }, bsStyle: 'info' },
+                            'Piilota'
+                        )
                     )
                 );
             }
@@ -79105,6 +79127,7 @@ function submitApplication(app, repeatEmail, event) {
         dispatch({ type: "RESET_ERROR_MSG" });
         if (!(0, _applicationValidationActions.allFieldsValid)(app, repeatEmail)) {
             dispatch({ type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"] });
+            dispatch({ type: "SET_ERROR", payload: { header: 'Tarkasta täyttämäsi kentät', data: [] } });
             return;
         }
         dispatch({ type: "SUBMIT_APPLICATION_PENDING" });
@@ -79120,7 +79143,7 @@ function submitApplication(app, repeatEmail, event) {
             }, 5000);
         }, function (status, err) {
             dispatch({ type: "SUBMIT_APPLICATION_REJECTED", payload: err });
-            dispatch({ type: "SET_ERROR", payload: err });
+            dispatch({ type: "SET_ERROR", payload: { header: 'Lähetysvirhe', data: err } });
         });
     };
 } /**

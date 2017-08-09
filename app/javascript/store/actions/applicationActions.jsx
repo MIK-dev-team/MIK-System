@@ -12,7 +12,7 @@ export function submitApplication(app, repeatEmail, event) {
         dispatch({type: "RESET_ERROR_MSG"});
         if (!allFieldsValid(app, repeatEmail)) {
             dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"]});
-            dispatch({type: "SET_ERROR", payload: { header: 'Tarkista täyttämäsi kentät', data: [] } })
+            dispatch({type: "SET_ERROR", payload: { header: 'Tarkasta täyttämäsi kentät', data: [] } })
             return;
         }
         dispatch({type: "SUBMIT_APPLICATION_PENDING"});
@@ -24,7 +24,7 @@ export function submitApplication(app, repeatEmail, event) {
             (status, data) => {
                 const success = "Hakemuksenne on lähetetty onnistuneesti.",
                     text = 'Vahvistussähköposti on lähetetty antamaanne sähköpostiosoitteeseen. ' +
-                        'Teidät uudelleenohjataan etusivulle piakkoin'
+                        'Teidät uudelleenohjataan etusivulle piakkoin';
                 dispatch({type: "SUBMIT_APPLICATION_FULFILLED", payload: success});
                 dispatch({type: "SET_SUCCESS", payload: { header: success, text: text}});
                 setTimeout(() => window.location.replace('/'), 5000);
