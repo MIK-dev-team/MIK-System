@@ -21,12 +21,16 @@ export function submitApplication(app, repeatEmail, event) {
             '/api/v1/membership_applications',
             app,
             (status, data) => {
-                const success = "Hakemuksenne on lähetetty onnistuneesti.";
+                const success = "Hakemuksenne on lähetetty onnistuneesti.",
+                    text = 'Vahvistussähköposti on lähetetty antamaanne sähköpostiosoitteeseen. ' +
+                        'Teidät uudelleenohjataan etusivulle piakkoin'
                 dispatch({type: "SUBMIT_APPLICATION_FULFILLED", payload: success});
+                dispatch({type: "SET_SUCCESS", payload: { header: success, text: text}});
                 setTimeout(() => window.location.replace('/'), 5000);
             },
             (status, err) => {
                 dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: err});
+                dispatch({type: "SET_ERROR", payload: err});
             }
         );
     }

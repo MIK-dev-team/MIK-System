@@ -4,7 +4,7 @@ const initialState = {
     username: "",
     password: "",
     user_id: ""
-}
+};
 
 export default function reducer(state = initialState, action) {
 
