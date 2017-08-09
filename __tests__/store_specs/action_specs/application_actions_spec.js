@@ -65,6 +65,7 @@ describe('Application Actions', () => {
             { type: "RESET_ERROR_MSG" },
             { type: "SUBMIT_APPLICATION_PENDING" },
             { type: "SUBMIT_APPLICATION_FULFILLED", payload: "Hakemuksenne on lähetetty onnistuneesti." },
+            { type: "SET_SUCCESS", payload: {header: "Hakemuksenne on lähetetty onnistuneesti.", text: "Vahvistussähköposti on lähetetty antamaanne sähköpostiosoitteeseen. Teidät uudelleenohjataan etusivulle piakkoin" } }
         ];
 
         store.dispatch(actions.submitApplication(submitObject, submitObject.repeat_email, {preventDefault: () => {}}));
@@ -100,7 +101,8 @@ describe('Application Actions', () => {
         stub = sinon.stub(AjaxService.service, 'request').callsFake(() => promise);
         const expectedActions = [
             { type: "RESET_ERROR_MSG" },
-            { type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"] }
+            { type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"] },
+            { type: "SET_ERROR", payload: { header: "Tarkista täyttämäsi kentät", data: [] } },
         ];
 
         store.dispatch(actions.submitApplication(submitObject, null, {preventDefault: () => {}}));

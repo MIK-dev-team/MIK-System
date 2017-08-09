@@ -12,6 +12,7 @@ export function submitApplication(app, repeatEmail, event) {
         dispatch({type: "RESET_ERROR_MSG"});
         if (!allFieldsValid(app, repeatEmail)) {
             dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"]});
+            dispatch({type: "SET_ERROR", payload: { header: 'Tarkista täyttämäsi kentät', data: [] } })
             return;
         }
         dispatch({type: "SUBMIT_APPLICATION_PENDING"});
@@ -30,7 +31,7 @@ export function submitApplication(app, repeatEmail, event) {
             },
             (status, err) => {
                 dispatch({type: "SUBMIT_APPLICATION_REJECTED", payload: err});
-                dispatch({type: "SET_ERROR", payload: err});
+                dispatch({type: "SET_ERROR", payload: { header: 'Lähetysvirhe', data: err } });
             }
         );
     }

@@ -209,18 +209,6 @@ export default function reducer(state = {
                 }
             }
         }
-        case "SET_SUCCESS_MSG": {
-            return {
-                ...state,
-                successMsg: action.payload
-            }
-        }
-        case "RESET_ERROR_MSG": {
-            return {
-                ...state,
-                submitError: null
-            }
-        }
     }
 
     return state;

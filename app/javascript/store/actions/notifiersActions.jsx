@@ -21,7 +21,7 @@ export function fetchNotifiers(user=undefined) {
             },
             (status, err) => {
                 dispatch({type: "FETCH_NOTIFIERS_REJECTED", payload: err});
-                dispatch({type: "SET_ERROR", payload: err});
+                dispatch({type: "SET_ERROR", payload: { header: 'Tapahtui virhe hakiessa tarkkailijoita tietokannasta', data: [] } });
             }
         );
     }
@@ -59,7 +59,7 @@ export function submitNotifier(event, notifier) {
             },
             (status, err) => {
                 dispatch({type: "SUBMIT_NOTIFIER_REJECTED", payload: err});
-                dispatch({type: "SET_ERROR", payload: err});
+                dispatch({type: "SET_ERROR", payload: { header: 'Lähetysvirhe', data: err } });
             }
         );
     }

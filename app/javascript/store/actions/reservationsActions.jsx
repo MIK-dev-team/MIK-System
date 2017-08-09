@@ -23,7 +23,7 @@ export function fetchReservations(plane=undefined) {
             },
             (status, err) => {
                 dispatch({type: "FETCH_RESERVATIONS_REJECTED", payload: err});
-                dispatch({type: "SET_ERROR", payload: err});
+                dispatch({type: "SET_ERROR", payload: { header: 'Tapahtui virhe hakiessa varauksia tietokannasta', data: err } });
             }
         );
     }
@@ -34,7 +34,7 @@ export function submitReservation(event, start, end, plane, type, desc) {
     if (plane === undefined) {
         return (dispatch) => {
             // dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: "Valitse kone"});
-            dispatch({type: "SET_ERROR", payload: ['Valitse kone']})
+            dispatch({type: "SET_ERROR", payload: {header: 'Lähetysvirhe', data: ['Valitse kone']}})
         }
     }
     const reservation = {
@@ -57,7 +57,7 @@ export function submitReservation(event, start, end, plane, type, desc) {
             },
             (status, err) => {
                 dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: err})
-                dispatch({type: "SET_ERROR", payload: err});
+                dispatch({type: "SET_ERROR", payload: { header: 'Lähetysvirhe', data: err } });
             }
         );
     }
@@ -75,7 +75,7 @@ export function destroyReservation(res) {
             },
             (status, err) => {
                 dispatch({type: "DESTROY_RESERVATION_REJECTED", payload: err})
-                dispatch({type: "SET_ERROR", payload: err});
+                dispatch({type: "SET_ERROR", payload: { header: 'Poistovirhe', data: err } });
             }
         );
     }
