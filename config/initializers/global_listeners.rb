@@ -1,1 +1,2 @@
 Reservation.subscribe(AvailabilityListener)
+Reservation.subscribe(ReservationDeletionLogListener)
