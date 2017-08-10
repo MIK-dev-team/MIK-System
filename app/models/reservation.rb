@@ -47,5 +47,6 @@ class Reservation < ApplicationRecord
   private
     def publish_reservation_destroyed
       broadcast(:reservation_destroyed, self)
+      broadcast(:reservation_destroyed_for_log, self, false)
     end
 end
