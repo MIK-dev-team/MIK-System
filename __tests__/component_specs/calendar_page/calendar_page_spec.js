@@ -45,45 +45,7 @@ describe('Calendar page', () => {
         const returnedValue = page.instance().notifierIndicationStyle();
         expect(returnedValue).toEqual({});
     });
-
-    describe("with sent props set", () => {
-        beforeAll(() => {
-            page.setProps({sent: true});
-            page.update();
-        });
-
-        afterAll(() => {
-            page.setProps({sent: undefined});
-            page.update();
-        });
-
-        it('shows alert when has sent props', () => {
-            expect(page.find('Alert').length).toEqual(1);
-        });
-
-        it("shows correct alert", () => {
-            expect(page.find('Alert').props().bsStyle).toEqual('success');
-            expect(page.find('Alert > h4').text()).toEqual('Varaus tallennettu!');
-        });
-    });
-
-    describe("with error set", () => {
-        beforeAll(() => {
-            page.setProps({error: "something"});
-            page.update();
-        });
-
-        afterAll(() => {
-            page.setProps({error: undefined});
-            page.update();
-        });
-
-        it('shows error Alert', () => {
-            expect(page.find('Alert').props().bsStyle).toEqual('danger');
-            expect(page.find('Alert > h4').text()).toEqual('Kyseisen ajan varaaminen kyseiselle lentokoneelle ei onnistunut');
-        });
-    });
-
+    
     describe("with notifierMode on", () => {
         beforeAll(() => {
             page.setProps({notifierMode: true});

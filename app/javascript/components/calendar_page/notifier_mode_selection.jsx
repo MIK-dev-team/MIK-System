@@ -16,7 +16,7 @@ export class NotifierModeSelection extends React.Component {
                     onClick={() => this.props.dispatch(setNotifierMode())}
                     className={(this.props.notifierMode) ? "active" : ""}
                 >
-                    Luo tarkkailija
+                    Tarkkailijat
                 </Button>
             </Col>
         )

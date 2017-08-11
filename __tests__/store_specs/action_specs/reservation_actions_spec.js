@@ -112,6 +112,7 @@ describe('Reservation action', () => {
             { type: "SUBMIT_RESERVATION_PENDING" },
             { type: "SUBMIT_RESERVATION_FULFILLED" },
             { type: "RESET_NEW_RESERVATION" },
+            { type: "SET_SUCCESS", payload: { header: "Varaus tallennettu!", text: "" } },
             { type: "FETCH_RESERVATIONS_PENDING" }
         ];
 
@@ -143,6 +144,7 @@ describe('Reservation action', () => {
         const expectedActions = [
             { type: "DESTROY_RESERVATION_PENDING" },
             { type: "DESTROY_RESERVATION_FULFILLED" },
+            { type: "SET_SUCCESS", payload: { header: "Varaus poistettu!", text: "" } },
             { type: "FETCH_RESERVATIONS_PENDING" },
         ];
 

@@ -19,10 +19,11 @@ export function fetchReservations(plane=undefined) {
         AjaxService.get(
             route,
             (status, data) => {
-                dispatch({type: "FETCH_RESERVATIONS_FULFILLED", payload: data})
+                dispatch({type: "FETCH_RESERVATIONS_FULFILLED", payload: data});
             },
             (status, err) => {
-                dispatch({type: "FETCH_RESERVATIONS_REJECTED", payload: err})
+                dispatch({type: "FETCH_RESERVATIONS_REJECTED", payload: err});
+                dispatch({type: "SET_ERROR", payload: { header: 'Tapahtui virhe hakiessa varauksia tietokannasta', data: err } });
             }
         );
     }
@@ -32,7 +33,8 @@ export function submitReservation(event, start, end, plane, type, desc) {
     event.preventDefault();
     if (plane === undefined) {
         return (dispatch) => {
-            dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: "Valitse kone"});
+            // dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: "Valitse kone"});
+            dispatch({type: "SET_ERROR", payload: {header: 'Lähetysvirhe', data: ['Valitse kone']}})
         }
     }
     const reservation = {
@@ -50,10 +52,12 @@ export function submitReservation(event, start, end, plane, type, desc) {
             (status, data) => {
                 dispatch({type: "SUBMIT_RESERVATION_FULFILLED"});
                 dispatch({type: "RESET_NEW_RESERVATION"});
+                dispatch({type: "SET_SUCCESS", payload: { header: 'Varaus tallennettu!', text: '' }});
                 dispatch(fetchReservations());
             },
             (status, err) => {
                 dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: err})
+                dispatch({type: "SET_ERROR", payload: { header: 'Lähetysvirhe', data: err } });
             }
         );
     }
@@ -66,10 +70,12 @@ export function destroyReservation(res) {
             '/api/v1/reservations/' + res.id,
             (status, data) => {
                 dispatch({type: "DESTROY_RESERVATION_FULFILLED"});
+                dispatch({type: "SET_SUCCESS", payload: { header: 'Varaus poistettu!', text: '' }});
                 dispatch(fetchReservations());
             },
             (status, err) => {
                 dispatch({type: "DESTROY_RESERVATION_REJECTED", payload: err})
+                dispatch({type: "SET_ERROR", payload: { header: 'Poistovirhe', data: err } });
             }
         );
     }

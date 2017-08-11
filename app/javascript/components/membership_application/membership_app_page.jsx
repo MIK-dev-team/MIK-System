@@ -4,7 +4,7 @@
 import React from 'react';
 import { Grid, Row, Col, Jumbotron } from 'react-bootstrap';
 
-
+import Notifications from '../common/notifications';
 import MembershipForm from './membership_form';
 
 const styles = {
@@ -34,6 +34,7 @@ export default class MembershipAppPage extends React.Component {
                 </Jumbotron>
                 <Row>
                     <Col lg={6} md={6} sm={6} style={styles.colCentered}>
+                        <Notifications/>
                         <MembershipForm />
                     </Col>
                 </Row>
