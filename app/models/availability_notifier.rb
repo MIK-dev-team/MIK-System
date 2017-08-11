@@ -1,5 +1,5 @@
 class AvailabilityNotifier < ApplicationRecord
-  # belongs_to :user
+  belongs_to :user
   belongs_to :plane
   validates :user_id, :start, :end, :notifier_type, presence: true
   validates :notifier_type, inclusion: { in: ['all', 'any'] }

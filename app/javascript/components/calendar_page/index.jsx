@@ -1,7 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 
-import { setPlanes } from '../../store/actions/planesActions'
+import { setPlanes } from '../../store/actions/planesActions';
+import { setLoggedIn } from "../../store/actions/sessionActions";
 import CalendarPage from "./calendar_page";
 import store from '../../store/store';
 

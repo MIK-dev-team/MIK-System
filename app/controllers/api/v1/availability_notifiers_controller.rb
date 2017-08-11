@@ -1,5 +1,10 @@
 class Api::V1::AvailabilityNotifiersController < ApiController
   def create
+    unless current_user
+      render json: { status: :unauthorized }
+      return
+    end
+
     @notifier = AvailabilityNotifier.new(availability_notifier_params)
 
     @notifier.user_id = 1

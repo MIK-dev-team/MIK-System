@@ -1,4 +1,4 @@
-webpackJsonp([2],[
+webpackJsonp([3],[
 /* 0 */,
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -73650,157 +73650,7 @@ webpackContext.id = 613;
 /* 665 */,
 /* 666 */,
 /* 667 */,
-/* 668 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.validationStateForForm = validationStateForForm;
-exports.allFieldsValid = allFieldsValid;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _moment = __webpack_require__(1);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Created by owlaukka on 30/06/17.
- */
-var validators = {
-    username: usernameIsValid,
-    email: emailIsValid,
-    repeatEmail: repeatEmailIsValid,
-    birthday: birthdayIsValid,
-    fullName: fullNameIsValid,
-    address: addressIsValid,
-    postalCode: postalCodeIsValid,
-    city: cityIsValid,
-    phoneNumber: phoneNumberIsValid
-};
-
-function validationStateForForm(fieldName) {
-    for (var _len = arguments.length, fieldValues = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        fieldValues[_key - 1] = arguments[_key];
-    }
-
-    if (fieldValues[0].length === 0) {
-        return null;
-    } else if (validators[fieldName].apply(validators, fieldValues)) {
-        return 'success';
-    } else {
-        return 'error';
-    }
-}
-
-function allFieldsValid(submitObject, repeat) {
-    return usernameIsValid(submitObject.username) && emailIsValid(submitObject.email) && repeatEmailIsValid(submitObject.email, repeat) && birthdayIsValid(submitObject.birthday) && fullNameIsValid(submitObject.full_name) && addressIsValid(submitObject.address) && postalCodeIsValid(submitObject.postal_code) && cityIsValid(submitObject.city);
-}
-
-function isEmpty(value) {
-    if (value == undefined || value.length == 0) {
-        return false;
-    }
-}
-
-function usernameIsValid(username) {
-    if (username === undefined) {
-        return true;
-    }
-    if (username.indexOf(' ') > -1) {
-        return false;
-    }
-    if (username.length < 8) {
-        return false;
-    }
-    return true;
-}
-
-function emailIsValid(email) {
-    var copy = (' ' + email).slice(1);
-    if (copy.replace(/[^@]/g, "").length !== 1) {
-        return false;
-    }
-    return true;
-}
-
-function repeatEmailIsValid(email, repeat) {
-    return email == repeat;
-}
-
-function birthdayIsValid(bday) {
-    if (isEmpty(bday)) {
-        return false;
-    }
-    var dateFormat1 = "D.M.YYYY",
-        dateFormat2 = "D.M.YY",
-        correctFormat = null;
-    if ((0, _moment2.default)(bday, dateFormat1, true).isValid()) {
-        correctFormat = dateFormat1;
-    } else if ((0, _moment2.default)(bday, dateFormat2, true).isValid()) {
-        correctFormat = dateFormat2;
-    }
-
-    if (correctFormat === null) {
-        return false;
-    }
-    if ((0, _moment2.default)(bday, correctFormat).format('YYYY') < 1900) {
-        return false;
-    }
-    if ((0, _moment2.default)(bday, correctFormat) >= (0, _moment2.default)()) {
-        return false;
-    }
-    return true;
-}
-
-function fullNameIsValid(name) {
-    if (isEmpty(name)) {
-        return false;
-    }
-    return (/^[a-zA-ZöäåÖÄÅ ]+$/.test(name)
-    );
-}
-
-function addressIsValid(address) {
-    if (isEmpty(address)) {
-        return false;
-    }
-    return true;
-}
-
-function postalCodeIsValid(code) {
-    if (isEmpty(code)) {
-        return false;
-    }
-    return (/^[0-9]{5}$/.test(code)
-    );
-}
-
-function cityIsValid(city) {
-    if (isEmpty(city)) {
-        return false;
-    }
-    return (/^[a-zA-ZöäåÖÄÅ\- ]+$/.test(city)
-    );
-}
-
-function phoneNumberIsValid(number) {
-    if (isEmpty(number)) {
-        return false;
-    }
-    return (/^[0-9\+\-\(\)]+$/.test(number)
-    );
-}
-
-/***/ }),
+/* 668 */,
 /* 669 */,
 /* 670 */,
 /* 671 */,
@@ -73852,8 +73702,7 @@ function phoneNumberIsValid(number) {
 /* 717 */,
 /* 718 */,
 /* 719 */,
-/* 720 */,
-/* 721 */
+/* 720 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73871,9 +73720,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(83);
 
-var _membership_app_page = __webpack_require__(733);
+var _login_page = __webpack_require__(732);
 
-var _membership_app_page2 = _interopRequireDefault(_membership_app_page);
+var _login_page2 = _interopRequireDefault(_login_page);
 
 var _store = __webpack_require__(346);
 
@@ -73885,37 +73734,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by owlaukka on 29/06/17.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var LoginIndex = function (_React$Component) {
+    _inherits(LoginIndex, _React$Component);
 
-var MembershipAppIndex = function (_React$Component) {
-    _inherits(MembershipAppIndex, _React$Component);
+    function LoginIndex() {
+        _classCallCheck(this, LoginIndex);
 
-    function MembershipAppIndex() {
-        _classCallCheck(this, MembershipAppIndex);
-
-        return _possibleConstructorReturn(this, (MembershipAppIndex.__proto__ || Object.getPrototypeOf(MembershipAppIndex)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (LoginIndex.__proto__ || Object.getPrototypeOf(LoginIndex)).apply(this, arguments));
     }
 
-    _createClass(MembershipAppIndex, [{
+    _createClass(LoginIndex, [{
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 _reactRedux.Provider,
                 { store: _store2.default },
-                _react2.default.createElement(_membership_app_page2.default, null)
+                _react2.default.createElement(_login_page2.default, null)
             );
         }
     }]);
 
-    return MembershipAppIndex;
+    return LoginIndex;
 }(_react2.default.Component);
 
-exports.default = MembershipAppIndex;
+exports.default = LoginIndex;
 
 /***/ }),
+/* 721 */,
 /* 722 */,
 /* 723 */,
 /* 724 */,
@@ -73925,9 +73772,152 @@ exports.default = MembershipAppIndex;
 /* 728 */,
 /* 729 */,
 /* 730 */,
-/* 731 */,
-/* 732 */,
-/* 733 */
+/* 731 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LoginForm = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(83);
+
+var _reactBootstrap = __webpack_require__(109);
+
+var _loginActions = __webpack_require__(746);
+
+var actions = _interopRequireWildcard(_loginActions);
+
+var _loginValidationActions = __webpack_require__(747);
+
+var validators = _interopRequireWildcard(_loginValidationActions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LoginForm = exports.LoginForm = function (_React$Component) {
+    _inherits(LoginForm, _React$Component);
+
+    function LoginForm() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, LoginForm);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = LoginForm.__proto__ || Object.getPrototypeOf(LoginForm)).call.apply(_ref, [this].concat(args))), _this), Object.defineProperty(_this, 'handleFormSubmit', {
+            enumerable: true,
+            writable: true,
+            value: function value(e) {
+                _this.props.dispatch(actions.loginUser(_this.props.username, _this.props.password, e));
+            }
+        }), _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(LoginForm, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var alert = void 0;
+            if (this.props.isLoginFailed) {
+                alert = _react2.default.createElement(
+                    _reactBootstrap.Alert,
+                    { bsStyle: 'danger' },
+                    _react2.default.createElement(
+                        'h4',
+                        null,
+                        'Kirjautumistiedoissa on virhe!'
+                    )
+                );
+            }
+            if (this.props.isLoginSuccess) {
+                alert = _react2.default.createElement(
+                    _reactBootstrap.Alert,
+                    { bsStyle: 'success' },
+                    _react2.default.createElement(
+                        'h4',
+                        null,
+                        'Olet kirjautunut sis\xE4\xE4n!'
+                    )
+                );
+            }
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                alert,
+                _react2.default.createElement(
+                    'form',
+                    { onSubmit: this.handleFormSubmit },
+                    _react2.default.createElement(
+                        _reactBootstrap.FormGroup,
+                        { controlId: 'username' },
+                        _react2.default.createElement(
+                            _reactBootstrap.ControlLabel,
+                            null,
+                            'K\xE4ytt\xE4j\xE4tunnus/S\xE4hk\xF6posti'
+                        ),
+                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', value: this.props.username, onChange: function onChange(e) {
+                                return _this2.props.dispatch(actions.handleUsernameValueChange(e));
+                            } })
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.FormGroup,
+                        { controlId: 'password' },
+                        _react2.default.createElement(
+                            _reactBootstrap.ControlLabel,
+                            null,
+                            'Salasana'
+                        ),
+                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'password', value: this.props.password, onChange: function onChange(e) {
+                                return _this2.props.dispatch(actions.handlePasswordValueChange(e));
+                            } })
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Button,
+                        { type: 'submit' },
+                        'Kirjaudu'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return LoginForm;
+}(_react2.default.Component);
+
+exports.default = (0, _reactRedux.connect)(function (store) {
+    return {
+        isLoginSuccess: store.login.isLoginSuccess,
+        username: store.login.username,
+        password: store.login.password,
+        isLoginFailed: store.login.isLoginFailed
+    };
+})(LoginForm);
+
+/***/ }),
+/* 732 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73945,9 +73935,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactBootstrap = __webpack_require__(109);
 
-var _membership_form = __webpack_require__(734);
+var _login_form = __webpack_require__(731);
 
-var _membership_form2 = _interopRequireDefault(_membership_form);
+var _login_form2 = _interopRequireDefault(_login_form);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -73955,10 +73945,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by owlaukka on 29/06/17.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var styles = {
     jumbo: {
@@ -73973,16 +73960,16 @@ var styles = {
     }
 };
 
-var MembershipAppPage = function (_React$Component) {
-    _inherits(MembershipAppPage, _React$Component);
+var LoginPage = function (_React$Component) {
+    _inherits(LoginPage, _React$Component);
 
-    function MembershipAppPage() {
-        _classCallCheck(this, MembershipAppPage);
+    function LoginPage() {
+        _classCallCheck(this, LoginPage);
 
-        return _possibleConstructorReturn(this, (MembershipAppPage.__proto__ || Object.getPrototypeOf(MembershipAppPage)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).apply(this, arguments));
     }
 
-    _createClass(MembershipAppPage, [{
+    _createClass(LoginPage, [{
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -73994,12 +73981,7 @@ var MembershipAppPage = function (_React$Component) {
                     _react2.default.createElement(
                         'h1',
                         null,
-                        'Liity j\xE4seneksi!'
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        { style: styles.helpSpacing },
-                        'Tervetuloa Malmin Ilmailukerhon ilmailua rakastavien lent\xE4jien ja muiden harrastajien joukkoon! Voit liitty\xE4 kerhomme j\xE4seneksi allaolevalla lomakkeella, lomakkeen l\xE4hetetty\xE4si otamme sinuun l\xE4hip\xE4ivin\xE4 yhteytt\xE4 \u2013 pysy siis kuulolla!'
+                        'Kirjaudu sis\xE4\xE4n'
                     )
                 ),
                 _react2.default.createElement(
@@ -74008,517 +73990,33 @@ var MembershipAppPage = function (_React$Component) {
                     _react2.default.createElement(
                         _reactBootstrap.Col,
                         { lg: 6, md: 6, sm: 6, style: styles.colCentered },
-                        _react2.default.createElement(_membership_form2.default, null)
+                        _react2.default.createElement(_login_form2.default, null)
                     )
                 )
             );
         }
     }]);
 
-    return MembershipAppPage;
+    return LoginPage;
 }(_react2.default.Component);
 
-exports.default = MembershipAppPage;
+exports.default = LoginPage;
 
 /***/ }),
-/* 734 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.MembershipForm = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(83);
-
-var _reactBootstrap = __webpack_require__(109);
-
-var _applicationActions = __webpack_require__(745);
-
-var actions = _interopRequireWildcard(_applicationActions);
-
-var _applicationValidationActions = __webpack_require__(668);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by owlaukka on 29/06/17.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-
-var alert = void 0;
-
-var MembershipForm = exports.MembershipForm = function (_React$Component) {
-    _inherits(MembershipForm, _React$Component);
-
-    function MembershipForm() {
-        _classCallCheck(this, MembershipForm);
-
-        return _possibleConstructorReturn(this, (MembershipForm.__proto__ || Object.getPrototypeOf(MembershipForm)).apply(this, arguments));
-    }
-
-    _createClass(MembershipForm, [{
-        key: 'componentWillUpdate',
-        value: function componentWillUpdate(nextProps, nextState) {
-            if (nextProps.successMsg !== null && nextProps.successMsg !== undefined) {
-                alert = _react2.default.createElement(
-                    _reactBootstrap.Alert,
-                    { bsStyle: 'success' },
-                    _react2.default.createElement(
-                        'h4',
-                        null,
-                        'Hakemuksenne on onnistuneesti l\xE4hetetty'
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        null,
-                        'Vahvistuss\xE4hk\xF6posti on l\xE4hetetty antamaanne s\xE4hk\xF6postiosoitteeseen. Teid\xE4t uudelleenohjataan etusivulle piakkoin'
-                    )
-                );
-            } else if (nextProps.submitError !== null && nextProps.submitError !== undefined) {
-                alert = _react2.default.createElement(
-                    _reactBootstrap.Alert,
-                    { bsStyle: 'danger' },
-                    _react2.default.createElement(
-                        'h4',
-                        null,
-                        'L\xE4hetysvirhe'
-                    ),
-                    nextProps.submitError.map(function (error) {
-                        return _react2.default.createElement(
-                            'p',
-                            { key: error },
-                            error
-                        );
-                    })
-                );
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            return _react2.default.createElement(
-                'div',
-                null,
-                alert,
-                _react2.default.createElement(
-                    'form',
-                    { onSubmit: function onSubmit(event) {
-                            _this2.props.dispatch(actions.submitApplication(_this2.props.submitObject, _this2.props.applications.repeatEmail, event));
-                        } },
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'username', validationState: (0, _applicationValidationActions.validationStateForForm)("username", this.props.applications.username) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'K\xE4ytt\xE4j\xE4tunnus'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setUsername(event.target.value));
-                            } }),
-                        _react2.default.createElement(
-                            _reactBootstrap.HelpBlock,
-                            null,
-                            'Voit j\xE4tt\xE4\xE4 tyhj\xE4ksi halutessasi ja k\xE4ytt\xE4\xE4 s\xE4hk\xF6postiosoitetta kirjautumiseen'
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'email', validationState: (0, _applicationValidationActions.validationStateForForm)("email", this.props.applications.email) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'S\xE4hk\xF6postiosoite'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setEmail(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'repeatEmail', validationState: (0, _applicationValidationActions.validationStateForForm)("repeatEmail", this.props.applications.email, this.props.applications.repeatEmail) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Kirjoita s\xE4hk\xF6postiosoite uudelleen'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setRepeatEmail(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'birthday', validationState: (0, _applicationValidationActions.validationStateForForm)("birthday", this.props.applications.birthday) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Syntym\xE4aika (pp.kk.vvvv)'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setBirthday(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { id: 'memberType', controlId: 'memberType' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'J\xE4senlaji'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(
-                                _reactBootstrap.FormControl,
-                                { componentClass: 'select', onChange: function onChange(event) {
-                                        return _this2.props.dispatch(actions.setMemberType(event.target.value));
-                                    } },
-                                _react2.default.createElement(
-                                    'option',
-                                    { value: 'null' },
-                                    '** Valitse j\xE4senlaji **'
-                                ),
-                                this.props.membershipTypes.map(function (type) {
-                                    return _react2.default.createElement(
-                                        'option',
-                                        { key: type.name, value: type.name },
-                                        type.name
-                                    );
-                                })
-                            ),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'fullName', validationState: (0, _applicationValidationActions.validationStateForForm)("fullName", this.props.applications.full_name) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Koko nimi'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setFullName(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'address', validationState: (0, _applicationValidationActions.validationStateForForm)("address", this.props.applications.address) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Osoite'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setAddress(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'postalCode', validationState: (0, _applicationValidationActions.validationStateForForm)("postalCode", this.props.applications.postal_code) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Postinumero'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setPostalCode(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'city', validationState: (0, _applicationValidationActions.validationStateForForm)("city", this.props.applications.city) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Postitoimipaikka'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setCity(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'phoneNumber', validationState: (0, _applicationValidationActions.validationStateForForm)("phoneNumber", this.props.applications.phone) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Puhelinnumero'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setPhoneNumber(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement('hr', null),
-                    _react2.default.createElement(
-                        'h4',
-                        null,
-                        'Valinnaiset tiedot'
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'licences' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Nykyiset lupakirjaluokat'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setLicences(event.target.value));
-                            } })
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'expWithEngine' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Lentokokemus moottorikoneilla (tuntia)'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'number', min: 0, onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setEngineExp(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                'h'
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'otherExp' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Muu lentokokemus'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setOtherExp(event.target.value));
-                            } })
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'otherMemberships' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Muiden kerhojen j\xE4senyys'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setOtherMemberships(event.target.value));
-                            } })
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'silMembership' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Suomen Ilmailuliiton (SIL) j\xE4senyys'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.FormControl,
-                            { componentClass: 'select', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setSilMembership(event.target.value));
-                                } },
-                            _react2.default.createElement(
-                                'option',
-                                { value: 'willJoin' },
-                                'Liityn my\xF6s Suomen Ilmailuliiton j\xE4senyksi'
-                            ),
-                            _react2.default.createElement(
-                                'option',
-                                { value: 'willNot' },
-                                'En halua liitty\xE4 SIL:n j\xE4seneksi'
-                            ),
-                            _react2.default.createElement(
-                                'option',
-                                { value: 'alreadyMember' },
-                                'Olen jo SIL:n j\xE4sen'
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'silNumber' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'SIL j\xE4sennumerosi, jos olet jo SIL:n j\xE4sen'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setSilNumber(event.target.value));
-                            } })
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        null,
-                        _react2.default.createElement(
-                            'i',
-                            null,
-                            'Suomen Ilmailuliitto ry - SIL - on urheilu- ja harrasteilmailun valtakunnallinen keskusj\xE4rjest\xF6 Suomessa. ',
-                            _react2.default.createElement(
-                                'a',
-                                { href: 'http://www.ilmailuliitto.fi/fi/jasenille/jasenasiat/jasenedut' },
-                                'Ilmailuliitto tarjoaa j\xE4senilleen useita j\xE4senetuja'
-                            ),
-                            ', mm. tapaturmavakuutuksen, joka on voimassa my\xF6s ilmailulajeja harrastettaessa ja kuukausittaisen ILMAILU-lehden. Jokainen Ilmailuliittoon kuuluva Malmin Ilmailukerhon j\xE4sen lis\xE4\xE4 kerhomme painoarvoa ja vaikutusmahdollisuuksia liiton p\xE4\xE4t\xF6ksenteossa.',
-                            _react2.default.createElement(
-                                'a',
-                                { href: 'http://www.ilmailuliitto.fi/fi/jasenille/jasenasiat' },
-                                'Ilmailuliiton voimassaolevat j\xE4senmaksut voit tarkistaa t\xE4st\xE4.'
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'additionalInfo' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Muuta aiheeseen liittyv\xE4\xE4'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', style: { 'height': 200 }, onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setAdditionalInfo(event.target.value));
-                            } })
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.Button,
-                        { type: 'submit' },
-                        'L\xE4het\xE4 hakemus'
-                    )
-                )
-            );
-        }
-    }]);
-
-    return MembershipForm;
-}(_react2.default.Component);
-
-exports.default = (0, _reactRedux.connect)(function (store) {
-    return {
-        membershipTypes: store.applications.membershipTypes,
-        applications: store.applications,
-        submitObject: store.applications.submitObject,
-        successMsg: store.applications.successMsg,
-        submitError: store.applications.submitError
-    };
-})(MembershipForm);
-
-/***/ }),
+/* 733 */,
+/* 734 */,
 /* 735 */,
 /* 736 */,
 /* 737 */,
 /* 738 */,
 /* 739 */,
-/* 740 */,
-/* 741 */
+/* 740 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(721);
+var _index = __webpack_require__(720);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -74528,16 +74026,15 @@ var _webpackerReact2 = _interopRequireDefault(_webpackerReact);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Created by owlaukka on 29/06/17.
- */
-_webpackerReact2.default.setup({ MembershipAppIndex: _index2.default });
+_webpackerReact2.default.setup({ LoginIndex: _index2.default });
 
 /***/ }),
+/* 741 */,
 /* 742 */,
 /* 743 */,
 /* 744 */,
-/* 745 */
+/* 745 */,
+/* 746 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74546,24 +74043,9 @@ _webpackerReact2.default.setup({ MembershipAppIndex: _index2.default });
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.submitApplication = submitApplication;
-exports.setUsername = setUsername;
-exports.setEmail = setEmail;
-exports.setRepeatEmail = setRepeatEmail;
-exports.setBirthday = setBirthday;
-exports.setMemberType = setMemberType;
-exports.setFullName = setFullName;
-exports.setAddress = setAddress;
-exports.setPostalCode = setPostalCode;
-exports.setCity = setCity;
-exports.setPhoneNumber = setPhoneNumber;
-exports.setLicences = setLicences;
-exports.setEngineExp = setEngineExp;
-exports.setOtherExp = setOtherExp;
-exports.setOtherMemberships = setOtherMemberships;
-exports.setSilMembership = setSilMembership;
-exports.setSilNumber = setSilNumber;
-exports.setAdditionalInfo = setAdditionalInfo;
+exports.loginUser = loginUser;
+exports.handleUsernameValueChange = handleUsernameValueChange;
+exports.handlePasswordValueChange = handlePasswordValueChange;
 
 var _react = __webpack_require__(0);
 
@@ -74573,135 +74055,73 @@ var _ajax_service = __webpack_require__(591);
 
 var _ajax_service2 = _interopRequireDefault(_ajax_service);
 
-var _applicationValidationActions = __webpack_require__(668);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function loginUser(email, password, event) {
+    event.preventDefault();
+    var route = '/kirjaudu';
+    var auth_details = {
+        email: email,
+        password: password
+    };
+    return function (dispatch) {
+        _ajax_service2.default.post(route, auth_details, function (status, data) {
+            dispatch({ type: "SUBMIT_LOGIN", payload: data });
+        }, function (status, err) {
+            dispatch({ type: "LOGIN_FAILED" });
+        });
+    };
+}
+
+function handleUsernameValueChange(event) {
+    return function (dispatch) {
+        dispatch({ type: "USERNAME_CHANGED", payload: event.target.value });
+    };
+}
+
+function handlePasswordValueChange(event) {
+    return function (dispatch) {
+        dispatch({ type: "PASSWORD_CHANGED", payload: event.target.value });
+    };
+}
+
+/***/ }),
+/* 747 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.validationStateForForm = validationStateForForm;
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _moment = __webpack_require__(1);
+
+var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function submitApplication(app, repeatEmail, event) {
-    event.preventDefault();
-    return function (dispatch) {
-        dispatch({ type: "RESET_ERROR_MSG" });
-        if (!(0, _applicationValidationActions.allFieldsValid)(app, repeatEmail)) {
-            dispatch({ type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"] });
-            return;
-        }
-        dispatch({ type: "SUBMIT_APPLICATION_PENDING" });
-        window.scrollTo(0, 0);
+function validationStateForForm(fieldName) {
+    var _validators;
 
-        _ajax_service2.default.post('/api/v1/membership_applications', app, function (status, data) {
-            var success = "Hakemuksenne on lähetetty onnistuneesti.";
-            dispatch({ type: "SUBMIT_APPLICATION_FULFILLED", payload: success });
-            setTimeout(function () {
-                return window.location.replace('/');
-            }, 5000);
-        }, function (status, err) {
-            dispatch({ type: "SUBMIT_APPLICATION_REJECTED", payload: err });
-        });
-    };
-} /**
-   * Created by owlaukka on 30/06/17.
-   */
-function setUsername(username) {
-    return function (dispatch) {
-        dispatch({ type: "SET_USERNAME", payload: username });
-    };
-}
+    for (var _len = arguments.length, fieldValues = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        fieldValues[_key - 1] = arguments[_key];
+    }
 
-function setEmail(email) {
-    return function (dispatch) {
-        dispatch({ type: "SET_EMAIL", payload: email });
-    };
-}
-
-function setRepeatEmail(repeatEmail) {
-    return function (dispatch) {
-        dispatch({ type: "SET_REPEAT_EMAIL", payload: repeatEmail });
-    };
-}
-
-function setBirthday(bday) {
-    return function (dispatch) {
-        dispatch({ type: "SET_BIRTHDAY", payload: bday });
-    };
-}
-
-function setMemberType(type) {
-    return function (dispatch) {
-        dispatch({ type: "SET_MEMBER_TYPE", payload: type });
-    };
-}
-
-function setFullName(name) {
-    return function (dispatch) {
-        dispatch({ type: "SET_FULL_NAME", payload: name });
-    };
-}
-
-function setAddress(address) {
-    return function (dispatch) {
-        dispatch({ type: "SET_ADDRESS", payload: address });
-    };
-}
-
-function setPostalCode(code) {
-    return function (dispatch) {
-        dispatch({ type: "SET_POSTAL_CODE", payload: code });
-    };
-}
-
-function setCity(city) {
-    return function (dispatch) {
-        dispatch({ type: "SET_CITY", payload: city });
-    };
-}
-
-function setPhoneNumber(number) {
-    return function (dispatch) {
-        dispatch({ type: "SET_PHONE_NUMBER", payload: number });
-    };
-}
-
-function setLicences(licences) {
-    return function (dispatch) {
-        dispatch({ type: "SET_LICENCES", payload: licences });
-    };
-}
-
-function setEngineExp(exp) {
-    return function (dispatch) {
-        dispatch({ type: "SET_ENGINE_EXP", payload: exp });
-    };
-}
-
-function setOtherExp(exp) {
-    return function (dispatch) {
-        dispatch({ type: "SET_OTHER_EXP", payload: exp });
-    };
-}
-
-function setOtherMemberships(memberships) {
-    return function (dispatch) {
-        dispatch({ type: "SET_OTHER_MEMBERSHIPS", payload: memberships });
-    };
-}
-
-function setSilMembership(membership) {
-    return function (dispatch) {
-        dispatch({ type: "SET_SIL_MEMBERSHIP", payload: membership });
-    };
-}
-
-function setSilNumber(number) {
-    return function (dispatch) {
-        dispatch({ type: "SET_SIL_NUMBER", payload: number });
-    };
-}
-
-function setAdditionalInfo(info) {
-    return function (dispatch) {
-        dispatch({ type: "SET_ADDITIONAL_INFO", payload: info });
-    };
+    if (fieldValues[0].length === 0) {
+        return null;
+    } else if ((_validators = validators)[fieldName].apply(_validators, fieldValues)) {
+        return 'success';
+    } else {
+        return 'error';
+    }
 }
 
 /***/ })
-],[741]);
+],[740]);

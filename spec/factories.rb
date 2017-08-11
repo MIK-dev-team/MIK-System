@@ -29,19 +29,25 @@ FactoryGirl.define do
     name "EH123"
   end
 
+  factory :user do
+    email 'asdf@asdf.fi'
+    password 'salasana1'
+  end
+
   factory :reservation do
     reservation_type "opetus"
-    start "2018-06-07 15:42:00+03:00"
-    self.end "2018-06-07 17:42:00+03:00"
-    user_id 1
+    start DateTime.now + 2.days
+    self.end DateTime.now + 2.days + 3.hours
+    user
     plane
   end
 
   factory :availability_notifier do
-    start "2018-06-07 12:00:00+03:00"
-    self.end "2018-06-07 18:00:00+03:00"
+    start DateTime.now + 2.days
+    self.end DateTime.now + 2.days + 3.hours
     user_id 1
     notifier_type 'all'
+    user
     plane
   end
 end

@@ -1,6 +1,7 @@
 class Reservation < ApplicationRecord
   include Wisper::Publisher
   belongs_to :plane
+  belongs_to :user
 
   after_destroy :publish_reservation_destroyed, on: :destroy
 

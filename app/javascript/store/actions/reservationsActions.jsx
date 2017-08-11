@@ -28,6 +28,27 @@ export function fetchReservations(plane=undefined) {
     }
 }
 
+export function fetchMyReservations(plane=undefined) {
+    let route;
+    if (plane !== undefined) {
+        route = `api/v1/planes/${plane.id}/my_reservations`;
+    } else {
+        route = `api/v1/all_my_reservations`;
+    }
+    return function(dispatch) {
+        dispatch({type: "FETCH_RESERVATIONS_PENDING"});
+        AjaxService.get(
+            route,
+            (status, data) => {
+                dispatch({type: "FETCH_RESERVATIONS_FULFILLED", payload: data})
+            },
+            (status, err) => {
+                dispatch({type: "FETCH_RESERVATIONS_REJECTED", payload: err})
+            }
+        );
+    }
+}
+
 export function submitReservation(event, start, end, plane, type, desc) {
     event.preventDefault();
     if (plane === undefined) {

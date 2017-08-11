@@ -7,6 +7,12 @@ class Website::ReservationsController < ApplicationController
     @planes = Plane.all
   end
 
+  def list
+    unless current_user
+      redirect_to liity_path
+    end
+  end
+
   # GET /reservations/1
   # GET /reservations/1.json
   def show

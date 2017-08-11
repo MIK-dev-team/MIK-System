@@ -2,13 +2,11 @@ require 'rails_helper'
 
 RSpec.describe 'Reservation listing page', js: true do
   let(:all_notifier){ FactoryGirl.build(:availability_notifier) }
-  let(:reservation){ FactoryGirl.build(:reservation) }
-
-  # before :each do
-  #   visit '/varaukset'
-  # end
+  let!(:reservation){ FactoryGirl.build(:reservation) }
+  let!(:user){ FactoryGirl.create(:user) }
 
   it 'should have correct static content' do
+    log_in
     visit '/varaukset'
     expect(page).to have_content 'Varaukset'
     expect(page).to have_content 'Alkamisaika'
@@ -17,21 +15,40 @@ RSpec.describe 'Reservation listing page', js: true do
 
   it 'should show reservation information' do
     reservation.save
+    log_in
     visit '/varaukset'
     expect(page).to have_content 'opetus'
-    expect(page).to have_content '7. kesä 2018, klo 12.42'
-    expect(page).to have_content '7. kesä 2018, klo 14.42'
+    expect(page).to have_content ", klo #{reservation.start.hour}."
+    expect(page).to have_content ", klo #{reservation.end.hour}."
+    expect(page).to have_content reservation.start.day
+    expect(page).to have_content reservation.start.year
+    expect(page).to have_content reservation.end.day
+    expect(page).to have_content reservation.end.year
   end
 
   it 'has option to delete reservations' do
     reservation.save
     expect(Reservation.count).to eq(1)
+    log_in
     visit '/varaukset'
+    expect(page).to have_content 'Poista'
     click_button 'Poista'
-    sleep 5
+    expect(page).not_to have_content 'opetus'
+    expect(page).not_to have_content ", klo #{reservation.start.hour}."
+    expect(page).not_to have_content ", klo #{reservation.end.hour}."
+    expect(page).not_to have_content reservation.start.day
+    expect(page).not_to have_content reservation.start.year
+    expect(page).not_to have_content reservation.end.day
+    expect(page).not_to have_content reservation.end.year
     expect(Reservation.count).to eq(0)
-    expect(page).to_not have_content 'opetus'
-    expect(page).to_not have_content '7. kesä 2018, klo 12.42'
-    expect(page).to_not have_content '7. kesä 2018, klo 14.42'
+  end
+
+  private
+  def log_in
+    visit '/kirjaudu'
+    fill_in 'Sähköposti', with: 'asdf@asdf.fi'
+    fill_in 'Salasana', with: 'salasana1'
+    click_button 'Kirjaudu'
+    expect(page).to have_content 'Olet kirjautunut sisään!'
   end
 end
