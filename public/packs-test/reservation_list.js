@@ -32555,8 +32555,6 @@ function reducer() {
         membershipTypes: membershipTypes,
         sending: false,
         sent: false,
-        successMsg: null,
-        submitError: null,
 
         // Mandatory fields (for validations)
         username: "",
@@ -32736,18 +32734,6 @@ function reducer() {
                     submitObject: _extends({}, state.submitObject, {
                         extra_information: action.payload
                     })
-                });
-            }
-        case "SET_SUCCESS_MSG":
-            {
-                return _extends({}, state, {
-                    successMsg: action.payload
-                });
-            }
-        case "RESET_ERROR_MSG":
-            {
-                return _extends({}, state, {
-                    submitError: null
                 });
             }
     }
@@ -73325,6 +73311,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.fetchReservations = fetchReservations;
+exports.fetchMyReservations = fetchMyReservations;
 exports.submitReservation = submitReservation;
 exports.destroyReservation = destroyReservation;
 exports.setType = setType;
@@ -73363,6 +73350,25 @@ function fetchReservations() {
     var route = '/api/v1/reservations';
     if (plane !== undefined) {
         route = 'api/v1/planes/' + plane.id + '/reservations';
+    }
+    return function (dispatch) {
+        dispatch({ type: "FETCH_RESERVATIONS_PENDING" });
+        _ajax_service2.default.get(route, function (status, data) {
+            dispatch({ type: "FETCH_RESERVATIONS_FULFILLED", payload: data });
+        }, function (status, err) {
+            dispatch({ type: "FETCH_RESERVATIONS_REJECTED", payload: err });
+        });
+    };
+}
+
+function fetchMyReservations() {
+    var plane = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+    var route = void 0;
+    if (plane !== undefined) {
+        route = 'api/v1/planes/' + plane.id + '/my_reservations';
+    } else {
+        route = 'api/v1/all_my_reservations';
     }
     return function (dispatch) {
         dispatch({ type: "FETCH_RESERVATIONS_PENDING" });
@@ -74243,7 +74249,7 @@ var ReservationTable = exports.ReservationTable = function (_React$Component) {
     _createClass(ReservationTable, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.props.dispatch((0, _reservationsActions.fetchReservations)());
+            this.props.dispatch((0, _reservationsActions.fetchMyReservations)());
         }
     }, {
         key: 'render',

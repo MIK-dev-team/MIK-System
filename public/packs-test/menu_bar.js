@@ -16453,8 +16453,6 @@ function reducer() {
         membershipTypes: membershipTypes,
         sending: false,
         sent: false,
-        successMsg: null,
-        submitError: null,
 
         // Mandatory fields (for validations)
         username: "",
@@ -16634,18 +16632,6 @@ function reducer() {
                     submitObject: _extends({}, state.submitObject, {
                         extra_information: action.payload
                     })
-                });
-            }
-        case "SET_SUCCESS_MSG":
-            {
-                return _extends({}, state, {
-                    successMsg: action.payload
-                });
-            }
-        case "RESET_ERROR_MSG":
-            {
-                return _extends({}, state, {
-                    submitError: null
                 });
             }
     }
