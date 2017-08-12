@@ -1,4 +1,5 @@
 {
+  "login.js": "/packs-test/login.js",
   "membership_application.js": "/packs-test/membership_application.js",
   "reservation_list.js": "/packs-test/reservation_list.js",
   "reservations.js": "/packs-test/reservations.js"

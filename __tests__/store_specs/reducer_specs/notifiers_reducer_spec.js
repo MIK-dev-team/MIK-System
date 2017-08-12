@@ -1,6 +1,10 @@
 import reducer from '../../../app/javascript/store/reducers/notifiersReducer';
 
 const initialState = {
+    notifiers: [],
+    fetching: false,
+    fetched: false,
+    fetchError: null,
     notifierMode: false,
     submitting: false,
     submitted: false,
@@ -16,6 +20,24 @@ const initialState = {
 describe('Notifiers reducer', () => {
     it('should return correct initial state', () => {
         expect(reducer(undefined, {})).toEqual(initialState)
+    });
+
+    it('should handle FETCH_NOTIFIERS_PENDING correctly', () => {
+        expect(
+            reducer(undefined, {type: "FETCH_NOTIFIERS_PENDING"})
+        ).toEqual({...initialState, fetching: true})
+    });
+
+    it('should handle FETCH_NOTIFIERS_REJECTED correctly', () => {
+        expect(
+            reducer(undefined, {type: "FETCH_NOTIFIERS_REJECTED", payload: 'some error'})
+        ).toEqual({...initialState, fetching: false, fetchError: 'some error'})
+    });
+
+    it('should handle FETCH_NOTIFIERS_FULFILLED correctly', () => {
+        expect(
+            reducer(undefined, {type: "FETCH_NOTIFIERS_FULFILLED", payload: ['something', 'here']})
+        ).toEqual({...initialState, fetching: false, fetched: true, notifiers: ['something', 'here']})
     });
 
     it('should handle SET_NOTIFIER_MODE correctly', () => {
