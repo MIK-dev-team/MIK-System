@@ -3,7 +3,7 @@ import AjaxService from '../../services/ajax_service';
 
 export function loginUser(email, password, event) {
     event.preventDefault();
-    let route = '/kirjaudu';
+    let route = '/api/v1/kirjaudu';
     const auth_details = {
         email: email,
         password: password
