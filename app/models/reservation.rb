@@ -37,10 +37,10 @@ class Reservation < ApplicationRecord
   end
 
   def as_json(options={})
-    super(only: [:id, :start, :end, :reservation_type],
+    super(only: [:id, :start, :end, :reservation_type, :additional_info],
           include: {
               plane: {only: [:id, :name]},
-              # user: {only: [:id, :full_name]}
+              user: {only: [:id, :full_name]}
           }
     )
   end

@@ -56274,27 +56274,7 @@ exports.default = ujs;
 /* 641 */,
 /* 642 */,
 /* 643 */,
-/* 644 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.setLoggedIn = setLoggedIn;
-/**
- * Created by owlaukka on 10/08/17.
- */
-
-function setLoggedIn(loggedIn) {
-    return function (dispatch) {
-        dispatch({ type: "SET_LOGGED_IN", payload: loggedIn });
-    };
-}
-
-/***/ }),
+/* 644 */,
 /* 645 */,
 /* 646 */,
 /* 647 */,
@@ -56371,8 +56351,7 @@ function setLoggedIn(loggedIn) {
 /* 718 */,
 /* 719 */,
 /* 720 */,
-/* 721 */,
-/* 722 */
+/* 721 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56390,7 +56369,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(83);
 
-var _menu_bar = __webpack_require__(735);
+var _menu_bar = __webpack_require__(734);
 
 var _menu_bar2 = _interopRequireDefault(_menu_bar);
 
@@ -56398,7 +56377,7 @@ var _store = __webpack_require__(346);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _sessionActions = __webpack_require__(644);
+var _sessionActions = __webpack_require__(747);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56442,6 +56421,7 @@ var MenuBarIndex = function (_React$Component) {
 exports.default = MenuBarIndex;
 
 /***/ }),
+/* 722 */,
 /* 723 */,
 /* 724 */,
 /* 725 */,
@@ -56453,8 +56433,7 @@ exports.default = MenuBarIndex;
 /* 731 */,
 /* 732 */,
 /* 733 */,
-/* 734 */,
-/* 735 */
+/* 734 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56613,19 +56592,19 @@ exports.default = (0, _reactRedux.connect)(function (store) {
 })(MenuBar);
 
 /***/ }),
+/* 735 */,
 /* 736 */,
 /* 737 */,
 /* 738 */,
 /* 739 */,
 /* 740 */,
-/* 741 */,
-/* 742 */
+/* 741 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(722);
+var _index = __webpack_require__(721);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -56640,5 +56619,31 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 _webpackerReact2.default.setup({ MenuBarIndex: _index2.default });
 
+/***/ }),
+/* 742 */,
+/* 743 */,
+/* 744 */,
+/* 745 */,
+/* 746 */,
+/* 747 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.setLoggedIn = setLoggedIn;
+/**
+ * Created by owlaukka on 10/08/17.
+ */
+
+function setLoggedIn(loggedIn) {
+    return function (dispatch) {
+        dispatch({ type: "SET_LOGGED_IN", payload: loggedIn });
+    };
+}
+
 /***/ })
-],[742]);
+],[741]);

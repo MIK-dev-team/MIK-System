@@ -209,15 +209,16 @@ describe('Reservation action', () => {
 
     it('setReservationStart dispatches correct actions when last reservation is not from db', () => {
         const start = 'some start',
+            existingEnd = moment().add({days: 6, hours: 7}),
             inputReservations = [{simulated: 'reservation'}, {
                 start: moment().add({days: 6, hours: 5}).format(),
-                end: moment().add({days: 6, hours: 7}).format(),
+                end: existingEnd,
                 plane: { id: 2, name: "ES1234" },
                 reservation_type: "selected"
             }],
             expectedReservations = [{simulated: 'reservation'}, {
                 start: start,
-                end: moment().add({days: 6, hours: 7}).format(),
+                end: existingEnd,
                 plane: { id: 2, name: "ES1234" },
                 reservation_type: "selected"
             }];
@@ -254,14 +255,15 @@ describe('Reservation action', () => {
 
     it('setReservationEnd dispatches correct actions when last reservation is not from db', () => {
         const end = 'some end',
+            existingStart = moment().add({days: 6, hours: 5}).format(),
             inputReservations = [{simulated: 'reservation'}, {
-                start: moment().add({days: 6, hours: 5}).format(),
+                start: existingStart,
                 end: moment().add({days: 6, hours: 7}).format(),
                 plane: { id: 2, name: "ES1234" },
                 reservation_type: "selected"
             }],
             expectedReservations = [{simulated: 'reservation'}, {
-                start: moment().add({days: 6, hours: 5}).format(),
+                start: existingStart,
                 end: end,
                 plane: { id: 2, name: "ES1234" },
                 reservation_type: "selected"

@@ -6,13 +6,14 @@ import { Button } from 'react-bootstrap';
 import moment from 'moment';
 
 import AjaxService from '../../services/ajax_service';
+import { showModal } from './singleReservationActions';
 
 moment.locale('fi');
 
 export function fetchReservations(plane=undefined) {
     let route = '/api/v1/reservations';
     if (plane !== undefined) {
-        route = `api/v1/planes/${plane.id}/reservations`;
+        route = `/api/v1/planes/${plane.id}/reservations`;
     }
     return function(dispatch) {
         dispatch({type: "FETCH_RESERVATIONS_PENDING"});
@@ -61,7 +62,7 @@ export function submitReservation(event, start, end, plane, type, desc) {
         end: moment(end).toDate(),
         plane_id: plane.id,
         reservation_type: type,
-        description: desc,
+        additional_info: desc,
     };
     return function(dispatch) {
         dispatch({type: "SUBMIT_RESERVATION_PENDING"});
@@ -166,7 +167,7 @@ export function mapReservations(reservations, dispatch) {
         return <tr key="empty"></tr>
     } else {
         return reservations.map((res) =>
-            <tr key={res.id}>
+            <tr onClick={() => dispatch(showModal(res))} key={res.id}>
                 <td>{res.id}</td>
                 <td>{moment(res.start).format('lll')}</td>
                 <td>{moment(res.end).format('lll')}</td>

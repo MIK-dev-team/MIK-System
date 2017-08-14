@@ -8,6 +8,7 @@ import planes from './planesReducer';
 import login from './loginReducer';
 import notifiers from './notifiersReducer';
 import session from './sessionReducer';
+import singleReservation from './singleReservationReducer';
 
 export default combineReducers({
     reservations,
@@ -16,4 +17,5 @@ export default combineReducers({
     login,
     notifiers,
     session,
+    singleReservation,
 });

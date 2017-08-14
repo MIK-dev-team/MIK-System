@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { fetchMyReservations } from '../../store/actions/reservationsActions';
 
 import ReservationTableContent from './reservation_table_content';
+import ReservationModal from '../reservation_modal';
 
 export class ReservationTable extends React.Component {
     componentDidMount() {
@@ -47,6 +48,7 @@ export class ReservationTable extends React.Component {
 
         return (
             <div>
+                <ReservationModal/>
                 <h1>Varaukset</h1>
                 {body}
             </div>
@@ -57,6 +59,6 @@ export default connect((store) => {
     return {
         reservations: store.reservations.reservations,
         fetched: store.reservations.fetched,
-        fetching: store.reservations.fetching
+        fetching: store.reservations.fetching,
     }
 })(ReservationTable);

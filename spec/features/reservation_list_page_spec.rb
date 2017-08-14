@@ -61,6 +61,12 @@ RSpec.describe 'Reservation listing page', js: true do
     expect(Reservation.count).to eq(0)
   end
 
+  it 'should redirect to to login page when not logged in' do
+    visit '/varaukset'
+    expect(page).to have_current_path kirjaudu_path
+    expect(page).to have_content 'Kirjaudu sisään'
+  end
+
   private
   def log_in
     visit '/kirjaudu'

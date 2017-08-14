@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     root 'reservations#index'
 
     get 'varaukset', to: 'reservations#list'
+    get 'varaukset/:id/muokkaa', to: 'reservations#edit'
     get 'varauskalenteri', to: 'reservations#index'
     get 'liity', to: 'membership_applications#join'
     get 'kirjaudu', to: 'auth#show'

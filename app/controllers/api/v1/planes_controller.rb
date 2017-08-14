@@ -1,4 +1,6 @@
 class Api::V1::PlanesController < ApiController
+  before_action :ensure_that_signed_in, only: [:my_reservations]
+
   def reservations
     reservations = Plane.find(params[:id]).reservations
     render json: reservations

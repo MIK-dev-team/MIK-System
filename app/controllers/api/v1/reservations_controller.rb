@@ -1,5 +1,6 @@
 class Api::V1::ReservationsController < ApiController
   before_action :set_reservation, only: [:destroy]
+  before_action :ensure_that_signed_in, only: [:all_my_reservations, :create, :destroy]
 
   def index
     reservations = Reservation.all
@@ -7,19 +8,11 @@ class Api::V1::ReservationsController < ApiController
   end
 
   def all_my_reservations
-    if current_user
-      reservations = current_user.reservations
-      render json: reservations
-    else
-      render json: { status: :unauthorized }
-    end
+    reservations = current_user.reservations
+    render json: reservations
   end
 
   def create
-    unless current_user
-      render json: { status: :unauthorized }
-      return
-    end
     @reservation = Reservation.new(reservation_params)
     @reservation.user_id = current_user.id
 
@@ -48,6 +41,6 @@ class Api::V1::ReservationsController < ApiController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
-      params.require(:reservation).permit(:reservation_type, :start, :end, :user_id, :plane_id)
+      params.require(:reservation).permit(:reservation_type, :start, :end, :user_id, :plane_id, :additional_info)
     end
 end
