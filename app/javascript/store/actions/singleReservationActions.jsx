@@ -25,11 +25,13 @@ export function saveChangesToReservation(values) {
             '/api/v1/reservations/' + values.id,
             values,
             (status, data) => {
-                console.log(status, data)
+                dispatch({type: "SET_SUCCESS", payload: { header: 'Varaus muokattu!', text: 'Varauksen uudet tiedot onnistuneesti tallennettu tietokantaan' }});
                 dispatch({type: "UPDATE_RESERVATION_FULFILLED"});
+                window.scrollTo(0, 0);
                 setTimeout(() => window.location.replace('/varaukset'), 5000);
             },
             (status, err) => {
+                dispatch({type: "SET_ERROR", payload: { header: 'Jotain meni vikaan', text: err }});
                 dispatch({type: "UPDATE_RESERVATION_REJECTED", payload: err})
             }
         );
@@ -48,10 +50,12 @@ export function destroyReservationAndRedirect(res, path) {
         AjaxService.destroy(
             '/api/v1/reservations/' + res.id,
             (status, data) => {
+                dispatch({type: "SET_SUCCESS", payload: { header: 'Varaus poistettu!', text: '' }});
                 dispatch({type: "DESTROY_RESERVATION_FULFILLED"});
                 setTimeout(() => window.location.replace(path), 5000);
             },
             (status, err) => {
+                dispatch({type: "SET_ERROR", payload: { header: 'Jokin meni pieleen', text: err }});
                 dispatch({type: "DESTROY_RESERVATION_REJECTED", payload: err})
             }
         );

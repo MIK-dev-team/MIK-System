@@ -85373,32 +85373,40 @@ function mapReservations(reservations, dispatch) {
         return reservations.map(function (res) {
             return _react2.default.createElement(
                 'tr',
-                { onClick: function onClick() {
-                        return dispatch((0, _singleReservationActions.showModal)(res));
-                    }, key: res.id },
+                { key: res.id },
                 _react2.default.createElement(
                     'td',
-                    null,
+                    { onClick: function onClick() {
+                            return dispatch((0, _singleReservationActions.showModal)(res));
+                        } },
                     res.id
                 ),
                 _react2.default.createElement(
                     'td',
-                    null,
+                    { onClick: function onClick() {
+                            return dispatch((0, _singleReservationActions.showModal)(res));
+                        } },
                     (0, _moment2.default)(res.start).format('lll')
                 ),
                 _react2.default.createElement(
                     'td',
-                    null,
+                    { onClick: function onClick() {
+                            return dispatch((0, _singleReservationActions.showModal)(res));
+                        } },
                     (0, _moment2.default)(res.end).format('lll')
                 ),
                 _react2.default.createElement(
                     'td',
-                    null,
+                    { onClick: function onClick() {
+                            return dispatch((0, _singleReservationActions.showModal)(res));
+                        } },
                     res.plane.name
                 ),
                 _react2.default.createElement(
                     'td',
-                    null,
+                    { onClick: function onClick() {
+                            return dispatch((0, _singleReservationActions.showModal)(res));
+                        } },
                     res.reservation_type
                 ),
                 _react2.default.createElement(

@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Modal, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { hideModal } from '../store/actions/singleReservationActions';
+import { hideModal } from '../../store/actions/singleReservationActions';
 
 export class ReservationModal extends React.Component {
     modalBody() {

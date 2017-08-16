@@ -173,12 +173,12 @@ export function mapReservations(reservations, dispatch) {
         return <tr key="empty"></tr>
     } else {
         return reservations.map((res) =>
-            <tr onClick={() => dispatch(showModal(res))} key={res.id}>
-                <td>{res.id}</td>
-                <td>{moment(res.start).format('lll')}</td>
-                <td>{moment(res.end).format('lll')}</td>
-                <td>{res.plane.name}</td>
-                <td>{res.reservation_type}</td>
+            <tr key={res.id}>
+                <td onClick={() => dispatch(showModal(res))}>{res.id}</td>
+                <td onClick={() => dispatch(showModal(res))}>{moment(res.start).format('lll')}</td>
+                <td onClick={() => dispatch(showModal(res))}>{moment(res.end).format('lll')}</td>
+                <td onClick={() => dispatch(showModal(res))} >{res.plane.name}</td>
+                <td onClick={() => dispatch(showModal(res))}>{res.reservation_type}</td>
                 <td><Button onClick={() => dispatch(destroyReservation(res))} bsStyle="danger" bsSize="small">Poista</Button></td>
             </tr>
         )

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fetchMyReservations } from '../../store/actions/reservationsActions';
 
 import ReservationTableContent from './reservation_table_content';
-import ReservationModal from '../reservation_modal';
+import ReservationModal from '../common/reservation_modal';
 
 export class ReservationTable extends React.Component {
     componentDidMount() {
