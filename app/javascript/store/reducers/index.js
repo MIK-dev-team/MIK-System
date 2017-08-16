@@ -9,6 +9,7 @@ import applications from './applicationsReducer';
 import planes from './planesReducer';
 import login from './loginReducer';
 import notifiers from './notifiersReducer';
+import notifications from './notificationsReducer';
 import session from './sessionReducer';
 import singleReservation from './singleReservationReducer';
 
@@ -18,6 +19,7 @@ export default combineReducers({
     planes,
     login,
     notifiers,
+    notifications,
     session,
     singleReservation,
     form: formReducer,

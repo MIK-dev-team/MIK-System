@@ -42,6 +42,20 @@ describe('Notifier action', () => {
         promise = undefined;
     });
 
+    it('fetchNotifiers dispatches correct actions on succesful request', () => {
+        promise = Promise.resolve({ data: [notifier] });
+        stub = sinon.stub(AjaxService.service, 'get').callsFake(() => promise);
+        const expectedActions = [
+            { type: "FETCH_NOTIFIERS_PENDING" },
+            { type: "FETCH_NOTIFIERS_FULFILLED", payload: [notifier] }
+        ];
+
+        store.dispatch(actions.fetchNotifiers());
+        return promise.then(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
     it('selectTimeForNotifier returns original reservations if given time is in the past', () => {
         const timeSlot = {
             start: moment().subtract(2, 'days').toDate(),
@@ -130,6 +144,7 @@ describe('Notifier action', () => {
             { type: "SUBMIT_NOTIFIER_PENDING" },
             { type: "SUBMIT_NOTIFIER_FULFILLED" },
             { type: "RESET_NOTIFIER" },
+            { type: "SET_SUCCESS", payload: { header: "Tarkkailija luotu!", text: ""} },
             { type: "FETCH_RESERVATIONS_PENDING" }
         ];
 

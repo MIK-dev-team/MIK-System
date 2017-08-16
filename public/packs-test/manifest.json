@@ -3,6 +3,7 @@
   "login.js": "/packs-test/login.js",
   "membership_application.js": "/packs-test/membership_application.js",
   "menu_bar.js": "/packs-test/menu_bar.js",
+  "reservation_edit.js": "/packs-test/reservation_edit.js",
   "reservation_list.js": "/packs-test/reservation_list.js",
   "reservations.js": "/packs-test/reservations.js"
 }

@@ -20,7 +20,7 @@ RSpec.describe 'Membership Application page', js: true do
 
     click_button('Lähetä hakemus')
 
-    expect(page).to have_content('Hakemuksenne on onnistuneesti lähetetty')
+    expect(page).to have_content('Hakemuksenne on lähetetty onnistuneesti')
 
     expect(MembershipApplication.count).to eq(1)
     expect(MembershipApplication.first.username).to eq(valid_app.username)
@@ -45,7 +45,7 @@ RSpec.describe 'Membership Application page', js: true do
 
     click_button('Lähetä hakemus')
 
-    expect(page).to have_content('Hakemuksenne on onnistuneesti lähetetty')
+    expect(page).to have_content('Hakemuksenne on lähetetty onnistuneesti')
 
     expect(MembershipApplication.count).to eq(1)
     expect(MembershipApplication.first.licences).to eq('some kinda licences')
@@ -86,6 +86,7 @@ RSpec.describe 'Membership Application page', js: true do
     click_on('Lähetä hakemus')
 
     check_filling_error
+    sleep 1
     expect(page).to have_content('Tarkasta täyttämäsi kentät')
   end
 
@@ -105,7 +106,6 @@ RSpec.describe 'Membership Application page', js: true do
   end
 
   def check_filling_error
-    expect(page).to have_content('Lähetysvirhe')
     expect(MembershipApplication.count).to eq(0)
   end
 end
