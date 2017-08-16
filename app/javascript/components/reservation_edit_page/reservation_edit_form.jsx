@@ -2,119 +2,69 @@
  * Created by owlaukka on 14/08/17.
  */
 import React from 'react';
-import moment from 'moment';
-import DatePicker from 'react-datepicker';
-import TimePicker from 'react-bootstrap-time-picker';
-import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
+import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import moment from 'moment';
+import { Button } from 'react-bootstrap'
 
-import { saveChangesToReservation } from '../../store/actions/singleReservationActions';
+import SelectInput from '../form_fields/bootstrap_select_input';
+import ObjectSelectInput from '../form_fields/object_select_input';
+import TimePickerInput from '../form_fields/timepicker_input';
+import DatePickerInput from '../form_fields/datepicker_input';
+import TextAreaInput from '../form_fields/textarea_input';
+import ConfirmDeleteButton from './confirm_delete_button';
 
+moment.locale('fi');
+
+const validate = values => {
+    const errors = {};
+    if (moment(values.start).isBefore(moment())) {
+        errors.start = 'Varauksen alku ei voi olla menneisyydessä';
+    }
+    if (moment(values.end).isSameOrBefore(moment(values.start))) {
+        errors.end = 'Varauksen loppu ei voi olla ennen sen alkua'
+    }
+
+    return errors
+};
+
+const normalizeTimePicker = value => (value, previousValue) =>
+    moment(previousValue).startOf('day').add(value, 'seconds').format();
+
+const normalizeDatePicker = value => (value, previousValue) => {
+    const timeInSeconds = moment.duration(moment(previousValue).format('HH:mm')).asSeconds();
+    return moment(value).startOf('day').add(timeInSeconds, 'seconds').format();
+};
 
 export class ReservationEditForm extends React.Component {
-    formatTime(time) {
-        if (time !== undefined && time !== "")
-            return moment(time).format('HH:mm');
-        else
-            return undefined;
-    }
-
-    handlePlaneChange(e) {
-        for (let plane of this.props.planes) {
-            if (plane.id === parseInt(e.target.value)) {
-                this.props.dispatch(selectPlane(plane));
-                return;
-            }
-        }
-        if (e.target.value === 'null') {
-            this.props.dispatch(selectPlane(undefined))
-        }
-    }
-
-    createPlaneSelect() {
-        return (
-            <FormControl componentClass="select"
-                         value={this.props.selectedPlane !== undefined ? this.props.selectedPlane.id : 'null'}
-                         onChange={this.handlePlaneChange}
-            >
-                <option value='null'>*** Valitse kone ***</option>
-                {this.mapPlanesToOptions()}
-            </FormControl>
-        )
-    }
-
-    mapPlanesToOptions() {
-        return this.props.planes.map((plane) =>
-            <option key={plane.id} value={plane.id}>{plane.name}</option>
-        )
-    }
-
     render() {
+        const { handleSubmit, pristine, reset, submitting } = this.props;
         return (
-            <div>
-            {/*<form onSubmit={(event) => this.props.dispatch(saveChangesToReservation(event))}>*/}
-                {/*<FormGroup controlId="1">*/}
-                    {/*<ControlLabel>Lennon alkupäivä</ControlLabel>*/}
-                    {/*<DatePicker*/}
-                        {/*id="startDate"*/}
-                        {/*selected={moment(this.props.reservation.start)}*/}
-                        {/*//onChange={(date) => this.props.dispatch(setReservationStart(date, this.props.reservations))}*/}
-                    {/*/>*/}
-                {/*</FormGroup>*/}
-                {/*<FormGroup controlId="startTime">*/}
-                    {/*<ControlLabel>Lennon alkuaika</ControlLabel>*/}
-                    {/*<TimePicker*/}
-                        {/*id="startTime"*/}
-                        {/*value={this.formatTime(this.props.reservation.start)}*/}
-                        {/*//onChange={(time) => this.props.dispatch(changeStartTime(time, this.props.start, this.props.reservations))}*/}
-                        {/*format={24}*/}
-                    {/*/>*/}
-                {/*</FormGroup>*/}
-                {/*<FormGroup controlId="2">*/}
-                    {/*<ControlLabel>Lennon loppupäivä</ControlLabel>*/}
-                    {/*<DatePicker*/}
-                        {/*id="endDate"*/}
-                        {/*selected={moment(this.props.reservation.end)}*/}
-                        {/*//onChange={(date) => this.props.dispatch(setReservationEnd(date, this.props.reservations))}*/}
-                    {/*/>*/}
-                {/*</FormGroup>*/}
-                {/*<FormGroup controlId="endTime">*/}
-                    {/*<ControlLabel>Lennon loppuaika</ControlLabel>*/}
-                    {/*<TimePicker*/}
-                        {/*id="endTime"*/}
-                        {/*value={this.formatTime(this.props.reservation.end)}*/}
-                        {/*//onChange={(time) => this.props.dispatch(changeEndTime(time, this.props.end, this.props.reservations))}*/}
-                        {/*format={24}*/}
-                    {/*/>*/}
-                {/*</FormGroup>*/}
-                {/*<FormGroup id="selectPlane" controlId="selectPlane">*/}
-                    {/*<ControlLabel>Lentokone</ControlLabel>*/}
-                    {/*{this.createPlaneSelect()}*/}
-                {/*</FormGroup>*/}
-                {/*<FormGroup id="selectType" controlId="selectType">*/}
-                    {/*<ControlLabel>Lennon tyyppi</ControlLabel>*/}
-                    {/*<FormControl componentClass="select" defaultValue={this.props.reservation.reservation_type}*/}
-                                 {/*//onChange={(event) => this.props.dispatch(setType(event))}*/}
-                    {/*>*/}
-                        {/*<option value="opetus">Opetuslento</option>*/}
-                        {/*<option value="harraste">Harrastelento</option>*/}
-                    {/*</FormControl>*/}
-                {/*</FormGroup>*/}
-                {/*<FormGroup controlId="setDesc">*/}
-                    {/*<ControlLabel>Lisätietoja</ControlLabel>*/}
-                    {/*<FormControl componentClass="textarea"*/}
-                                 {/*//onChange={(event) => description = event.target.value}*/}
-                    {/*/>*/}
-                {/*</FormGroup>*/}
-                {/*<Button type="submit">Tee varaus</Button>*/}
-            {/*</form>*/}
-            </div>
+            <form onSubmit={handleSubmit}>
+                <Field label="Alkupäivämäärä" name="start"  component={DatePickerInput} normalize={normalizeDatePicker()} />
+                <Field label="Alkuaika" name="start" component={TimePickerInput} normalize={normalizeTimePicker()} />
+                <Field label="Loppupäivämäärä" name="end" component={DatePickerInput} normalize={normalizeDatePicker()} />
+                <Field label="Loppuaika" name="end" component={TimePickerInput} normalize={normalizeTimePicker()} />
+                <Field label="Lentokone" name="plane" options={this.props.planes} component={ObjectSelectInput} />
+                <Field label="Tyyppi" name="reservation_type" options={["harraste", "opetus"]} component={SelectInput} />
+                <Field label="Lisätiedot" name="additional_info" componentClass="textarea" component={TextAreaInput} />
+                <Button type="submit">Tallenna varaus</Button>
+                <span className="pull-right" ><ConfirmDeleteButton /></span>
+            </form>
         )
     }
 }
 
-export default connect((store) => {
+ReservationEditForm = reduxForm({
+    form: 'ReservationEdit',
+    validate
+})(ReservationEditForm);
+
+ReservationEditForm = connect((store) => {
     return {
+        initialValues: store.singleReservation.reservation,
         planes: store.planes.planes,
     }
-})(ReservationEditForm)
+})(ReservationEditForm);
+
+export default ReservationEditForm;

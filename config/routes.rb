@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :membership_applications, only: [:create, :show]
       resources :auth, only: [:create, :show]
-      resources :reservations, only: [:create, :index, :destroy]
+      resources :reservations, only: [:create, :index, :destroy, :update]
       resources :availability_notifiers, only: [:create, :destroy]
       # TODO: clean up these, streamline
       get 'planes/:id/reservations', to: 'planes#reservations'

@@ -17,6 +17,7 @@ class Website::ReservationsController < ApplicationController
 
   # GET /varaukset/1/muokkaa
   def edit
+    @planes = Plane.all
   end
 
   private

@@ -2,6 +2,8 @@
  * Created by owlaukka on 18/06/17.
  */
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
+
 import reservations from './reservationsReducer';
 import applications from './applicationsReducer';
 import planes from './planesReducer';
@@ -18,4 +20,5 @@ export default combineReducers({
     notifiers,
     session,
     singleReservation,
+    form: formReducer,
 });

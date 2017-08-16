@@ -10,12 +10,12 @@ RSpec.describe 'Calendar page', js: true do
   #   res
   # }
 
-  it 'should have should reservation in calendar' do
-    visit '/varauskalenteri'
-    sleep 3
-    print page.html
-    expect(page).to have_content 'Näytä kaikki'
-    expect(page).to have_content 'opetus'
-    expect(page).to have_content '13:00-15:00'
-  end
+  # it 'should have should reservation in calendar' do
+  #   visit '/varauskalenteri'
+  #   sleep 3
+  #   print page.html
+  #   expect(page).to have_content 'Näytä kaikki'
+  #   expect(page).to have_content 'opetus'
+  #   expect(page).to have_content '13:00-15:00'
+  # end
 end

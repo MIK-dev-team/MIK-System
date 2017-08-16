@@ -40,9 +40,8 @@ export class Calendar extends React.Component {
     }
 
     isButtonDisabled() {
-        return (this.props.reservations.length !== 0 &&
-            this.props.reservations[this.props.reservations.length-1].reservation_type === 'selected') ||
-            !this.props.logged
+        return !this.props.logged || (this.props.reservations.length !== 0 &&
+            this.props.reservations[this.props.reservations.length-1].reservation_type === 'selected')
     }
 
     toggleCollapse() {

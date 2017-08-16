@@ -144,31 +144,45 @@ describe('Calendar', () => {
         });
     });
 
-    it('has isDisabled function that return true if last reservation in props is of selected type', () => {
+    it('has isDisabled function that return true if last reservation in props is of selected type and user is logged', () => {
         const reservations = [{
             title: '<valittu aika>',
             start: moment().add(1, 'days').format(),
             end: moment().add(1, 'days').add(2, 'hours').format(),
             reservation_type: 'selected'
         }];
-        calendar.setProps({reservations: reservations});
+        calendar.setProps({reservations: reservations, logged: true});
         calendar.update();
 
         const isButtonDisabledReturn = calendar.instance().isButtonDisabled();
         expect(isButtonDisabledReturn).toBe(true);
     });
 
-    it('has isDisabled function that return false if last reservation in props is not of selected type', () => {
+    it('has isDisabled function that return false if last reservation in props is not of selected type and user is logged', () => {
         const reservations = [{
             title: '<valittu aika>',
             start: moment().add(1, 'days').format(),
             end: moment().add(1, 'days').add(2, 'hours').format(),
             reservation_type: 'opetus'
         }];
-        calendar.setProps({reservations: reservations});
+        calendar.setProps({reservations: reservations, logged: true});
         calendar.update();
 
         const isButtonDisabledReturn = calendar.instance().isButtonDisabled();
         expect(isButtonDisabledReturn).toBe(false);
+    });
+
+    it('has isDisabled function that return true if user is not logged', () => {
+        const reservations = [{
+            title: '<valittu aika>',
+            start: moment().add(1, 'days').format(),
+            end: moment().add(1, 'days').add(2, 'hours').format(),
+            reservation_type: 'opetus'
+        }];
+        calendar.setProps({reservations: reservations, logged: false});
+        calendar.update();
+
+        const isButtonDisabledReturn = calendar.instance().isButtonDisabled();
+        expect(isButtonDisabledReturn).toBe(true);
     });
 });

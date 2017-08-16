@@ -1,4 +1,8 @@
 const initialState = {
+    sending: false,
+    sent: false,
+    updateError: null,
+
     showModal: false,
     reservation: null,
 };
@@ -19,18 +23,30 @@ export default function reducer(state=initialState, action) {
                 reservation: null,
             }
         }
-        // case "SET_RESERVATION": {
-        //     return {
-        //         ...state,
-        //         reservation: action.payload,
-        //     }
-        // }
-        // case "CLEAR_RESERVATION": {
-        //     return {
-        //         ...state,
-        //         reservation: null,
-        //     }
-        // }
+        case "SET_RESERVATION": {
+            return {
+                ...state,
+                reservation: action.payload,
+            }
+        }
+        case "UPDATE_RESERVATION_PENDING": {
+            return {
+                sending: true,
+            }
+        }
+        case "UPDATE_RESERVATION_REJECTED": {
+            return {
+                sending: false,
+                updateError: action.payload,
+            }
+        }
+        case "UPDATE_RESERVATION_FULFILLED": {
+            return {
+                sending: false,
+                sent: true,
+                updateError: null
+            }
+        }
     }
 
     return state;

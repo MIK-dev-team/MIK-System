@@ -1,6 +1,6 @@
 class Api::V1::ReservationsController < ApiController
-  before_action :set_reservation, only: [:destroy]
-  before_action :ensure_that_signed_in, only: [:all_my_reservations, :create, :destroy]
+  before_action :set_reservation, only: [:destroy, :update]
+  before_action :ensure_that_signed_in, only: [:all_my_reservations, :create, :destroy, :update]
 
   def index
     reservations = Reservation.all
@@ -30,6 +30,14 @@ class Api::V1::ReservationsController < ApiController
       render json: { status: :no_content }
     else
       render json: { status: :unauthorized }
+    end
+  end
+
+  def update
+    if @reservation.update(reservation_params)
+      render json: @reservation, status: :no_content
+    else
+      render json: @reservation.errors.full_messages, status: :unprocessable_entity
     end
   end
 
