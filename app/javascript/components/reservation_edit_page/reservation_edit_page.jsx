@@ -21,6 +21,7 @@ export class ReservationEditPage extends React.Component {
                 <Row>
                     <Col mdOffset={3} md={6} xs={12} xsOffset={0}>
                         <ReservationEditForm
+                            id="edit-form"
                             onSubmit={(values) => this.props.dispatch(saveChangesToReservation(values))}
                         />
                     </Col>

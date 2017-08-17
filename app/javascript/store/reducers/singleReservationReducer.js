@@ -31,17 +31,20 @@ export default function reducer(state=initialState, action) {
         }
         case "UPDATE_RESERVATION_PENDING": {
             return {
+                ...state,
                 sending: true,
             }
         }
         case "UPDATE_RESERVATION_REJECTED": {
             return {
+                ...state,
                 sending: false,
                 updateError: action.payload,
             }
         }
         case "UPDATE_RESERVATION_FULFILLED": {
             return {
+                ...state,
                 sending: false,
                 sent: true,
                 updateError: null

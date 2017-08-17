@@ -20294,24 +20294,24 @@ function reducer() {
             }
         case "UPDATE_RESERVATION_PENDING":
             {
-                return {
+                return _extends({}, state, {
                     sending: true
-                };
+                });
             }
         case "UPDATE_RESERVATION_REJECTED":
             {
-                return {
+                return _extends({}, state, {
                     sending: false,
                     updateError: action.payload
-                };
+                });
             }
         case "UPDATE_RESERVATION_FULFILLED":
             {
-                return {
+                return _extends({}, state, {
                     sending: false,
                     sent: true,
                     updateError: null
-                };
+                });
             }
     }
 

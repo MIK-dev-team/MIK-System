@@ -37102,24 +37102,24 @@ function reducer() {
             }
         case "UPDATE_RESERVATION_PENDING":
             {
-                return {
+                return _extends({}, state, {
                     sending: true
-                };
+                });
             }
         case "UPDATE_RESERVATION_REJECTED":
             {
-                return {
+                return _extends({}, state, {
                     sending: false,
                     updateError: action.payload
-                };
+                });
             }
         case "UPDATE_RESERVATION_FULFILLED":
             {
-                return {
+                return _extends({}, state, {
                     sending: false,
                     sent: true,
                     updateError: null
-                };
+                });
             }
     }
 
@@ -83964,16 +83964,17 @@ function hideModal() {
 
 function saveChangesToReservation(values) {
     values.plane_id = values.plane;
-    // TODO: make a notice when that branch is merged
     return function (dispatch) {
         dispatch({ type: "UPDATE_RESERVATION_PENDING" });
         _ajax_service2.default.patch('/api/v1/reservations/' + values.id, values, function (status, data) {
-            console.log(status, data);
+            dispatch({ type: "SET_SUCCESS", payload: { header: 'Varaus muokattu!', text: 'Varauksen uudet tiedot onnistuneesti tallennettu tietokantaan' } });
             dispatch({ type: "UPDATE_RESERVATION_FULFILLED" });
+            window.scrollTo(0, 0);
             setTimeout(function () {
                 return window.location.replace('/varaukset');
             }, 5000);
         }, function (status, err) {
+            dispatch({ type: "SET_ERROR", payload: { header: 'Jotain meni vikaan', text: err } });
             dispatch({ type: "UPDATE_RESERVATION_REJECTED", payload: err });
         });
     };
@@ -83989,11 +83990,13 @@ function destroyReservationAndRedirect(res, path) {
     return function (dispatch) {
         dispatch({ type: "DESTROY_RESERVATION_PENDING" });
         _ajax_service2.default.destroy('/api/v1/reservations/' + res.id, function (status, data) {
+            dispatch({ type: "SET_SUCCESS", payload: { header: 'Varaus poistettu!', text: '' } });
             dispatch({ type: "DESTROY_RESERVATION_FULFILLED" });
             setTimeout(function () {
                 return window.location.replace(path);
             }, 5000);
         }, function (status, err) {
+            dispatch({ type: "SET_ERROR", payload: { header: 'Jokin meni pieleen', text: err } });
             dispatch({ type: "DESTROY_RESERVATION_REJECTED", payload: err });
         });
     };

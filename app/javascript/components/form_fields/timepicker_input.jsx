@@ -27,6 +27,7 @@ export default class TimePickerInput extends React.Component {
             <FormGroup validationState={ validationState }>
                 <ControlLabel>{ label }</ControlLabel>
                 <TimePicker
+                    id="edit-form-timepicker"
                     {...input}
                     value={moment(input.value).format('HH:mm') || undefined}
                     format={24} />

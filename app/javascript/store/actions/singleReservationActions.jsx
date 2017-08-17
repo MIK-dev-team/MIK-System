@@ -18,7 +18,6 @@ export function hideModal() {
 
 export function saveChangesToReservation(values) {
     values.plane_id = values.plane;
-    // TODO: make a notice when that branch is merged
     return (dispatch) => {
         dispatch({type: "UPDATE_RESERVATION_PENDING"});
         AjaxService.patch(
