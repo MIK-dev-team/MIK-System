@@ -7,7 +7,7 @@ class ApiController < ActionController::API
 
   def ensure_that_signed_in
     unless current_user
-      render json: { status: :unauthorized }
+      render json: {}, status: :unauthorized
     end
   end
 end

@@ -27,12 +27,12 @@ class Reservation < ApplicationRecord
   end
 
   def overlap_error
-    errors.add(:overlap_error, 'Kyseinen aika on jo varattu')
+    errors.add(:aika, 'on jo varattu')
   end
 
   def start_date_before_end_date
     if self.start > self.end
-      errors.add(:start_date_before_end_date, 'Lopetuksen pitää olla aloituksen jälkeen')
+      errors.add(:end, 'tulee olla aloituksen jälkeen')
     end
   end
 

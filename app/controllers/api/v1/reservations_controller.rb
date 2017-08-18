@@ -27,17 +27,21 @@ class Api::V1::ReservationsController < ApiController
     # TODO: adjust when admin role exists
     if @reservation.user_id == current_user.id
       @reservation.destroy
-      render json: { status: :no_content }
+      render json: {}, status: :no_content
     else
-      render json: { status: :unauthorized }
+      render json: {}, status: :forbidden
     end
   end
 
   def update
-    if @reservation.update(reservation_params)
-      render json: @reservation, status: :no_content
+    if @reservation.user_id == current_user.id
+      if @reservation.update(reservation_params)
+        render json: @reservation, status: :ok
+      else
+        render json: @reservation.errors.full_messages, status: :unprocessable_entity
+      end
     else
-      render json: @reservation.errors.full_messages, status: :unprocessable_entity
+      render json: {}, status: :forbidden
     end
   end
 

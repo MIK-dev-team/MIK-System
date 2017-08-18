@@ -45,7 +45,6 @@ FactoryGirl.define do
   factory :availability_notifier do
     start DateTime.now + 2.days
     self.end DateTime.now + 2.days + 3.hours
-    user_id 1
     notifier_type 'all'
     user
     plane
