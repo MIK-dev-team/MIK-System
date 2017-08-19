@@ -14,6 +14,7 @@ export default function reducer(state = {
     end: "",
     desc: "",
     collapsed: true,
+    sidebarMod: true,
 }, action) {
 
     switch(action.type) {
@@ -125,7 +126,45 @@ export default function reducer(state = {
                 reservations: action.payload,
             }
         }
+
+        case "TOGGLE_SIDEBARMOD": {
+
+          if(action.payload === 1) {
+            return {
+              ...state,
+              sidebarMod: true,
+            }
+          } else {
+            return {
+              ...state,
+              sidebarMod: false,
+          }
+
+        }
     }
+
+    case "MASS_DESTROY_RESERVATION_PENDING": {
+        return {
+            ...state,
+            sending: true,
+            sent: false,
+        }
+    }
+    case "MASS_DESTROY_RESERVATION_REJECTED": {
+        return {
+            ...state,
+            sending: false,
+            submitError: action.payload,
+        }
+    }
+    case "MASS_DESTROY_RESERVATION_FULFILLED": {
+        return {
+            ...state,
+            sending:false,
+            sent: true,
+        }
+    }
+  }
 
     return state;
 }

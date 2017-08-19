@@ -25,6 +25,10 @@ class Api::V1::ReservationsController < ApiController
     render json: { status: :no_content }
   end
 
+  def mass_destroy
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_reservation

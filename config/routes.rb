@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :availability_notifiers, only: [:create, :destroy]
       get 'planes/:id/reservations', to: 'planes#reservations'
       post 'kirjaudu', to: 'auth#login'
+      post 'joukkoperu', to: 'reservations#mass_destroy'
     end
   end
 

@@ -1,12 +1,13 @@
 import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, Tab, Tabs, Nav, NavItem, NavDropdown, MenuItem, NavBar } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { setCollapsed, fillForm } from '../../store/actions/reservationsActions';
+import { setCollapsed, fillForm , setSidebarMod } from '../../store/actions/reservationsActions';
 import { selectTimeForNotifier } from "../../store/actions/notifiersActions";
 import ReservationForm from "./reservation_form";
+import CancellationForm from "./cancellation_form";
 
 moment.locale("fi");
 
@@ -46,6 +47,14 @@ export class Calendar extends React.Component {
             this.props.dispatch(setCollapsed(this.props.collapsed));
     }
 
+    toggleSidebarMod(eventKey) {
+      if(this.props.sidebarMod && eventKey === 2) {
+        this.props.dispatch(setSidebarMod(2));
+      }
+      if(!this.props.sidebarMod && eventKey === 1) {
+        this.props.dispatch(setSidebarMod(1));
+      }
+    }
 
     // TODO: put this into it's own service/library function etc
     eventStyleGetter(event, start, end, isSelected) {
@@ -102,7 +111,11 @@ export class Calendar extends React.Component {
                         />
                     </Col>
                     <Col id="sidebar" className={this.props.collapsed ? 'collapsed' : 'col-lg-4'}>
-                        <ReservationForm />
+                      <Nav bsStyle="tabs" onSelect={(eventKey) => this.toggleSidebarMod(eventKey)}>
+                        <NavItem eventKey={1} title="Varaus">Varaus</NavItem>
+                        <NavItem eventKey={2} title="Peruminen">Joukkoperuminen</NavItem>
+                      </Nav>
+                        {this.props.sidebarMod ? <ReservationForm/> : <CancellationForm/>}
                     </Col>
                 </Row>
                 <br />
@@ -124,5 +137,6 @@ export default connect((store) => {
         reservations: store.reservations.reservations,
         resChange: store.reservations.resChange,
         notifierMode: store.notifiers.notifierMode,
+        sidebarMod: store.reservations.sidebarMod,
     }
 })(Calendar)

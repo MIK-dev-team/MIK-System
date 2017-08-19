@@ -9,4 +9,9 @@ class Api::V1::AuthController < ApiController
       render :json => response, :status => 401
     end
   end
+
+  def logout
+    session[:user_id] = null
+    render json: => response
+  end
 end
