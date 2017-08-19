@@ -5,7 +5,7 @@ import TimePicker from 'react-bootstrap-time-picker';
 import { Panel, FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { submitReservation, setType, setReservationStart, setReservationEnd, changeStartTime, changeEndTime } from '../../store/actions/reservationsActions';
+import { submitReservation, setReservationStart, setReservationEnd, changeStartTime, changeEndTime, massDestroyReservation } from '../../store/actions/reservationsActions';
 import { selectPlane } from "../../store/actions/planesActions";
 
 moment.locale('fi');
