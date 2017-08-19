@@ -13,6 +13,7 @@ const initialState = {
     end: "",
     desc: "",
     collapsed: true,
+    sidebarMod: true,
 };
 
 describe('Reservations reducer', () => {
