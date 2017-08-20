@@ -91111,38 +91111,16 @@ var Calendar = exports.Calendar = function (_React$Component) {
         key: 'convertReservationsToCalendarEvents',
         value: function convertReservationsToCalendarEvents() {
             var newArray = [];
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
-
-            try {
-                for (var _iterator = this.props.reservations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var res = _step.value;
-
-                    newArray.push({
-                        id: res.id,
-                        title: res.reservation_type,
-                        start: (0, _moment2.default)(res.start).toDate(),
-                        end: (0, _moment2.default)(res.end).toDate(),
-                        reservation_type: res.reservation_type,
-                        additional_info: res.additional_info
-                    });
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
-                }
-            }
-
+            // for (let res of this.props.reservations) {
+            //     newArray.push({
+            //         id: res.id,
+            //         title: res.reservation_type,
+            //         start: moment(res.start).toDate(),
+            //         end: moment(res.end).toDate(),
+            //         reservation_type: res.reservation_type,
+            //         additional_info: res.additional_info
+            //     })
+            // }
             return newArray;
         }
     }, {
@@ -91251,6 +91229,18 @@ var Calendar = exports.Calendar = function (_React$Component) {
                             this.props.collapsed ? "Näytä varauksesi tiedot" : "Piilota varauksesi tiedot"
                         )
                     )
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'LENGTH: ',
+                    this.props.reservations.length
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'START of FIRST',
+                    this.props.reservation
                 )
             );
         }
