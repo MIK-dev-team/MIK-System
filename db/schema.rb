@@ -54,6 +54,16 @@ ActiveRecord::Schema.define(version: 20170814144709) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "reservation_deletion_logs", force: :cascade do |t|
+    t.datetime "start"
+    t.datetime "end"
+    t.integer "user_id"
+    t.integer "plane_id"
+    t.boolean "deleted_by_admin"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "reservations", force: :cascade do |t|
     t.string "reservation_type"
     t.datetime "start"
