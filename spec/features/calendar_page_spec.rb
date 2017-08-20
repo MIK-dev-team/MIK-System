@@ -9,7 +9,7 @@ RSpec.describe 'Calendar page', js: true do
   #   res.save(validate: false)
   #   res
   # }
-
+  #
   # it 'should have should reservation in calendar' do
   #   visit '/varauskalenteri'
   #   sleep 3

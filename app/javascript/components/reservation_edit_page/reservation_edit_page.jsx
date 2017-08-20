@@ -8,6 +8,7 @@ import { Grid, Row, Col, Button } from 'react-bootstrap';
 
 import ReservationEditForm from './reservation_edit_form';
 import { saveChangesToReservation } from '../../store/actions/singleReservationActions';
+import Notifications from "../common/notifications";
 
 export class ReservationEditPage extends React.Component {
     render() {
@@ -16,6 +17,11 @@ export class ReservationEditPage extends React.Component {
                 <Row>
                     <Col md={4} mdOffset={4}>
                         <h2>Muokkaa varausta</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={6} mdOffset={3}>
+                        <Notifications/>
                     </Col>
                 </Row>
                 <Row>
@@ -34,6 +40,5 @@ export class ReservationEditPage extends React.Component {
 export default connect((store) => {
     return {
         reservation: store.singleReservation.reservation,
-        logged: store.session.loggedIn,
     }
 })(ReservationEditPage)

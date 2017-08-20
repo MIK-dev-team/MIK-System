@@ -1,6 +1,6 @@
 class Website::ReservationsController < ApplicationController
-  before_action :set_reservation, only: [:show, :edit]
-  before_action :ensure_that_signed_in, only: [:list, :show, :edit]
+  before_action :set_reservation, only: [:edit]
+  before_action :ensure_that_signed_in, only: [:list, :edit]
 
   # GET /varauskalenteri
   def index
@@ -11,13 +11,13 @@ class Website::ReservationsController < ApplicationController
   def list
   end
 
-  # GET /reservations/1
-  def show
-  end
-
   # GET /varaukset/1/muokkaa
   def edit
-    @planes = Plane.all
+    if @reservation.user.id == current_user.id
+      @planes = Plane.all
+    else
+      redirect_to kirjaudu_path
+    end
   end
 
   private

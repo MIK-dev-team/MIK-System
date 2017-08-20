@@ -186,7 +186,6 @@ RSpec.describe 'Reservations API' do
 
     expect(response).to_not be_success
     expect(response).to have_http_status(422)
-    puts json
 
     expect(json.length).to eq(1)
     expect(json[0]).to eq('Loppu tulee olla aloituksen jälkeen')

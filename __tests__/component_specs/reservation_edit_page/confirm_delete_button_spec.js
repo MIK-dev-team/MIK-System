@@ -25,7 +25,7 @@ describe('Confirm delete button', () => {
 
     it('has Confirm component with correct props', () => {
         expect(button.find('Confirm').props().body).toEqual("Oletko varma, että haluat poistaa tämän varauksen?");
-        expect(button.find('Confirm').props().confirmText).toEqual("Poista varaus");
+        expect(button.find('Confirm').props().confirmText).toEqual("Poista");
         expect(button.find('Confirm').props().title).toEqual("Poista varaus");
         expect(button.find('Confirm').props().cancelText).toEqual("Peruuta");
     });

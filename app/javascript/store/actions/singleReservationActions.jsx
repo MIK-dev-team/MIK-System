@@ -30,8 +30,9 @@ export function saveChangesToReservation(values) {
                 setTimeout(() => window.location.replace('/varaukset'), 5000);
             },
             (status, err) => {
-                dispatch({type: "SET_ERROR", payload: { header: 'Jotain meni vikaan', text: err }});
+                dispatch({type: "SET_ERROR", payload: { header: 'Jotain meni vikaan', data: err }});
                 dispatch({type: "UPDATE_RESERVATION_REJECTED", payload: err})
+                window.scrollTo(0, 0);
             }
         );
     }
@@ -54,7 +55,7 @@ export function destroyReservationAndRedirect(res, path) {
                 setTimeout(() => window.location.replace(path), 5000);
             },
             (status, err) => {
-                dispatch({type: "SET_ERROR", payload: { header: 'Jokin meni pieleen', text: err }});
+                dispatch({type: "SET_ERROR", payload: { header: 'Jokin meni pieleen', data: err }});
                 dispatch({type: "DESTROY_RESERVATION_REJECTED", payload: err})
             }
         );

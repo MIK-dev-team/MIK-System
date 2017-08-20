@@ -15,8 +15,8 @@ describe('Reservation edit page initially', () => {
 
     it('has correct static elements', () => {
         expect(page.find('Grid').length).toEqual(1);
-        expect(page.find('Row').length).toEqual(2);
-        expect(page.find('Col').length).toEqual(2);
+        expect(page.find('Row').length).toEqual(3);
+        expect(page.find('Col').length).toEqual(3);
     });
 
     it('has ReservationEditForm', () => {

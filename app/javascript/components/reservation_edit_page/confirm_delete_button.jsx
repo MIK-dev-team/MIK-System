@@ -14,7 +14,7 @@ export class ConfirmDeleteButton extends React.Component {
             <Confirm
                 onConfirm={() => this.props.dispatch(destroyReservationAndRedirect(this.props.reservation, '/varaukset'))}
                 body="Oletko varma, että haluat poistaa tämän varauksen?"
-                confirmText="Poista varaus"
+                confirmText="Poista"
                 title="Poista varaus"
                 cancelText="Peruuta">
                 <Button

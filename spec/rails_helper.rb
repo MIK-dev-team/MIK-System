@@ -8,6 +8,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rspec'
 require 'capybara/poltergeist'
+require 'capybara-bootstrap-datepicker/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -82,7 +83,10 @@ RSpec.configure do |config|
   Capybara.register_driver :poltergeist do |app|
     Capybara::Poltergeist::Driver.new(app, {
         js_errors: false,
-        extensions: ['spec/support/polyfill.js']
+        extensions: ['spec/support/polyfill.js',
+                     'spec/support/object.assign.polyfill.js',
+                     'spec/support/function.bind.polyfill.js'],
+        phantomjs_options: ['--load-images=yes', '--ignore-ssl-errors=yes', '--ssl-protocol=any']
     })
   end
 

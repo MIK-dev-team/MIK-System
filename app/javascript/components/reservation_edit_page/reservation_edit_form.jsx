@@ -41,9 +41,9 @@ export class ReservationEditForm extends React.Component {
         const { handleSubmit, pristine, reset, submitting } = this.props;
         return (
             <form onSubmit={handleSubmit}>
-                <Field label="Alkupäivämäärä" name="start"  component={DatePickerInput} normalize={normalizeDatePicker()} />
+                <Field label="Alkupäivämäärä" name="start" id="start-date"  component={DatePickerInput} normalize={normalizeDatePicker()} />
                 <Field label="Alkuaika" name="start" component={TimePickerInput} normalize={normalizeTimePicker()} />
-                <Field label="Loppupäivämäärä" name="end" component={DatePickerInput} normalize={normalizeDatePicker()} />
+                <Field label="Loppupäivämäärä" name="end" id="end-date" component={DatePickerInput} normalize={normalizeDatePicker()} />
                 <Field label="Loppuaika" name="end" component={TimePickerInput} normalize={normalizeTimePicker()} />
                 <Field label="Lentokone" name="plane" options={this.props.planes} component={ObjectSelectInput} />
                 <Field label="Tyyppi" name="reservation_type" options={["harraste", "opetus"]} component={SelectInput} />
