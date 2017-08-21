@@ -6,6 +6,7 @@ import ReservationFetcher from "./reservation_fetcher";
 import PlaneSelection from './plane_selection';
 import NotifierModeSelection from "./notifier_mode_selection";
 import NotifierForm from './notifier_form'
+import ReservationModal from "../common/reservation_modal";
 import Notifications from '../common/notifications';
 
 export class CalendarPage extends React.Component {
@@ -30,6 +31,7 @@ export class CalendarPage extends React.Component {
     render() {
         return (
             <Grid>
+                <ReservationModal/>
                 <h1>Varauskalenteri</h1>
                 <div id="calendarWrapper" style={this.notifierIndicationStyle()}>
                     <Row>

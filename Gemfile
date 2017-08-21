@@ -44,6 +44,7 @@ gem 'activerecord-nulldb-adapter'
 
 group :test do
   gem 'factory_girl_rails'
+  gem 'capybara-bootstrap-datepicker'
 end
 
 group :development, :test do

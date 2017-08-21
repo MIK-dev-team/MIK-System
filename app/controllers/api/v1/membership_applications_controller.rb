@@ -1,7 +1,6 @@
 class Api::V1::MembershipApplicationsController < ApiController
   def create
     @membership_application = MembershipApplication.new(application_params)
-    @membership_application.user_id = 1
     @membership_application.pending = true
 
     if @membership_application.save

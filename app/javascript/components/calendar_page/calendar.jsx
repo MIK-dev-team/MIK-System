@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import { setCollapsed, fillForm } from '../../store/actions/reservationsActions';
 import { selectTimeForNotifier } from "../../store/actions/notifiersActions";
+import { showModal } from '../../store/actions/singleReservationActions';
 import ReservationForm from "./reservation_form";
 
 moment.locale("fi");
@@ -24,21 +25,24 @@ export class Calendar extends React.Component {
     }
 
     convertReservationsToCalendarEvents() {
-        let newArray = [];
-        for (let res of this.props.reservations) {
+        let i, newArray = [];
+        for (i = 0; i < this.props.reservations.length; i++) {
+            let res = this.props.reservations[i];
             newArray.push({
+                id: res.id,
                 title: res.reservation_type,
                 start: moment(res.start).toDate(),
                 end: moment(res.end).toDate(),
-                reservation_type: res.reservation_type
-            })
+                reservation_type: res.reservation_type,
+                additional_info: res.additional_info
+            });
         }
         return newArray;
     }
 
     isButtonDisabled() {
-        return this.props.reservations.length !== 0 &&
-            this.props.reservations[this.props.reservations.length-1].reservation_type === 'selected'
+        return !this.props.logged || (this.props.reservations.length !== 0 &&
+            this.props.reservations[this.props.reservations.length-1].reservation_type === 'selected')
     }
 
     toggleCollapse() {
@@ -89,12 +93,12 @@ export class Calendar extends React.Component {
                 <Row id="row-main">
                     <Col id="content" lg={this.props.collapsed ? 12 : 8} style={{margin: "auto", height: 40 + "vw"}}>
                         <BigCalendar
-                            selectable
+                            selectable={this.props.logged ? true : false}
                             {...this.props}
                             events={this.convertReservationsToCalendarEvents()}
                             defaultView="week"
                             scrollToTime={initTime}
-                            onSelectEvent={(event) => alert("Tehdään tähän vaikka modaali tai muu ikkuna joka kertoo kaikki tiedot", event)}
+                            onSelectEvent={(event) => this.props.dispatch(showModal(event))}
                             onSelectSlot={(timeSlot) => this.selectTimeSlot(timeSlot)}
                             views={["month", "week", "day", "agenda"]}
                             eventPropGetter={this.eventStyleGetter}
@@ -124,5 +128,6 @@ export default connect((store) => {
         reservations: store.reservations.reservations,
         resChange: store.reservations.resChange,
         notifierMode: store.notifiers.notifierMode,
+        logged: store.session.loggedIn,
     }
 })(Calendar)

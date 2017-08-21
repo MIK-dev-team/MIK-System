@@ -24,7 +24,7 @@ before_script:
   - docker-compose run -e "RAILS_ENV=test" web bin/webpack
 
 script:
-  - docker-compose run web rspec spec
+  - docker-compose run web rake spec
   - docker-compose run web yarn test
 
 after_script:

@@ -6,13 +6,35 @@ import { Button } from 'react-bootstrap';
 import moment from 'moment';
 
 import AjaxService from '../../services/ajax_service';
+import { showModal } from './singleReservationActions';
 
 moment.locale('fi');
 
 export function fetchReservations(plane=undefined) {
     let route = '/api/v1/reservations';
     if (plane !== undefined) {
-        route = `api/v1/planes/${plane.id}/reservations`;
+        route = `/api/v1/planes/${plane.id}/reservations`;
+    }
+    return function(dispatch) {
+        dispatch({type: "FETCH_RESERVATIONS_PENDING"});
+        AjaxService.get(
+            route,
+            (status, data) => {
+                dispatch({type: "FETCH_RESERVATIONS_FULFILLED", payload: data})
+            },
+            (status, err) => {
+                dispatch({type: "FETCH_RESERVATIONS_REJECTED", payload: err})
+            }
+        );
+    }
+}
+
+export function fetchMyReservations(plane=undefined) {
+    let route;
+    if (plane !== undefined) {
+        route = `api/v1/planes/${plane.id}/my_reservations`;
+    } else {
+        route = `api/v1/all_my_reservations`;
     }
     return function(dispatch) {
         dispatch({type: "FETCH_RESERVATIONS_PENDING"});
@@ -42,7 +64,7 @@ export function submitReservation(event, start, end, plane, type, desc) {
         end: moment(end).toDate(),
         plane_id: plane.id,
         reservation_type: type,
-        description: desc,
+        additional_info: desc,
     };
     return function(dispatch) {
         dispatch({type: "SUBMIT_RESERVATION_PENDING"});
@@ -152,11 +174,11 @@ export function mapReservations(reservations, dispatch) {
     } else {
         return reservations.map((res) =>
             <tr key={res.id}>
-                <td>{res.id}</td>
-                <td>{moment(res.start).format('lll')}</td>
-                <td>{moment(res.end).format('lll')}</td>
-                <td>{res.plane.name}</td>
-                <td>{res.reservation_type}</td>
+                <td onClick={() => dispatch(showModal(res))}>{res.id}</td>
+                <td onClick={() => dispatch(showModal(res))}>{moment(res.start).format('lll')}</td>
+                <td onClick={() => dispatch(showModal(res))}>{moment(res.end).format('lll')}</td>
+                <td onClick={() => dispatch(showModal(res))} >{res.plane.name}</td>
+                <td onClick={() => dispatch(showModal(res))}>{res.reservation_type}</td>
                 <td><Button onClick={() => dispatch(destroyReservation(res))} bsStyle="danger" bsSize="small">Poista</Button></td>
             </tr>
         )

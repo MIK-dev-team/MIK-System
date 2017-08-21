@@ -11,8 +11,6 @@ export default function reducer(state = {
     membershipTypes: membershipTypes,
     sending: false,
     sent: false,
-    successMsg: null,
-    submitError: null,
 
     // Mandatory fields (for validations)
     username: "",
