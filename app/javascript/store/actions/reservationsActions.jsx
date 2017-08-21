@@ -183,8 +183,8 @@ export function changeEndTime(time, previousTime, reservations) {
     }
 }
 
-export function fillForm(timeSlot, reservations) {
-    if (!timeIsValid(timeSlot, reservations)) {
+export function fillForm(timeSlot, reservations, sidebarMod) {
+    if (!timeIsValid(timeSlot, reservations, sidebarMod)) {
         return reservations;
     }
     let newArray = refreshReservationList(timeSlot, reservations);
@@ -221,7 +221,7 @@ export function mapReservations(reservations, dispatch) {
 
 // --- LOCAL FUNCTIONS HERE ---
 
-function timeIsValid(timeSlot, reservations) {
+function timeIsValid(timeSlot, reservations, sidebarMod) {
     // if (moment(timeSlot.start).toDate() < moment().toDate()) {
     if (moment(timeSlot.start).isBefore(moment())) {
         alert('Älä varaa aikaa menneisyydestä!');
@@ -229,13 +229,14 @@ function timeIsValid(timeSlot, reservations) {
     }
 
     for (let res of reservations) {
+      if(sidebarMod === true) {
         if ((moment(timeSlot.end).isAfter(res.start) && moment(timeSlot.end).isSameOrBefore(res.end)) ||
             (moment(timeSlot.start).isSameOrAfter(res.start) && moment(timeSlot.start).isBefore(res.end)) ||
             (moment(timeSlot.start).isSameOrBefore(res.start) && moment(timeSlot.end).isSameOrAfter(res.end))) {
             alert("Et voi varata jo varattua aikaa");
             return false;
         }
-    }
+    }}
     return true;
 }
 

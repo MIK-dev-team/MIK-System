@@ -1,7 +1,6 @@
 class Reservation < ApplicationRecord
   include Wisper::Publisher
   belongs_to :plane
-  belongs_to :user
 
   after_destroy :publish_reservation_destroyed, on: :destroy
 
@@ -27,20 +26,20 @@ class Reservation < ApplicationRecord
   end
 
   def overlap_error
-    errors.add(:aika, 'on jo varattu')
+    errors.add(:overlap_error, 'Kyseinen aika on jo varattu')
   end
 
   def start_date_before_end_date
     if self.start > self.end
-      errors.add(:end, 'tulee olla aloituksen jälkeen')
+      errors.add(:start_date_before_end_date, 'Lopetuksen pitää olla aloituksen jälkeen')
     end
   end
 
   def as_json(options={})
-    super(only: [:id, :start, :end, :reservation_type, :additional_info],
+    super(only: [:id, :start, :end, :reservation_type],
           include: {
               plane: {only: [:id, :name]},
-              user: {only: [:id, :full_name]}
+              # user: {only: [:id, :full_name]}
           }
     )
   end
@@ -48,6 +47,5 @@ class Reservation < ApplicationRecord
   private
     def publish_reservation_destroyed
       broadcast(:reservation_destroyed, self)
-      broadcast(:reservation_destroyed_for_log, self, false)
     end
 end

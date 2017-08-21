@@ -56,7 +56,7 @@ export class CancellationForm extends React.Component {
 
     render() {
         return (
-            <Panel header={<h3>Peru varaukset</h3>}>
+            <Panel bsStyle="danger" header={<h3>Peru varaukset</h3>}>
                 <form onSubmit={(event) => this.props.dispatch(massDestroyReservation(event, this.props.start, this.props.end, this.props.selectedPlane, description))}>
                     <FormGroup controlId="1">
                         <ControlLabel>Alkaen (pvm)</ControlLabel>

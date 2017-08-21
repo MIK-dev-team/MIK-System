@@ -53,7 +53,7 @@ class Api::V1::ReservationsController < ApiController
       r.destroy
     end
 
-    render json: { status: :no_content }
+    render json: {}, status: :no_content
 
   end
 

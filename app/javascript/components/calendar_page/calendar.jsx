@@ -21,7 +21,7 @@ export class Calendar extends React.Component {
         if (this.props.notifierMode) {
             this.props.dispatch(selectTimeForNotifier(timeSlot, this.props.reservations));
         } else {
-            this.props.dispatch(fillForm(timeSlot, this.props.reservations));
+            this.props.dispatch(fillForm(timeSlot, this.props.reservations, this.props.sidebarMod));
         }
     }
 
