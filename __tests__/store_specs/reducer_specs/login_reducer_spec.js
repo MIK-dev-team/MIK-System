@@ -15,11 +15,13 @@ describe('Login Reducer', () => {
         expect(reducer(undefined, {})).toEqual(initialState)
     });
 
-    // it('should handle SUBMIT_LOGIN correctly', () => {
-    //     expect(
-    //         reducer(undefined, {type: "SUBMIT_LOGIN"})
-    //     ).toEqual({...initialState, isLoginSuccess: true})
-    // });
+    it('should handle SUBMIT_LOGIN correctly', () => {
+        expect(
+            reducer(undefined, {type: "SUBMIT_LOGIN", payload: { id: 1 }})
+        ).toEqual({
+            ...initialState,
+            isLoginSuccess: true, user_id: 1})
+    });
 
     it('should handle USERNAME_CHANGED correctly', () => {
         const un = "someusername"

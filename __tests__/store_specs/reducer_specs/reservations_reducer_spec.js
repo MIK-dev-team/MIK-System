@@ -196,4 +196,56 @@ describe('Reservations reducer', () => {
             reservations: reservations,
         })
     });
+
+    it("should handle TOGGLE_SIDEBARMOD when given 1 as payload correctly", () => {
+        const payload = 1;
+        expect(
+            reducer(undefined, {type: "TOGGLE_SIDEBARMOD", payload: payload})
+        ).toEqual({
+            ...initialState,
+            sidebarMod: true,
+        });
+    });
+
+    it("should handle TOGGLE_SIDEBARMOD when not given 1 as payload correctly", () => {
+        const payload = 'something else';
+        expect(
+            reducer(undefined, {type: "TOGGLE_SIDEBARMOD", payload: payload})
+        ).toEqual({
+            ...initialState,
+            sidebarMod: false,
+        });
+    });
+
+    it('should handle MASS_DESTROY_RESERVATION_PENDING correctly', () => {
+        expect(
+            reducer(undefined, {type: "MASS_DESTROY_RESERVATION_PENDING"})
+        ).toEqual({
+            ...initialState,
+            sending: true,
+        })
+    });
+
+
+    it('should handle MASS_DESTROY_RESERVATION_REJECTED correctly', () => {
+        const payload = "Some sorta error?";
+        expect(
+            reducer(undefined, {type: "MASS_DESTROY_RESERVATION_REJECTED",
+                payload: payload})
+        ).toEqual({
+            ...initialState,
+            sending: false,
+            submitError: "Some sorta error?",
+        })
+    });
+
+    it('should handle MASS_DESTROY_RESERVATION_FULFILLED correctly', () => {
+        expect(
+            reducer(undefined, {type: "MASS_DESTROY_RESERVATION_FULFILLED"})
+        ).toEqual({
+            ...initialState,
+            sending: false,
+            sent: true,
+        })
+    });
 });

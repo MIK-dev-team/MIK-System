@@ -5,12 +5,14 @@ import React from 'react';
 import { Nav, NavItem, Navbar, Grid, Jumbotron } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
+import { logOutAndRedirect } from "../../store/actions/loginActions";
+
 export class MenuBar extends React.Component {
     settingsBar() {
         if (this.props.logged) {
             return (
                 <Nav bsStyle="tabs" pullRight>
-                    <NavItem data-method="delete" href="/api/v1/logout">Kirjaudu ulos</NavItem>
+                    <NavItem onClick={() => this.props.dispatch(logOutAndRedirect())}>Kirjaudu ulos</NavItem>
                 </Nav>
             )
         } else {

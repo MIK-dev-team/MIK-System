@@ -6,6 +6,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
 import { MenuBar } from "../../../app/javascript/components/menu_bar/menu_bar";
+import * as loginActions from '../../../app/javascript/store/actions/loginActions';
 
 let menu, goToStub;
 describe('MenuBar', () => {
@@ -81,8 +82,22 @@ describe('MenuBar', () => {
 
         // third NavItem is a test button to see how the bar looks
         it('has correct props on logout NavItem', () => {
-            expect(menu.find('NavItem').at(3).props().href).toEqual('/api/v1/logout');
             expect(menu.find('NavItem').at(3).props().children).toEqual('Kirjaudu ulos');
         });
+
+        it('dispatches correct action when pressing logout button', () => {
+            const dispatchSpy = sinon.spy(),
+                logOutStub = sinon.stub(loginActions, 'logOutAndRedirect');
+            menu.setProps({dispatch: dispatchSpy});
+            menu.update();
+
+            expect(dispatchSpy.notCalled).toBe(true);
+            expect(logOutStub.notCalled).toBe(true);
+            menu.find('NavItem').at(3).simulate('click');
+            expect(dispatchSpy.calledOnce).toBe(true);
+            expect(logOutStub.calledOnce).toBe(true);
+            expect(logOutStub.calledWithExactly()).toBe(true)
+            logOutStub.restore();
+        })
     });
 });
