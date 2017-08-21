@@ -103,6 +103,34 @@ export function destroyReservation(res) {
     }
 }
 
+export function massDestroyReservation(event, start, end, plane, desc) {
+    event.preventDefault();
+
+    const cancellation = {
+        start: moment(start).toDate(),
+        end: moment(end).toDate(),
+        plane_id: plane.id,
+        description: desc,
+    };
+
+    return function(dispatch) {
+        dispatch({type: "MASS_DESTROY_RESERVATION_PENDING"});
+        AjaxService.post(
+            '/api/v1/joukkoperu/',
+            cancellation,
+            (status, data) => {
+                dispatch({type: "MASS_DESTROY_RESERVATION_FULFILLED"});
+                dispatch({type: "SET_SUCCESS", payload: { header: 'Varaukset poistettu!', text: '' }});
+                dispatch(fetchReservations());
+            },
+            (status, err) => {
+                dispatch({type: "MASS_DESTROY_RESERVATION_REJECTED", payload: err})
+                dispatch({type: "SET_ERROR", payload: { header: 'Poistovirhe', data: err } });
+            }
+        );
+    }
+}
+
 export function setType(event) {
     return (dispatch) => {
         dispatch({type: "SET_TYPE", payload: event.target.value});
@@ -112,6 +140,12 @@ export function setType(event) {
 export function setCollapsed(prev) {
     return (dispatch) => {
         dispatch({type: "SET_COLLAPSED", payload: !prev})
+    }
+}
+
+export function setSidebarMod(newSelect) {
+    return (dispatch) => {
+        dispatch({type: "TOGGLE_SIDEBARMOD", payload: newSelect })
     }
 }
 

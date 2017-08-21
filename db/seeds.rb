@@ -20,4 +20,4 @@ end
 # Reservation.create reservation_type: "1", start: "2017-06-17 15:42:00+03:00", end: "2017-06-18 15:42:00+03:00", user_id: 3, plane_id: 3
 # Reservation.create reservation_type: "1", start: "2017-06-19 15:42:00+03:00", end: "2017-06-20 15:42:00+03:00", user_id: 2, plane_id: 1
 # pw: robinsucks
-User.create email: "batman@waynecorp.com", password_digest: "$2a$06$4RZIyWX9mJh8KKIofYRT.ObMjddsrGQPkwMjeLoGEWG2SXL4sn9d."
+User.create email: "batman@waynecorp.com", password_digest: "$2a$06$4RZIyWX9mJh8KKIofYRT.ObMjddsrGQPkwMjeLoGEWG2SXL4sn9d.", username: "batman"

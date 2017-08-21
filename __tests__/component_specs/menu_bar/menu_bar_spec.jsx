@@ -81,7 +81,7 @@ describe('MenuBar', () => {
 
         // third NavItem is a test button to see how the bar looks
         it('has correct props on logout NavItem', () => {
-            expect(menu.find('NavItem').at(3).props().href).toEqual('/logout');
+            expect(menu.find('NavItem').at(3).props().href).toEqual('/api/v1/logout');
             expect(menu.find('NavItem').at(3).props().children).toEqual('Kirjaudu ulos');
         });
     });

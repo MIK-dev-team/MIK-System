@@ -70,7 +70,7 @@ RSpec.describe 'Reservation listing page', js: true do
   private
   def log_in
     visit '/kirjaudu'
-    fill_in 'Sähköposti', with: 'asdf@asdf.fi'
+    fill_in 'Käyttäjätunnus/Sähköposti', with: 'asdf@asdf.fi'
     fill_in 'Salasana', with: 'salasana1'
     click_button 'Kirjaudu'
     expect(page).to have_content 'Olet kirjautunut sisään!'

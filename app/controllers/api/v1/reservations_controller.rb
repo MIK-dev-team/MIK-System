@@ -45,6 +45,18 @@ class Api::V1::ReservationsController < ApiController
     end
   end
 
+  def mass_destroy
+    range = Range.new params[:start], params[:end]
+    reservations = Reservation.where(plane_id: params[:plane_id]).in_range(range)
+
+    reservations.each do |r|
+      r.destroy
+    end
+
+    render json: { status: :no_content }
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_reservation

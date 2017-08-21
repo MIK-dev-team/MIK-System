@@ -10,7 +10,7 @@ export class MenuBar extends React.Component {
         if (this.props.logged) {
             return (
                 <Nav bsStyle="tabs" pullRight>
-                    <NavItem data-method="delete" href="/logout">Kirjaudu ulos</NavItem>
+                    <NavItem data-method="delete" href="/api/v1/logout">Kirjaudu ulos</NavItem>
                 </Nav>
             )
         } else {

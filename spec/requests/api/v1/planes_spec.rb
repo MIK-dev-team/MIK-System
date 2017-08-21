@@ -55,6 +55,6 @@ RSpec.describe 'Planes API' do
 
   private
   def login
-    post kirjaudu_path, params: {email: user.email, password: 'salasana1'}
+    post api_v1_kirjaudu_path, params: {email: user.email, password: 'salasana1'}
   end
 end

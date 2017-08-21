@@ -1,20 +1,17 @@
 import React from 'react';
 import moment from 'moment'
-import DatePicker from 'react-bootstrap-date-picker';
+import DatePicker from 'react-datepicker';
 import TimePicker from 'react-bootstrap-time-picker';
 import { Panel, FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { submitReservation, setType, setReservationStart, setReservationEnd, changeStartTime, changeEndTime } from '../../store/actions/reservationsActions';
+import { submitReservation, setReservationStart, setReservationEnd, changeStartTime, changeEndTime, massDestroyReservation } from '../../store/actions/reservationsActions';
 import { selectPlane } from "../../store/actions/planesActions";
 
 moment.locale('fi');
-const months = ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu',
-        'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'],
-    days = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'];
 
 let description;
-export class ReservationForm extends React.Component {
+export class CancellationForm extends React.Component {
     constructor() {
         super();
         this.handlePlaneChange = this.handlePlaneChange.bind(this)
@@ -57,33 +54,20 @@ export class ReservationForm extends React.Component {
         )
     }
 
-    normalizeDatePicker(value) {
-        if (value === "") {
-            return ""
-        }
-        const timeInSeconds = moment.duration(moment(this.props.start).format('HH:mm')).asSeconds();
-        return moment(value).startOf('day').add(timeInSeconds, 'seconds').format();
-    }
-
     render() {
         return (
-            <Panel header={<h3>Tee varaus</h3>}>
-                <form onSubmit={(event) => this.props.dispatch(submitReservation(event, this.props.start, this.props.end, this.props.selectedPlane, this.props.reservation_type, description))}>
+            <Panel header={<h3>Peru varaukset</h3>}>
+                <form onSubmit={(event) => this.props.dispatch(massDestroyReservation(event, this.props.start, this.props.end, this.props.selectedPlane, description))}>
                     <FormGroup controlId="1">
-                        <ControlLabel>Lennon alkupäivä</ControlLabel>
+                        <ControlLabel>Alkaen (pvm)</ControlLabel>
                         <DatePicker
                             id="startDate"
-                            value={this.normalizeDatePicker(this.props.start)}
+                            selected={moment(this.props.start)}
                             onChange={(date) => this.props.dispatch(setReservationStart(date, this.props.reservations))}
-                            dateFormat={'DD.MM.YYYY'}
-                            showClearButton={false}
-                            dayLabels={days}
-                            monthLabels={months}
-                            weekStartsOn={1}
-                            placeholder="Aloituspäivämäärä" />
+                        />
                     </FormGroup>
                     <FormGroup controlId="startTime">
-                        <ControlLabel>Lennon alkuaika</ControlLabel>
+                        <ControlLabel>Alkaen (klo)</ControlLabel>
                         <TimePicker
                             id="startTime"
                             value={this.formatTime(this.props.start)}
@@ -92,20 +76,15 @@ export class ReservationForm extends React.Component {
                         />
                     </FormGroup>
                     <FormGroup controlId="2">
-                        <ControlLabel>Lennon loppupäivä</ControlLabel>
+                        <ControlLabel>Päättyen (pvm)</ControlLabel>
                         <DatePicker
                             id="endDate"
-                            value={this.normalizeDatePicker(this.props.end)}
+                            selected={moment(this.props.end)}
                             onChange={(date) => this.props.dispatch(setReservationEnd(date, this.props.reservations))}
-                            dateFormat={'DD.MM.YYYY'}
-                            showClearButton={false}
-                            dayLabels={days}
-                            monthLabels={months}
-                            weekStartsOn={1}
-                            placeholder="Lopetuspäivämäärä" />
+                        />
                     </FormGroup>
                     <FormGroup controlId="endTime">
-                        <ControlLabel>Lennon loppuaika</ControlLabel>
+                        <ControlLabel>Päättyen (klo)</ControlLabel>
                         <TimePicker
                             id="endTime"
                             value={this.formatTime(this.props.end)}
@@ -117,18 +96,11 @@ export class ReservationForm extends React.Component {
                         <ControlLabel>Lentokone</ControlLabel>
                         {this.createPlaneSelect()}
                     </FormGroup>
-                    <FormGroup id="selectType" controlId="selectType">
-                        <ControlLabel>Lennon tyyppi</ControlLabel>
-                        <FormControl componentClass="select" value={this.props.reservation_type} onChange={(event) => this.props.dispatch(setType(event))}>
-                            <option value="opetus">Opetuslento</option>
-                            <option value="harraste">Harrastelento</option>
-                        </FormControl>
-                    </FormGroup>
                     <FormGroup controlId="setDesc">
-                        <ControlLabel>Lisätietoja</ControlLabel>
+                        <ControlLabel>Perumisen syy</ControlLabel>
                         <FormControl componentClass="textarea" onChange={(event) => description = event.target.value} />
                     </FormGroup>
-                    <Button type="submit">Tee varaus</Button>
+                    <Button type="submit">Peru varaukset</Button>
                 </form>
             </Panel>
         )
@@ -144,4 +116,4 @@ export default connect((store) => {
         planes: store.planes.planes,
         reservations: store.reservations.reservations,
     }
-})(ReservationForm)
+})(CancellationForm)
