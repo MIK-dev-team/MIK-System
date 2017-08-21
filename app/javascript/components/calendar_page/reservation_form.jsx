@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment'
-import DatePicker from 'react-datepicker';
+import DatePicker from 'react-bootstrap-date-picker';
 import TimePicker from 'react-bootstrap-time-picker';
 import { Panel, FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -9,6 +9,9 @@ import { submitReservation, setType, setReservationStart, setReservationEnd, cha
 import { selectPlane } from "../../store/actions/planesActions";
 
 moment.locale('fi');
+const months = ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu',
+        'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'],
+    days = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'];
 
 let description;
 export class ReservationForm extends React.Component {
@@ -54,6 +57,14 @@ export class ReservationForm extends React.Component {
         )
     }
 
+    normalizeDatePicker(value) {
+        if (value === "") {
+            return ""
+        }
+        const timeInSeconds = moment.duration(moment(this.props.start).format('HH:mm')).asSeconds();
+        return moment(value).startOf('day').add(timeInSeconds, 'seconds').format();
+    }
+
     render() {
         return (
             <Panel header={<h3>Tee varaus</h3>}>
@@ -62,9 +73,14 @@ export class ReservationForm extends React.Component {
                         <ControlLabel>Lennon alkupäivä</ControlLabel>
                         <DatePicker
                             id="startDate"
-                            selected={moment(this.props.start)}
+                            value={this.normalizeDatePicker(this.props.start)}
                             onChange={(date) => this.props.dispatch(setReservationStart(date, this.props.reservations))}
-                        />
+                            dateFormat={'DD.MM.YYYY'}
+                            showClearButton={false}
+                            dayLabels={days}
+                            monthLabels={months}
+                            weekStartsOn={1}
+                            placeholder="Aloituspäivämäärä" />
                     </FormGroup>
                     <FormGroup controlId="startTime">
                         <ControlLabel>Lennon alkuaika</ControlLabel>
@@ -79,9 +95,14 @@ export class ReservationForm extends React.Component {
                         <ControlLabel>Lennon loppupäivä</ControlLabel>
                         <DatePicker
                             id="endDate"
-                            selected={moment(this.props.end)}
+                            value={this.normalizeDatePicker(this.props.end)}
                             onChange={(date) => this.props.dispatch(setReservationEnd(date, this.props.reservations))}
-                        />
+                            dateFormat={'DD.MM.YYYY'}
+                            showClearButton={false}
+                            dayLabels={days}
+                            monthLabels={months}
+                            weekStartsOn={1}
+                            placeholder="Lopetuspäivämäärä" />
                     </FormGroup>
                     <FormGroup controlId="endTime">
                         <ControlLabel>Lennon loppuaika</ControlLabel>

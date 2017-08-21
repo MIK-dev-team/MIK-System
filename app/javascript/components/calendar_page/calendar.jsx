@@ -25,8 +25,9 @@ export class Calendar extends React.Component {
     }
 
     convertReservationsToCalendarEvents() {
-        let newArray = [];
-        for (let res of this.props.reservations) {
+        let i, newArray = [];
+        for (i = 0; i < this.props.reservations.length; i++) {
+            let res = this.props.reservations[i];
             newArray.push({
                 id: res.id,
                 title: res.reservation_type,
@@ -34,7 +35,7 @@ export class Calendar extends React.Component {
                 end: moment(res.end).toDate(),
                 reservation_type: res.reservation_type,
                 additional_info: res.additional_info
-            })
+            });
         }
         return newArray;
     }
