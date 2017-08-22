@@ -5,7 +5,7 @@ class Api::V1::AuthController < ApiController
       session[:user_id] = user.id
       render json: user
     else
-      response = {:success => false}
+      response = {success: false}
       render :json => response, :status => 401
     end
   end

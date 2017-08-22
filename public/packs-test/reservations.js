@@ -85460,8 +85460,8 @@ function changeEndTime(time, previousTime, reservations) {
     };
 }
 
-function fillForm(timeSlot, reservations) {
-    if (!timeIsValid(timeSlot, reservations)) {
+function fillForm(timeSlot, reservations, sidebarMod) {
+    if (!timeIsValid(timeSlot, reservations, sidebarMod)) {
         return reservations;
     }
     var newArray = refreshReservationList(timeSlot, reservations);
@@ -85540,7 +85540,7 @@ function mapReservations(reservations, dispatch) {
 
 // --- LOCAL FUNCTIONS HERE ---
 
-function timeIsValid(timeSlot, reservations) {
+function timeIsValid(timeSlot, reservations, sidebarMod) {
     if ((0, _moment2.default)(timeSlot.start).isBefore((0, _moment2.default)())) {
         alert('Älä varaa aikaa menneisyydestä!');
         return false;
@@ -85554,9 +85554,11 @@ function timeIsValid(timeSlot, reservations) {
         for (var _iterator = reservations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             var res = _step.value;
 
-            if (res.reservation_type !== 'selected' && res.reservation_type !== 'observer' && ((0, _moment2.default)(timeSlot.end).isAfter(res.start) && (0, _moment2.default)(timeSlot.end).isSameOrBefore(res.end) || (0, _moment2.default)(timeSlot.start).isSameOrAfter(res.start) && (0, _moment2.default)(timeSlot.start).isBefore(res.end) || (0, _moment2.default)(timeSlot.start).isSameOrBefore(res.start) && (0, _moment2.default)(timeSlot.end).isSameOrAfter(res.end))) {
-                alert("Et voi varata jo varattua aikaa");
-                return false;
+            if (sidebarMod === true) {
+                if (res.reservation_type !== 'selected' && res.reservation_type !== 'observer' && ((0, _moment2.default)(timeSlot.end).isAfter(res.start) && (0, _moment2.default)(timeSlot.end).isSameOrBefore(res.end) || (0, _moment2.default)(timeSlot.start).isSameOrAfter(res.start) && (0, _moment2.default)(timeSlot.start).isBefore(res.end) || (0, _moment2.default)(timeSlot.start).isSameOrBefore(res.start) && (0, _moment2.default)(timeSlot.end).isSameOrAfter(res.end))) {
+                    alert("Et voi varata jo varattua aikaa");
+                    return false;
+                }
             }
         }
     } catch (err) {
@@ -93809,7 +93811,7 @@ var Calendar = exports.Calendar = function (_React$Component) {
             if (this.props.notifierMode) {
                 this.props.dispatch((0, _notifiersActions.selectTimeForNotifier)(timeSlot, this.props.reservations));
             } else {
-                this.props.dispatch((0, _reservationsActions.fillForm)(timeSlot, this.props.reservations));
+                this.props.dispatch((0, _reservationsActions.fillForm)(timeSlot, this.props.reservations, this.props.sidebarMod));
             }
         }
     }, {
@@ -94271,7 +94273,7 @@ var CancellationForm = exports.CancellationForm = function (_React$Component) {
 
             return _react2.default.createElement(
                 _reactBootstrap.Panel,
-                { header: _react2.default.createElement(
+                { bsStyle: 'danger', header: _react2.default.createElement(
                         'h3',
                         null,
                         'Peru varaukset'
