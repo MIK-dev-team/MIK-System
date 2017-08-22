@@ -14,23 +14,20 @@ describe('Login page', () => {
         expect(page.find('Grid').length).toEqual(1);
     });
 
-    it('has Jumbotron', () => {
-        expect(page.find('Jumbotron').length).toEqual(1);
+    it('has PageHeader', () => {
+        expect(page.find('PageHeader').length).toEqual(1);
     });
 
     it('has correct h1 header', () => {
-        expect(page.find('Jumbotron > h1').text()).toEqual('Kirjaudu sisään');
+        expect(page.find('PageHeader').props().children).toEqual('Kirjaudu sisään');
     });
 
     it('has LoginForm', () => {
         expect(page.find('Connect(LoginForm)').length).toEqual(1);
     });
 
-    it('has Jumbotron with correct style', () => {
-        expect(page.find('Jumbotron').props().style).toEqual({'borderRadius': '0px'})
-    });
-
     it("has correct style for <Col>", () => {
-        expect(page.find('Col').props().style).toEqual({'float': 'none', 'margin': '0 auto'})
+        expect(page.find('Col').first().props().style).toEqual({'float': 'none', 'margin': '0 auto'})
+        expect(page.find('Col').last().props().style).toEqual({'float': 'none', 'margin': '0 auto'})
     });
 });

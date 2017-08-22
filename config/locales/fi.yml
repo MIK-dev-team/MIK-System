@@ -1,12 +1,32 @@
 fi:
   activerecord:
+    errors:
+      models:
+        availability_notifier:
+          attributes:
+            plane:
+              required: 'ei voi olla tyhjä'
+        reservation:
+          attributes:
+            plane:
+              required: 'ei voi olla tyhjä'
     attributes:
+      reservation:
+        plane: 'Lentokone'
+        reservation_type: 'Varauksen tyyppi'
+        start: 'Alku'
+        end: 'Loppu'
       membership_application:
         username: "Käyttäjänimi"
         email: "Sähköpostiosoite"
-        member_type: ""
+        member_type: "Jäsenyyden tyyppi"
         full_name: "Nimi"
-        birthday: "syntymäpäivä"
+        birthday: "Syntymäpäivä"
+        phone: 'Puhelinnumero'
         city: "Kaupunki"
         postal_code: "Postinumero"
         address: "Osoite"
+      availability_notifier:
+        start: 'Alku'
+        end: 'Loppu'
+        plane: 'Lentokone'

@@ -11,8 +11,6 @@ const initialState = {
     ],
     sending: false,
     sent: false,
-    successMsg: null,
-    submitError: null,
 
     username: "",
     email: "",

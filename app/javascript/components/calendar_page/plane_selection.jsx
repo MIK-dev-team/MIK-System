@@ -14,7 +14,7 @@ export class PlaneSelection extends React.Component {
         } else {
             return this.props.planes.map((plane) =>
                 <Button key={plane.id} onClick={() => this.props.dispatch(selectPlane(plane))}
-                        className={(this.props.selectedPlane === plane.id) ? "active" : ""}>
+                        className={this.props.selectedPlane === plane.id ? "active" : ""}>
                     {plane.name}
                 </Button>
             )
@@ -25,9 +25,12 @@ export class PlaneSelection extends React.Component {
         return (
             <Col md={6}>
                 <ButtonToolbar>
-                    <ButtonGroup bsSize="large">
+                    <ButtonGroup bsSize="md">
                         {this.mapPlanesToButtons()}
-                        <Button onClick={() => this.props.dispatch(selectPlane())} className={(this.props.selectedPlane === undefined) ? "active" : ""}>Näytä kaikki</Button>
+                        <Button onClick={() => this.props.dispatch(selectPlane())}
+                                className={(this.props.selectedPlane === undefined) ? "active" : ""}>
+                            Näytä kaikki
+                        </Button>
                     </ButtonGroup>
                 </ButtonToolbar>
             </Col>

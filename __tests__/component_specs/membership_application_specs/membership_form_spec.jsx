@@ -57,7 +57,7 @@ describe("Membership form", () => {
 
     it("contains correct amount of glyphicons that signal mandatory fields", () => {
         expect(form.find('Glyphicon').length).toEqual(9);
-    })
+    });
 
     it("contains correct options for selecting member_type", () => {
         expect(form.find('option').first().text()).toEqual("** Valitse jäsenlaji **");
@@ -181,38 +181,6 @@ describe("Membership form", () => {
         form.findWhere(n => n.prop('controlId') === 'silNumber').find('FormControl').simulate('change', { target: {value: 'a'} });
         form.findWhere(n => n.prop('controlId') === 'additionalInfo').find('FormControl').simulate('change', { target: {value: 'a'} });
         expect(spy.callCount).toEqual(17);
-    });
-
-    it('sets success msg correctly when one exists', () => {
-        expect(form.find('Alert').length).toEqual(0);
-        form.setProps({successMsg: "Success!"});
-        form.update();
-        expect(form.find('Alert').length).toEqual(1);
-        expect(form.find('Alert > p').text())
-            .toContain('Vahvistussähköposti on lähetetty antamaanne sähköpostiosoitteeseen.');
-        form.setProps({successMsg: null});
-        form.update();
-    });
-
-    it('sets error msg correctly when one exists', () => {
-        form.setProps({submitError: ['Some error']});
-        form.update();
-        expect(form.find('Alert').length).toEqual(1);
-        expect(form.find('Alert > p').text())
-            .toContain('Some error');
-        form.setProps({submitError: null});
-        form.update();
-    });
-
-    it('shows all error msgs correctly when there are several', () => {
-        form.setProps({submitError: ['Some error', 'Another error']});
-        form.update();
-        expect(form.find('Alert').length).toEqual(1);
-        expect(form.find('Alert > p').length).toEqual(2);
-        expect(form.find('Alert > p').first().text()).toEqual('Some error');
-        expect(form.find('Alert > p').at(1).text()).toEqual('Another error');
-        form.setProps({submitError: null});
-        form.update();
     });
 
     describe('calls correct function inside dispatch', () => {

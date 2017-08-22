@@ -6,6 +6,27 @@ import moment from 'moment';
 import { fetchReservations } from "./reservationsActions"
 import AjaxService from '../../services/ajax_service';
 
+export function fetchNotifiers(user=undefined) {
+    user = { id: 1 }; // TODO: remove this when user is supported. allow user to be undefied only for admin
+    let route = '/api/v1/notifiers';
+    if (user !== undefined) {
+        route = `api/v1/user/${user.id}/notifiers`;
+    }
+    return function(dispatch) {
+        dispatch({type: "FETCH_NOTIFIERS_PENDING"});
+        AjaxService.get(
+            route,
+            (status, data) => {
+                dispatch({type: "FETCH_NOTIFIERS_FULFILLED", payload: data});
+            },
+            (status, err) => {
+                dispatch({type: "FETCH_NOTIFIERS_REJECTED", payload: err});
+                dispatch({type: "SET_ERROR", payload: { header: 'Tapahtui virhe hakiessa tarkkailijoita tietokannasta', data: [] } });
+            }
+        );
+    }
+}
+
 export function selectTimeForNotifier(timeSlot, reservations) {
     if (!timeIsValid(timeSlot)) {
         return reservations;
@@ -33,10 +54,12 @@ export function submitNotifier(event, notifier) {
             (status, data) => {
                 dispatch({type: "SUBMIT_NOTIFIER_FULFILLED"});
                 dispatch({type: "RESET_NOTIFIER"});
+                dispatch({type: "SET_SUCCESS", payload: { header: 'Tarkkailija luotu!', text: '' }});
                 dispatch(fetchReservations())
             },
             (status, err) => {
                 dispatch({type: "SUBMIT_NOTIFIER_REJECTED", payload: err});
+                dispatch({type: "SET_ERROR", payload: { header: 'Lähetysvirhe', data: err } });
             }
         );
     }
@@ -68,7 +91,7 @@ export function setNotifierType(type) {
 
 // --- LOCAL FUNCTIONS ---
 function timeIsValid(timeSlot) {
-    if (timeSlot.start < new Date()) {
+    if (moment(timeSlot.start).isBefore(moment())) {
         alert('Älä tarkkaile menneisyyttä!');
         return false;
     }

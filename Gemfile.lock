@@ -54,6 +54,7 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-bootstrap-datepicker (0.1.1)
     cliver (0.3.2)
     concurrent-ruby (1.0.5)
     database_cleaner (1.6.1)
@@ -200,6 +201,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   byebug
   capybara (~> 2.13)
+  capybara-bootstrap-datepicker
   database_cleaner
   factory_girl_rails
   listen (>= 3.0.5, < 3.2)
@@ -221,4 +223,4 @@ DEPENDENCIES
   wisper (= 2.0.0)
 
 BUNDLED WITH
-   1.15.2
+   1.15.3

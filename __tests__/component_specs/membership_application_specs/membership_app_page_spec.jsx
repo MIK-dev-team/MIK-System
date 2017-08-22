@@ -18,26 +18,20 @@ describe('Membership Application page', () => {
     });
 
     it('has Jumbotron', () => {
-        expect(page.find('Jumbotron').length).toEqual(1);
+        expect(page.find('PageHeader').length).toEqual(1);
     });
 
     it('has correct h1 header', () => {
-        expect(page.find('Jumbotron > h1').text()).toEqual('Liity jäseneksi!');
+        expect(page.find('PageHeader').props().children).toEqual('Liity jäseneksi!');
     });
 
     it('has MembershipForm', () => {
         expect(page.find('Connect(MembershipForm)').length).toEqual(1);
     });
 
-    it('has Jumbotron with correct style', () => {
-        expect(page.find('Jumbotron').props().style).toEqual({'borderRadius': '0px'})
-    });
-
-    it("has correct style for <p> inside jumbotron", () => {
-        expect(page.find('Jumbotron > p').props().style).toEqual({'lineHeight': '25px'});
-    });
-
     it("has correct style for <Col>", () => {
-        expect(page.find('Col').props().style).toEqual({'float': 'none', 'margin': '0 auto'})
+        expect(page.find('Col').first().props().style).toEqual({'float': 'none', 'margin': '0 auto'})
+        expect(page.find('Col').last().props().style).toEqual({'float': 'none', 'margin': '0 auto'})
+
     });
 });

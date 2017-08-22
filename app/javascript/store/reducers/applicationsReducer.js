@@ -11,8 +11,6 @@ export default function reducer(state = {
     membershipTypes: membershipTypes,
     sending: false,
     sent: false,
-    successMsg: null,
-    submitError: null,
 
     // Mandatory fields (for validations)
     username: "",
@@ -207,18 +205,6 @@ export default function reducer(state = {
                     ...state.submitObject,
                     extra_information: action.payload
                 }
-            }
-        }
-        case "SET_SUCCESS_MSG": {
-            return {
-                ...state,
-                successMsg: action.payload
-            }
-        }
-        case "RESET_ERROR_MSG": {
-            return {
-                ...state,
-                submitError: null
             }
         }
     }

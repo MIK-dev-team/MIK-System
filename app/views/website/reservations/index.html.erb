@@ -1,2 +1,2 @@
-<%= react_component 'CalendarIndex', { planes: @planes } %>
+<%= react_component 'CalendarIndex', { planes: @planes, logged: current_user.nil? } %>
 <%= javascript_pack_tag 'reservations' %>

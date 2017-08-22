@@ -1,4 +1,8 @@
 const initialState = {
+    notifiers: [],
+    fetching: false,
+    fetched: false,
+    fetchError: null,
     notifierMode: false,
     submitting: false,
     submitted: false,
@@ -14,6 +18,29 @@ const initialState = {
 export default function reducer(state = initialState, action) {
 
     switch(action.type) {
+        case "FETCH_NOTIFIERS_PENDING": {
+            return {
+                ...state,
+                fetching: true,
+            }
+        }
+        case "FETCH_NOTIFIERS_REJECTED": {
+            return {
+                ...state,
+                fetching: false,
+                fetched: false,
+                fetchError: action.payload,
+            }
+        }
+        case "FETCH_NOTIFIERS_FULFILLED": {
+            return {
+                ...state,
+                fetching:false,
+                fetched: true,
+                notifiers: action.payload,
+            }
+        }
+
         case "SET_NOTIFIER_MODE": {
             return {...state, notifierMode: !state.notifierMode}
         }

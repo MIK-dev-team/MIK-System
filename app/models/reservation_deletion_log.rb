@@ -1,0 +1,2 @@
+class ReservationDeletionLog < ApplicationRecord
+end

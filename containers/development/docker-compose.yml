@@ -13,3 +13,14 @@ services:
       - "3000:3000"
     depends_on:
       - db
+  webpack:
+    build:
+      context: .
+      dockerfile: containers/development/Dockerfile
+    command: ./bin/webpack-dev-server
+    volumes:
+      - .:/mik-system
+    ports:
+      - "8080:8080"
+    depends_on:
+      - web
