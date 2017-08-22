@@ -68,7 +68,7 @@ RSpec.describe 'Membership Application page', js: true do
     click_on('Lähetä hakemus')
 
     check_filling_error
-    expect(page).to have_content 'Valitse jäsenyyden tyyppi'
+    expect(page).to have_content 'Jäsenyyden tyyppi pitää olla valittu'
   end
 
   it 'displays error when email and repeat email do not match when submitting' do

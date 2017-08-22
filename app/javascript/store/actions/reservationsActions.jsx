@@ -6,13 +6,35 @@ import { Button } from 'react-bootstrap';
 import moment from 'moment';
 
 import AjaxService from '../../services/ajax_service';
+import { showModal } from './singleReservationActions';
 
 moment.locale('fi');
 
 export function fetchReservations(plane=undefined) {
     let route = '/api/v1/reservations';
     if (plane !== undefined) {
-        route = `api/v1/planes/${plane.id}/reservations`;
+        route = `/api/v1/planes/${plane.id}/reservations`;
+    }
+    return function(dispatch) {
+        dispatch({type: "FETCH_RESERVATIONS_PENDING"});
+        AjaxService.get(
+            route,
+            (status, data) => {
+                dispatch({type: "FETCH_RESERVATIONS_FULFILLED", payload: data})
+            },
+            (status, err) => {
+                dispatch({type: "FETCH_RESERVATIONS_REJECTED", payload: err})
+            }
+        );
+    }
+}
+
+export function fetchMyReservations(plane=undefined) {
+    let route;
+    if (plane !== undefined) {
+        route = `api/v1/planes/${plane.id}/my_reservations`;
+    } else {
+        route = `api/v1/all_my_reservations`;
     }
     return function(dispatch) {
         dispatch({type: "FETCH_RESERVATIONS_PENDING"});
@@ -42,7 +64,7 @@ export function submitReservation(event, start, end, plane, type, desc) {
         end: moment(end).toDate(),
         plane_id: plane.id,
         reservation_type: type,
-        description: desc,
+        additional_info: desc,
     };
     return function(dispatch) {
         dispatch({type: "SUBMIT_RESERVATION_PENDING"});
@@ -81,6 +103,34 @@ export function destroyReservation(res) {
     }
 }
 
+export function massDestroyReservation(event, start, end, plane, desc) {
+    event.preventDefault();
+
+    const cancellation = {
+        start: moment(start).toDate(),
+        end: moment(end).toDate(),
+        plane_id: plane.id,
+        description: desc,
+    };
+
+    return function(dispatch) {
+        dispatch({type: "MASS_DESTROY_RESERVATION_PENDING"});
+        AjaxService.post(
+            '/api/v1/joukkoperu/',
+            cancellation,
+            (status, data) => {
+                dispatch({type: "MASS_DESTROY_RESERVATION_FULFILLED"});
+                dispatch({type: "SET_SUCCESS", payload: { header: 'Varaukset poistettu!', text: '' }});
+                dispatch(fetchReservations());
+            },
+            (status, err) => {
+                dispatch({type: "MASS_DESTROY_RESERVATION_REJECTED", payload: err})
+                dispatch({type: "SET_ERROR", payload: { header: 'Poistovirhe', data: err } });
+            }
+        );
+    }
+}
+
 export function setType(event) {
     return (dispatch) => {
         dispatch({type: "SET_TYPE", payload: event.target.value});
@@ -90,6 +140,12 @@ export function setType(event) {
 export function setCollapsed(prev) {
     return (dispatch) => {
         dispatch({type: "SET_COLLAPSED", payload: !prev})
+    }
+}
+
+export function setSidebarMod(newSelect) {
+    return (dispatch) => {
+        dispatch({type: "TOGGLE_SIDEBARMOD", payload: newSelect })
     }
 }
 
@@ -127,8 +183,8 @@ export function changeEndTime(time, previousTime, reservations) {
     }
 }
 
-export function fillForm(timeSlot, reservations) {
-    if (!timeIsValid(timeSlot, reservations)) {
+export function fillForm(timeSlot, reservations, sidebarMod) {
+    if (!timeIsValid(timeSlot, reservations, sidebarMod)) {
         return reservations;
     }
     let newArray = refreshReservationList(timeSlot, reservations);
@@ -152,11 +208,11 @@ export function mapReservations(reservations, dispatch) {
     } else {
         return reservations.map((res) =>
             <tr key={res.id}>
-                <td>{res.id}</td>
-                <td>{moment(res.start).format('lll')}</td>
-                <td>{moment(res.end).format('lll')}</td>
-                <td>{res.plane.name}</td>
-                <td>{res.reservation_type}</td>
+                <td onClick={() => dispatch(showModal(res))}>{res.id}</td>
+                <td onClick={() => dispatch(showModal(res))}>{moment(res.start).format('lll')}</td>
+                <td onClick={() => dispatch(showModal(res))}>{moment(res.end).format('lll')}</td>
+                <td onClick={() => dispatch(showModal(res))} >{res.plane.name}</td>
+                <td onClick={() => dispatch(showModal(res))}>{res.reservation_type}</td>
                 <td><Button onClick={() => dispatch(destroyReservation(res))} bsStyle="danger" bsSize="small">Poista</Button></td>
             </tr>
         )
@@ -165,21 +221,22 @@ export function mapReservations(reservations, dispatch) {
 
 // --- LOCAL FUNCTIONS HERE ---
 
-function timeIsValid(timeSlot, reservations) {
-    // if (moment(timeSlot.start).toDate() < moment().toDate()) {
+function timeIsValid(timeSlot, reservations, sidebarMod) {
     if (moment(timeSlot.start).isBefore(moment())) {
         alert('Älä varaa aikaa menneisyydestä!');
         return false;
     }
 
     for (let res of reservations) {
-        if ((moment(timeSlot.end).isAfter(res.start) && moment(timeSlot.end).isSameOrBefore(res.end)) ||
+      if(sidebarMod === true) {
+        if ((res.reservation_type !== 'selected' && res.reservation_type !== 'observer') &&
+            ((moment(timeSlot.end).isAfter(res.start) && moment(timeSlot.end).isSameOrBefore(res.end)) ||
             (moment(timeSlot.start).isSameOrAfter(res.start) && moment(timeSlot.start).isBefore(res.end)) ||
-            (moment(timeSlot.start).isSameOrBefore(res.start) && moment(timeSlot.end).isSameOrAfter(res.end))) {
+            (moment(timeSlot.start).isSameOrBefore(res.start) && moment(timeSlot.end).isSameOrAfter(res.end)))) {
             alert("Et voi varata jo varattua aikaa");
             return false;
         }
-    }
+    }}
     return true;
 }
 

@@ -1,12 +1,14 @@
 import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, Tab, Tabs, Nav, NavItem, NavDropdown, MenuItem, NavBar } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { setCollapsed, fillForm } from '../../store/actions/reservationsActions';
+import { setCollapsed, fillForm , setSidebarMod } from '../../store/actions/reservationsActions';
 import { selectTimeForNotifier } from "../../store/actions/notifiersActions";
+import { showModal } from '../../store/actions/singleReservationActions';
 import ReservationForm from "./reservation_form";
+import CancellationForm from "./cancellation_form";
 
 moment.locale("fi");
 
@@ -19,26 +21,29 @@ export class Calendar extends React.Component {
         if (this.props.notifierMode) {
             this.props.dispatch(selectTimeForNotifier(timeSlot, this.props.reservations));
         } else {
-            this.props.dispatch(fillForm(timeSlot, this.props.reservations));
+            this.props.dispatch(fillForm(timeSlot, this.props.reservations, this.props.sidebarMod));
         }
     }
 
     convertReservationsToCalendarEvents() {
-        let newArray = [];
-        for (let res of this.props.reservations) {
+        let i, newArray = [];
+        for (i = 0; i < this.props.reservations.length; i++) {
+            let res = this.props.reservations[i];
             newArray.push({
+                id: res.id,
                 title: res.reservation_type,
                 start: moment(res.start).toDate(),
                 end: moment(res.end).toDate(),
-                reservation_type: res.reservation_type
-            })
+                reservation_type: res.reservation_type,
+                additional_info: res.additional_info
+            });
         }
         return newArray;
     }
 
     isButtonDisabled() {
-        return this.props.reservations.length !== 0 &&
-            this.props.reservations[this.props.reservations.length-1].reservation_type === 'selected'
+        return !this.props.logged || (this.props.reservations.length !== 0 &&
+            this.props.reservations[this.props.reservations.length-1].reservation_type === 'selected')
     }
 
     toggleCollapse() {
@@ -46,6 +51,14 @@ export class Calendar extends React.Component {
             this.props.dispatch(setCollapsed(this.props.collapsed));
     }
 
+    toggleSidebarMod(eventKey) {
+      if(this.props.sidebarMod && eventKey === 2) {
+        this.props.dispatch(setSidebarMod(2));
+      }
+      if(!this.props.sidebarMod && eventKey === 1) {
+        this.props.dispatch(setSidebarMod(1));
+      }
+    }
 
     // TODO: put this into it's own service/library function etc
     eventStyleGetter(event, start, end, isSelected) {
@@ -89,12 +102,12 @@ export class Calendar extends React.Component {
                 <Row id="row-main">
                     <Col id="content" lg={this.props.collapsed ? 12 : 8} style={{margin: "auto", height: 40 + "vw"}}>
                         <BigCalendar
-                            selectable
+                            selectable={this.props.logged ? true : false}
                             {...this.props}
                             events={this.convertReservationsToCalendarEvents()}
                             defaultView="week"
                             scrollToTime={initTime}
-                            onSelectEvent={(event) => alert("Tehdään tähän vaikka modaali tai muu ikkuna joka kertoo kaikki tiedot", event)}
+                            onSelectEvent={(event) => this.props.dispatch(showModal(event))}
                             onSelectSlot={(timeSlot) => this.selectTimeSlot(timeSlot)}
                             views={["month", "week", "day", "agenda"]}
                             eventPropGetter={this.eventStyleGetter}
@@ -102,7 +115,11 @@ export class Calendar extends React.Component {
                         />
                     </Col>
                     <Col id="sidebar" className={this.props.collapsed ? 'collapsed' : 'col-lg-4'}>
-                        <ReservationForm />
+                      <Nav bsStyle="tabs" onSelect={(eventKey) => this.toggleSidebarMod(eventKey)}>
+                        <NavItem eventKey={1} title="Varaus">Varaus</NavItem>
+                        <NavItem eventKey={2} title="Peruminen">Joukkoperuminen</NavItem>
+                      </Nav>
+                        {this.props.sidebarMod ? <ReservationForm/> : <CancellationForm/>}
                     </Col>
                 </Row>
                 <br />
@@ -124,5 +141,7 @@ export default connect((store) => {
         reservations: store.reservations.reservations,
         resChange: store.reservations.resChange,
         notifierMode: store.notifiers.notifierMode,
+        logged: store.session.loggedIn,
+        sidebarMod: store.reservations.sidebarMod,
     }
 })(Calendar)

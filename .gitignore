@@ -33,6 +33,7 @@
 .rspec
 /public/system
 /public/assets/**
+examples.txt
 
 # Default database schema
 /db/schema.rb

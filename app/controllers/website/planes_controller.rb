@@ -1,15 +1,10 @@
 class Website::PlanesController < ApplicationController
   before_action :set_plane, only: [:show, :reservations]
+  # TODO: possibly a completely useless controller atm, consider deleting
 
-  # GET /reservations/1
-  # GET /reservations/1.json
-  def show
-    @reservations = @plane.reservations
-  end
-
-  def reservations
-    @reservations = @plane.reservations
-  end
+  # def reservations
+  #   @reservations = @plane.reservations
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.
