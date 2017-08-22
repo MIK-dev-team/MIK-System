@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from "enzyme";
 import sinon from 'sinon';
+import moment from 'moment';
 
 import { ReservationForm } from "../../../app/javascript/components/calendar_page/reservation_form";
 import * as reservationActions from '../../../app/javascript/store/actions/reservationsActions';
@@ -81,9 +82,11 @@ describe('Reservation form', () => {
             actionStub = sinon.stub(reservationActions, 'setReservationEnd');
             expect(actionStub.notCalled).toBe(true);
 
-            const changedValue = new Date();
+            const changedValue = moment(moment().format('YYYY-MM-DDTHH:mm')).format();
+            console.log(changedValue)
             form.find('#endDate').simulate('change', changedValue);
-            expect(actionStub.calledWith(changedValue, undefined)).toBe(true);
+            console.log(actionStub.getCall(0).args)
+            expect(actionStub.calledWith(changedValue)).toBe(true);
             expect(dispatchSpy.calledOnce).toBe(true);
             expect(actionStub.calledOnce).toBe(true);
         });

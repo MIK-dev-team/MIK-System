@@ -85062,17 +85062,21 @@ var MembershipAppPage = function (_React$Component) {
                 _reactBootstrap.Grid,
                 null,
                 _react2.default.createElement(
-                    _reactBootstrap.Jumbotron,
-                    { style: styles.jumbo },
+                    _reactBootstrap.Row,
+                    null,
                     _react2.default.createElement(
-                        'h1',
-                        null,
-                        'Liity j\xE4seneksi!'
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        { style: styles.helpSpacing },
-                        'Tervetuloa Malmin Ilmailukerhon ilmailua rakastavien lent\xE4jien ja muiden harrastajien joukkoon! Voit liitty\xE4 kerhomme j\xE4seneksi allaolevalla lomakkeella, lomakkeen l\xE4hetetty\xE4si otamme sinuun l\xE4hip\xE4ivin\xE4 yhteytt\xE4 \u2013 pysy siis kuulolla!'
+                        _reactBootstrap.Col,
+                        { md: 6, style: styles.colCentered },
+                        _react2.default.createElement(
+                            _reactBootstrap.PageHeader,
+                            { className: 'text-center' },
+                            'Liity j\xE4seneksi!'
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Well,
+                            { bsSize: 'large', style: styles.helpSpacing },
+                            'Tervetuloa Malmin Ilmailukerhon ilmailua rakastavien lent\xE4jien ja muiden harrastajien joukkoon! Voit liitty\xE4 kerhomme j\xE4seneksi allaolevalla lomakkeella, lomakkeen l\xE4hetetty\xE4si otamme sinuun l\xE4hip\xE4ivin\xE4 yhteytt\xE4 \u2013 pysy siis kuulolla!'
+                        )
                     )
                 ),
                 _react2.default.createElement(

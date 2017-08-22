@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Row, Col, Jumbotron } from 'react-bootstrap';
+import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
 
 import LoginForm from './login_form';
 
@@ -20,14 +20,16 @@ export default class LoginPage extends React.Component {
     render() {
         return (
             <Grid>
-              <Jumbotron style={styles.jumbo}>
-                <h1>Kirjaudu sisään</h1>
-              </Jumbotron>
-              <Row>
-                <Col lg={6} md={6} sm={6} style={styles.colCentered}>
-                  <LoginForm />
-                </Col>
-              </Row>
+                <Row>
+                    <Col md={6} style={styles.colCentered}>
+                        <PageHeader className="text-center">Kirjaudu sisään</PageHeader>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col lg={6} md={6} sm={6} style={styles.colCentered}>
+                        <LoginForm />
+                    </Col>
+                </Row>
             </Grid>
         )
     }

@@ -84822,7 +84822,6 @@ function mapReservations(reservations, dispatch) {
 // --- LOCAL FUNCTIONS HERE ---
 
 function timeIsValid(timeSlot, reservations) {
-    // if (moment(timeSlot.start).toDate() < moment().toDate()) {
     if ((0, _moment2.default)(timeSlot.start).isBefore((0, _moment2.default)())) {
         alert('Älä varaa aikaa menneisyydestä!');
         return false;
@@ -84836,7 +84835,7 @@ function timeIsValid(timeSlot, reservations) {
         for (var _iterator = reservations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             var res = _step.value;
 
-            if ((0, _moment2.default)(timeSlot.end).isAfter(res.start) && (0, _moment2.default)(timeSlot.end).isSameOrBefore(res.end) || (0, _moment2.default)(timeSlot.start).isSameOrAfter(res.start) && (0, _moment2.default)(timeSlot.start).isBefore(res.end) || (0, _moment2.default)(timeSlot.start).isSameOrBefore(res.start) && (0, _moment2.default)(timeSlot.end).isSameOrAfter(res.end)) {
+            if (res.reservation_type !== 'selected' && res.reservation_type !== 'observer' && ((0, _moment2.default)(timeSlot.end).isAfter(res.start) && (0, _moment2.default)(timeSlot.end).isSameOrBefore(res.end) || (0, _moment2.default)(timeSlot.start).isSameOrAfter(res.start) && (0, _moment2.default)(timeSlot.start).isBefore(res.end) || (0, _moment2.default)(timeSlot.start).isSameOrBefore(res.start) && (0, _moment2.default)(timeSlot.end).isSameOrAfter(res.end))) {
                 alert("Et voi varata jo varattua aikaa");
                 return false;
             }
@@ -85001,7 +85000,8 @@ function refreshReservationList(timeSlot, reservations) {
 /* 874 */,
 /* 875 */,
 /* 876 */,
-/* 877 */
+/* 877 */,
+/* 878 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85158,7 +85158,6 @@ exports.default = (0, _reactRedux.connect)(function (store) {
 })(ReservationModal);
 
 /***/ }),
-/* 878 */,
 /* 879 */,
 /* 880 */,
 /* 881 */,
@@ -85409,7 +85408,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactBootstrap = __webpack_require__(66);
 
-var _reactLoading = __webpack_require__(1146);
+var _reactLoading = __webpack_require__(1145);
 
 var _reactLoading2 = _interopRequireDefault(_reactLoading);
 
@@ -85421,7 +85420,7 @@ var _reservation_table_content = __webpack_require__(997);
 
 var _reservation_table_content2 = _interopRequireDefault(_reservation_table_content);
 
-var _reservation_modal = __webpack_require__(877);
+var _reservation_modal = __webpack_require__(878);
 
 var _reservation_modal2 = _interopRequireDefault(_reservation_modal);
 
@@ -85755,8 +85754,7 @@ _webpackerReact2.default.setup({ ReservationsIndex: _index2.default });
 /* 1142 */,
 /* 1143 */,
 /* 1144 */,
-/* 1145 */,
-/* 1146 */
+/* 1145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {

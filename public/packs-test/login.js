@@ -84500,7 +84500,8 @@ webpackContext.id = 841;
 /* 875 */,
 /* 876 */,
 /* 877 */,
-/* 878 */
+/* 878 */,
+/* 879 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84571,7 +84572,6 @@ function handlePasswordValueChange(event) {
 }
 
 /***/ }),
-/* 879 */,
 /* 880 */,
 /* 881 */,
 /* 882 */,
@@ -84759,7 +84759,7 @@ var _reactRedux = __webpack_require__(25);
 
 var _reactBootstrap = __webpack_require__(66);
 
-var _loginActions = __webpack_require__(878);
+var _loginActions = __webpack_require__(879);
 
 var actions = _interopRequireWildcard(_loginActions);
 
@@ -84942,12 +84942,16 @@ var LoginPage = function (_React$Component) {
                 _reactBootstrap.Grid,
                 null,
                 _react2.default.createElement(
-                    _reactBootstrap.Jumbotron,
-                    { style: styles.jumbo },
+                    _reactBootstrap.Row,
+                    null,
                     _react2.default.createElement(
-                        'h1',
-                        null,
-                        'Kirjaudu sis\xE4\xE4n'
+                        _reactBootstrap.Col,
+                        { md: 6, style: styles.colCentered },
+                        _react2.default.createElement(
+                            _reactBootstrap.PageHeader,
+                            { className: 'text-center' },
+                            'Kirjaudu sis\xE4\xE4n'
+                        )
                     )
                 ),
                 _react2.default.createElement(

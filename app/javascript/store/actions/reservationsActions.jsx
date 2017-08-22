@@ -222,16 +222,16 @@ export function mapReservations(reservations, dispatch) {
 // --- LOCAL FUNCTIONS HERE ---
 
 function timeIsValid(timeSlot, reservations) {
-    // if (moment(timeSlot.start).toDate() < moment().toDate()) {
     if (moment(timeSlot.start).isBefore(moment())) {
         alert('Älä varaa aikaa menneisyydestä!');
         return false;
     }
 
     for (let res of reservations) {
-        if ((moment(timeSlot.end).isAfter(res.start) && moment(timeSlot.end).isSameOrBefore(res.end)) ||
+        if ((res.reservation_type !== 'selected' && res.reservation_type !== 'observer') &&
+            ((moment(timeSlot.end).isAfter(res.start) && moment(timeSlot.end).isSameOrBefore(res.end)) ||
             (moment(timeSlot.start).isSameOrAfter(res.start) && moment(timeSlot.start).isBefore(res.end)) ||
-            (moment(timeSlot.start).isSameOrBefore(res.start) && moment(timeSlot.end).isSameOrAfter(res.end))) {
+            (moment(timeSlot.start).isSameOrBefore(res.start) && moment(timeSlot.end).isSameOrAfter(res.end)))) {
             alert("Et voi varata jo varattua aikaa");
             return false;
         }

@@ -57,12 +57,26 @@ export class ReservationForm extends React.Component {
         )
     }
 
-    normalizeDatePicker(value) {
+    normalizeDatePickerInput(value) {
         if (value === "") {
             return ""
         }
         const timeInSeconds = moment.duration(moment(this.props.start).format('HH:mm')).asSeconds();
         return moment(value).startOf('day').add(timeInSeconds, 'seconds').format();
+    }
+
+    normalizeDatePickerOutput(value, part) {
+        if (value === "") {
+            return ""
+        }
+        const timeInSeconds = moment.duration(moment(this.props.start).format('HH:mm')).asSeconds();
+        const newValue = moment(value).startOf('day').add(timeInSeconds, 'seconds').format();
+
+        if (part === 'start') {
+            this.props.dispatch(setReservationStart(newValue, this.props.reservations))
+        } else if (part === 'end') {
+            this.props.dispatch(setReservationEnd(newValue, this.props.reservations))
+        }
     }
 
     render() {
@@ -73,8 +87,8 @@ export class ReservationForm extends React.Component {
                         <ControlLabel>Lennon alkupäivä</ControlLabel>
                         <DatePicker
                             id="startDate"
-                            value={this.normalizeDatePicker(this.props.start)}
-                            onChange={(date) => this.props.dispatch(setReservationStart(date, this.props.reservations))}
+                            value={this.normalizeDatePickerInput(this.props.start)}
+                            onChange={(date) => this.normalizeDatePickerOutput(date, 'start')}
                             dateFormat={'DD.MM.YYYY'}
                             showClearButton={false}
                             dayLabels={days}
@@ -95,8 +109,8 @@ export class ReservationForm extends React.Component {
                         <ControlLabel>Lennon loppupäivä</ControlLabel>
                         <DatePicker
                             id="endDate"
-                            value={this.normalizeDatePicker(this.props.end)}
-                            onChange={(date) => this.props.dispatch(setReservationEnd(date, this.props.reservations))}
+                            value={this.normalizeDatePickerInput(this.props.end)}
+                            onChange={(date) => this.normalizeDatePickerOutput(date, 'end')}
                             dateFormat={'DD.MM.YYYY'}
                             showClearButton={false}
                             dayLabels={days}
