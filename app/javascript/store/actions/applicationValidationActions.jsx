@@ -4,128 +4,69 @@
 import React from 'react';
 import moment from 'moment';
 
-const validators = {
-    username: usernameIsValid,
-    email: emailIsValid,
-    repeatEmail: repeatEmailIsValid,
-    birthday: birthdayIsValid,
-    fullName: fullNameIsValid,
-    address: addressIsValid,
-    postalCode: postalCodeIsValid,
-    city: cityIsValid,
-    phoneNumber: phoneNumberIsValid,
+export const required = value =>
+    value ? undefined : 'Ei voi olla tyhjä'
+
+export const doesNotContainSpaces = value =>
+    value && value.indexOf(' ') > -1 ? 'Ei voi sisältää välilyöntejä' : undefined
+
+export const isLongerThan8Characters = value =>
+    value && value.length < 8 ? 'Pitää olla enemmän kuin 8 merkkiä pitkä.' : undefined
+
+export const containsAt = value => {
+    let copy = (' ' + value).slice(1);
+    return copy.replace(/[^@]/g, "").length !== 1 ? 'Anna kunnollinen sähköpostiosoite' : undefined
 };
 
-export function validationStateForForm(fieldName, ...fieldValues) {
-    if (fieldValues[0].length === 0) {
-        return null;
-    } else if (validators[fieldName](...fieldValues)) {
-        return 'success'
-    } else {
-        return 'error'
-    }
-}
+export const containsPeriod = value => {
+    let copy = (' ' + value).slice(1);
+    return copy.replace(/[^.]/g, "").length !== 1 ? 'Anna kunnollinen sähköpostiosoite' : undefined
+};
 
-export function allFieldsValid(submitObject, repeat) {
-    return usernameIsValid(submitObject.username) &&
-        emailIsValid(submitObject.email) &&
-        repeatEmailIsValid(submitObject.email, repeat) &&
-        birthdayIsValid(submitObject.birthday) &&
-        fullNameIsValid(submitObject.full_name) &&
-        addressIsValid(submitObject.address) &&
-        postalCodeIsValid(submitObject.postal_code) &&
-        cityIsValid(submitObject.city)
+export const valuesMatch = original => value =>
+    value !== original ? 'Sähköpostiosoitteet eivät täsmää' : undefined
 
-}
-
-function isEmpty(value) {
-    if (value == undefined || value.length == 0) {
-        return false;
-    }
-}
-
-function usernameIsValid(username) {
-    if (username === undefined) {
-        return true
-    }
-    if (username.indexOf(' ') > -1) {
-        return false
-    }
-    if (username.length < 8) {
-        return false;
-    }
-    return true;
-}
-
-function emailIsValid(email) {
-    let copy = (' ' + email).slice(1);
-    if (copy.replace(/[^@]/g, "").length !== 1) {
-        return false;
-    }
-    return true;
-}
-
-function repeatEmailIsValid(email, repeat) {
-    return email == repeat;
-}
-
-function birthdayIsValid(bday) {
-    if (isEmpty(bday)) {
-        return false;
-    }
+const dateFormat = date => {
     let dateFormat1 = "D.M.YYYY",
         dateFormat2 = "D.M.YY",
         correctFormat = null;
-    if (moment(bday, dateFormat1, true).isValid()) {
+    if (moment(date, dateFormat1, true).isValid()) {
         correctFormat = dateFormat1;
-    } else if (moment(bday, dateFormat2, true).isValid()) {
+    } else if (moment(date, dateFormat2, true).isValid()) {
         correctFormat = dateFormat2;
     }
+    return correctFormat;
+};
 
+export const birthdayIsInCorrectFormat = value =>
+    dateFormat(value) === null ? 'Päivämäärä on väärässä muodossa' : undefined
 
-    if (correctFormat === null) {
-        return false;
+export const birthdayIsNotTooOld = value => {
+    const correctFormat = dateFormat(value)
+    if (correctFormat !== null && moment(value, correctFormat).format('YYYY') < 1900) {
+        return 'Syntymäaikasi ei taida olla ennen 1900-lukua'
+    } else {
+        return undefined
     }
-    if (moment(bday, correctFormat).format('YYYY') < 1900) {
-        return false;
-    }
-    if (moment(bday, correctFormat) >= moment()) {
-        return false;
-    }
-    return true;
-}
+};
 
-function fullNameIsValid(name) {
-    if (isEmpty(name)) {
-        return false;
+export const birthdayIsNotInTheFuture = value => {
+    const correctFormat = dateFormat(value)
+    if (correctFormat !== null && moment(value, correctFormat) >= moment()) {
+        return 'Syntymäaikasi ei taida olla ennen 1900-lukua'
+    } else {
+        return undefined
     }
-    return /^[a-zA-ZöäåÖÄÅ ]+$/.test(name);
-}
+};
 
-function addressIsValid(address) {
-    if (isEmpty(address)) {
-        return false;
-    }
-    return true;
-}
+export const nameIsValid = value =>
+    /^[a-zA-ZöäåÖÄÅ' ]+$/.test(value) ? undefined : 'Nimi voi sisältää vain aakkosia, ääkkösiä ja välilyöntejä.'
 
-function postalCodeIsValid(code) {
-    if (isEmpty(code)) {
-        return false;
-    }
-    return /^[0-9]{5}$/.test(code);
-}
+export const postalCodeIsValid = value =>
+    /^[0-9]{5}$/.test(value) ? undefined : 'Postinumerossa pitää olla tasan viisi numeroa'
 
-function cityIsValid(city) {
-    if (isEmpty(city)) {
-        return false;
-    }
-    return /^[a-zA-ZöäåÖÄÅ\- ]+$/.test(city);
-}
+export const cityIsValid = value =>
+    /^[a-zA-ZöäåÖÄÅ\- ]+$/.test(value) ? undefined : 'Tarkista, että kirjoitit kaupungin oikein'
 
-function phoneNumberIsValid(number) {
-    if (isEmpty(number)) {
-        return false;
-    }
-    return /^[0-9\+\-\(\)]+$/.test(number);
-}
+export const phoneNumberIsValid = value =>
+    /^[0-9\+\-\(\) ]+$/.test(value) ? undefined : 'Tarkista, että kirjoitit puhelinnumerosi oikein'

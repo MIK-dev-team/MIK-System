@@ -1,4 +1,4 @@
-webpackJsonp([3],[
+webpackJsonp([2],[
 /* 0 */,
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -7402,7 +7402,7 @@ module.exports = exports["default"];
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(59);
+var isObject = __webpack_require__(60);
 module.exports = function(it){
   if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
@@ -7413,7 +7413,7 @@ module.exports = function(it){
 /***/ (function(module, exports, __webpack_require__) {
 
 // Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(58)(function(){
+module.exports = !__webpack_require__(59)(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
 
@@ -7422,7 +7422,7 @@ module.exports = !__webpack_require__(58)(function(){
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP         = __webpack_require__(43)
-  , createDesc = __webpack_require__(62);
+  , createDesc = __webpack_require__(63);
 module.exports = __webpack_require__(51) ? function(object, key, value){
   return dP.f(object, key, createDesc(1, value));
 } : function(object, key, value){
@@ -7779,248 +7779,6 @@ module.exports = ReactReconciler;
 /***/ }),
 /* 57 */,
 /* 58 */
-/***/ (function(module, exports) {
-
-module.exports = function(exec){
-  try {
-    return !!exec();
-  } catch(e){
-    return true;
-  }
-};
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports) {
-
-module.exports = function(it){
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
-};
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports) {
-
-exports.f = {}.propertyIsEnumerable;
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports) {
-
-module.exports = function(bitmap, value){
-  return {
-    enumerable  : !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable    : !(bitmap & 4),
-    value       : value
-  };
-};
-
-/***/ }),
-/* 63 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSymbol_js__ = __webpack_require__(91);
-
-
-/** Used as references for various `Number` constants. */
-var INFINITY = 1 / 0;
-
-/**
- * Converts `value` to a string key if it's not a string or symbol.
- *
- * @private
- * @param {*} value The value to inspect.
- * @returns {string|symbol} Returns the key.
- */
-function toKey(value) {
-  if (typeof value == 'string' || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__isSymbol_js__["a" /* default */])(value)) {
-    return value;
-  }
-  var result = (value + '');
-  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (toKey);
-
-
-/***/ }),
-/* 64 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/**
- * Performs a
- * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
- * comparison between two values to determine if they are equivalent.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to compare.
- * @param {*} other The other value to compare.
- * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
- * @example
- *
- * var object = { 'a': 1 };
- * var other = { 'a': 1 };
- *
- * _.eq(object, object);
- * // => true
- *
- * _.eq(object, other);
- * // => false
- *
- * _.eq('a', 'a');
- * // => true
- *
- * _.eq('a', Object('a'));
- * // => false
- *
- * _.eq(NaN, NaN);
- * // => true
- */
-function eq(value, other) {
-  return value === other || (value !== value && other !== other);
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (eq);
-
-
-/***/ }),
-/* 65 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_values__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_values___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_values__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_classnames__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_classnames__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_prop_types__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_react_prop_types_lib_elementType__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_react_prop_types_lib_elementType___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_react_prop_types_lib_elementType__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__SafeAnchor__ = __webpack_require__(30);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var propTypes = {
-  active: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
-  disabled: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
-  block: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
-  onClick: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-  componentClass: __WEBPACK_IMPORTED_MODULE_9_react_prop_types_lib_elementType___default.a,
-  href: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.string,
-  /**
-   * Defines HTML button type attribute
-   * @defaultValue 'button'
-   */
-  type: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.oneOf(['button', 'reset', 'submit'])
-};
-
-var defaultProps = {
-  active: false,
-  block: false,
-  disabled: false
-};
-
-var Button = function (_React$Component) {
-  __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default()(Button, _React$Component);
-
-  function Button() {
-    __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck___default()(this, Button);
-
-    return __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.apply(this, arguments));
-  }
-
-  Button.prototype.renderAnchor = function renderAnchor(elementProps, className) {
-    return __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12__SafeAnchor__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, elementProps, {
-      className: __WEBPACK_IMPORTED_MODULE_6_classnames___default()(className, elementProps.disabled && 'disabled')
-    }));
-  };
-
-  Button.prototype.renderButton = function renderButton(_ref, className) {
-    var componentClass = _ref.componentClass,
-        elementProps = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default()(_ref, ['componentClass']);
-
-    var Component = componentClass || 'button';
-
-    return __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(Component, __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, elementProps, {
-      type: elementProps.type || 'button',
-      className: className
-    }));
-  };
-
-  Button.prototype.render = function render() {
-    var _extends2;
-
-    var _props = this.props,
-        active = _props.active,
-        block = _props.block,
-        className = _props.className,
-        props = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default()(_props, ['active', 'block', 'className']);
-
-    var _splitBsProps = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["splitBsProps"])(props),
-        bsProps = _splitBsProps[0],
-        elementProps = _splitBsProps[1];
-
-    var classes = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["getClassSet"])(bsProps), (_extends2 = {
-      active: active
-    }, _extends2[__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["prefix"])(bsProps, 'block')] = block, _extends2));
-    var fullClassName = __WEBPACK_IMPORTED_MODULE_6_classnames___default()(className, classes);
-
-    if (elementProps.href) {
-      return this.renderAnchor(elementProps, fullClassName);
-    }
-
-    return this.renderButton(elementProps, fullClassName);
-  };
-
-  return Button;
-}(__WEBPACK_IMPORTED_MODULE_7_react___default.a.Component);
-
-Button.propTypes = propTypes;
-Button.defaultProps = defaultProps;
-
-/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["bsClass"])('btn', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["bsSizes"])([__WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["b" /* Size */].LARGE, __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["b" /* Size */].SMALL, __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["b" /* Size */].XSMALL], __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["bsStyles"])([].concat(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_values___default()(__WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["c" /* State */]), [__WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["d" /* Style */].DEFAULT, __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["d" /* Style */].PRIMARY, __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["d" /* Style */].LINK]), __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["d" /* Style */].DEFAULT, Button))));
-
-/***/ }),
-/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8035,7 +7793,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Breadcrumb", function() { return __WEBPACK_IMPORTED_MODULE_3__Breadcrumb__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__BreadcrumbItem__ = __webpack_require__(220);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "BreadcrumbItem", function() { return __WEBPACK_IMPORTED_MODULE_4__BreadcrumbItem__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Button__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Button__ = __webpack_require__(66);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Button", function() { return __WEBPACK_IMPORTED_MODULE_5__Button__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ButtonGroup__ = __webpack_require__(221);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "ButtonGroup", function() { return __WEBPACK_IMPORTED_MODULE_6__ButtonGroup__["a"]; });
@@ -8297,6 +8055,248 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports) {
+
+module.exports = function(exec){
+  try {
+    return !!exec();
+  } catch(e){
+    return true;
+  }
+};
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports) {
+
+module.exports = function(it){
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
+};
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports) {
+
+module.exports = {};
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports) {
+
+exports.f = {}.propertyIsEnumerable;
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports) {
+
+module.exports = function(bitmap, value){
+  return {
+    enumerable  : !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable    : !(bitmap & 4),
+    value       : value
+  };
+};
+
+/***/ }),
+/* 64 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSymbol_js__ = __webpack_require__(91);
+
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0;
+
+/**
+ * Converts `value` to a string key if it's not a string or symbol.
+ *
+ * @private
+ * @param {*} value The value to inspect.
+ * @returns {string|symbol} Returns the key.
+ */
+function toKey(value) {
+  if (typeof value == 'string' || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__isSymbol_js__["a" /* default */])(value)) {
+    return value;
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (toKey);
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Performs a
+ * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ * var other = { 'a': 1 };
+ *
+ * _.eq(object, object);
+ * // => true
+ *
+ * _.eq(object, other);
+ * // => false
+ *
+ * _.eq('a', 'a');
+ * // => true
+ *
+ * _.eq('a', Object('a'));
+ * // => false
+ *
+ * _.eq(NaN, NaN);
+ * // => true
+ */
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (eq);
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_values__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_values___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_values__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_classnames__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_prop_types__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_react_prop_types_lib_elementType__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_react_prop_types_lib_elementType___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_react_prop_types_lib_elementType__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__SafeAnchor__ = __webpack_require__(30);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var propTypes = {
+  active: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
+  disabled: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
+  block: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
+  onClick: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
+  componentClass: __WEBPACK_IMPORTED_MODULE_9_react_prop_types_lib_elementType___default.a,
+  href: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.string,
+  /**
+   * Defines HTML button type attribute
+   * @defaultValue 'button'
+   */
+  type: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.oneOf(['button', 'reset', 'submit'])
+};
+
+var defaultProps = {
+  active: false,
+  block: false,
+  disabled: false
+};
+
+var Button = function (_React$Component) {
+  __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default()(Button, _React$Component);
+
+  function Button() {
+    __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck___default()(this, Button);
+
+    return __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn___default()(this, _React$Component.apply(this, arguments));
+  }
+
+  Button.prototype.renderAnchor = function renderAnchor(elementProps, className) {
+    return __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12__SafeAnchor__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, elementProps, {
+      className: __WEBPACK_IMPORTED_MODULE_6_classnames___default()(className, elementProps.disabled && 'disabled')
+    }));
+  };
+
+  Button.prototype.renderButton = function renderButton(_ref, className) {
+    var componentClass = _ref.componentClass,
+        elementProps = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default()(_ref, ['componentClass']);
+
+    var Component = componentClass || 'button';
+
+    return __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(Component, __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, elementProps, {
+      type: elementProps.type || 'button',
+      className: className
+    }));
+  };
+
+  Button.prototype.render = function render() {
+    var _extends2;
+
+    var _props = this.props,
+        active = _props.active,
+        block = _props.block,
+        className = _props.className,
+        props = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default()(_props, ['active', 'block', 'className']);
+
+    var _splitBsProps = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["splitBsProps"])(props),
+        bsProps = _splitBsProps[0],
+        elementProps = _splitBsProps[1];
+
+    var classes = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["getClassSet"])(bsProps), (_extends2 = {
+      active: active
+    }, _extends2[__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["prefix"])(bsProps, 'block')] = block, _extends2));
+    var fullClassName = __WEBPACK_IMPORTED_MODULE_6_classnames___default()(className, classes);
+
+    if (elementProps.href) {
+      return this.renderAnchor(elementProps, fullClassName);
+    }
+
+    return this.renderButton(elementProps, fullClassName);
+  };
+
+  return Button;
+}(__WEBPACK_IMPORTED_MODULE_7_react___default.a.Component);
+
+Button.propTypes = propTypes;
+Button.defaultProps = defaultProps;
+
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["bsClass"])('btn', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["bsSizes"])([__WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["b" /* Size */].LARGE, __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["b" /* Size */].SMALL, __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["b" /* Size */].XSMALL], __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__["bsStyles"])([].concat(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_values___default()(__WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["c" /* State */]), [__WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["d" /* Style */].DEFAULT, __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["d" /* Style */].PRIMARY, __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["d" /* Style */].LINK]), __WEBPACK_IMPORTED_MODULE_11__utils_StyleConfig__["d" /* Style */].DEFAULT, Button))));
 
 /***/ }),
 /* 67 */
@@ -9264,7 +9264,7 @@ var Symbol = __WEBPACK_IMPORTED_MODULE_0__root_js__["a" /* default */].Symbol;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eq_js__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eq_js__ = __webpack_require__(65);
 
 
 /**
@@ -9523,7 +9523,7 @@ function isSymbol(value) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isArray_js__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__isSymbol_js__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stringToPath_js__ = __webpack_require__(213);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__toKey_js__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__toKey_js__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__toString_js__ = __webpack_require__(218);
 
 
@@ -11655,7 +11655,7 @@ module.exports = function(it){
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(59);
+var isObject = __webpack_require__(60);
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
 module.exports = function(it, S){
@@ -15961,7 +15961,7 @@ module.exports = { "default": __webpack_require__(441), __esModule: true };
 /* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(59)
+var isObject = __webpack_require__(60)
   , document = __webpack_require__(37).document
   // in old IE typeof document.createElement is 'object'
   , is = isObject(document) && isObject(document.createElement);
@@ -15973,7 +15973,7 @@ module.exports = function(it){
 /* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(51) && !__webpack_require__(58)(function(){
+module.exports = !__webpack_require__(51) && !__webpack_require__(59)(function(){
   return Object.defineProperty(__webpack_require__(179)('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
 
@@ -15998,7 +15998,7 @@ var LIBRARY        = __webpack_require__(113)
   , redefine       = __webpack_require__(187)
   , hide           = __webpack_require__(52)
   , has            = __webpack_require__(42)
-  , Iterators      = __webpack_require__(60)
+  , Iterators      = __webpack_require__(61)
   , $iterCreate    = __webpack_require__(458)
   , setToStringTag = __webpack_require__(116)
   , getPrototypeOf = __webpack_require__(466)
@@ -16067,8 +16067,8 @@ module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED
 /* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var pIE            = __webpack_require__(61)
-  , createDesc     = __webpack_require__(62)
+var pIE            = __webpack_require__(62)
+  , createDesc     = __webpack_require__(63)
   , toIObject      = __webpack_require__(38)
   , toPrimitive    = __webpack_require__(121)
   , has            = __webpack_require__(42)
@@ -16124,7 +16124,7 @@ module.exports = function(object, names){
 
 var getKeys   = __webpack_require__(53)
   , toIObject = __webpack_require__(38)
-  , isEnum    = __webpack_require__(61).f;
+  , isEnum    = __webpack_require__(62).f;
 module.exports = function(isEntries){
   return function(it){
     var O      = toIObject(it)
@@ -16642,7 +16642,7 @@ function arrayMap(array, iteratee) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseAssignValue_js__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__eq_js__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__eq_js__ = __webpack_require__(65);
 
 
 
@@ -16695,7 +16695,7 @@ var baseFor = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__createBaseFor_j
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__castPath_js__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toKey_js__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toKey_js__ = __webpack_require__(64);
 
 
 
@@ -17358,7 +17358,7 @@ BreadcrumbItem.defaultProps = defaultProps;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_prop_types_lib_all__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_prop_types_lib_all___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_react_prop_types_lib_all__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Button__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Button__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__ = __webpack_require__(9);
 
 
@@ -17676,7 +17676,7 @@ CloseButton.propTypes = propTypes;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_classnames__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_classnames__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Button__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Button__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__SafeAnchor__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_bootstrapUtils__ = __webpack_require__(9);
 
@@ -35127,7 +35127,7 @@ var _scrollTop = __webpack_require__(169);
 
 var _scrollTop2 = _interopRequireDefault(_scrollTop);
 
-var _scrollLeft = __webpack_require__(405);
+var _scrollLeft = __webpack_require__(406);
 
 var _scrollLeft2 = _interopRequireDefault(_scrollLeft);
 
@@ -35446,100 +35446,6 @@ module.exports = exports['default'];
 
 /***/ }),
 /* 403 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.hasClass = exports.removeClass = exports.addClass = undefined;
-
-var _addClass = __webpack_require__(483);
-
-var _addClass2 = _interopRequireDefault(_addClass);
-
-var _removeClass = __webpack_require__(484);
-
-var _removeClass2 = _interopRequireDefault(_removeClass);
-
-var _hasClass = __webpack_require__(191);
-
-var _hasClass2 = _interopRequireDefault(_hasClass);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.addClass = _addClass2.default;
-exports.removeClass = _removeClass2.default;
-exports.hasClass = _hasClass2.default;
-exports.default = { addClass: _addClass2.default, removeClass: _removeClass2.default, hasClass: _hasClass2.default };
-
-/***/ }),
-/* 404 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.listen = exports.filter = exports.off = exports.on = undefined;
-
-var _on = __webpack_require__(77);
-
-var _on2 = _interopRequireDefault(_on);
-
-var _off = __webpack_require__(105);
-
-var _off2 = _interopRequireDefault(_off);
-
-var _filter = __webpack_require__(485);
-
-var _filter2 = _interopRequireDefault(_filter);
-
-var _listen = __webpack_require__(486);
-
-var _listen2 = _interopRequireDefault(_listen);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.on = _on2.default;
-exports.off = _off2.default;
-exports.filter = _filter2.default;
-exports.listen = _listen2.default;
-exports.default = { on: _on2.default, off: _off2.default, filter: _filter2.default, listen: _listen2.default };
-
-/***/ }),
-/* 405 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = scrollTop;
-
-var _isWindow = __webpack_require__(74);
-
-var _isWindow2 = _interopRequireDefault(_isWindow);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function scrollTop(node, val) {
-  var win = (0, _isWindow2.default)(node);
-
-  if (val === undefined) return win ? 'pageXOffset' in win ? win.pageXOffset : win.document.documentElement.scrollLeft : node.scrollLeft;
-
-  if (win) win.scrollTo(val, 'pageYOffset' in win ? win.pageYOffset : win.document.documentElement.scrollTop);else node.scrollLeft = val;
-}
-module.exports = exports['default'];
-
-/***/ }),
-/* 406 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35700,6 +35606,100 @@ var submit = __WEBPACK_IMPORTED_MODULE_0__actions__["a" /* default */].submit;
 var touch = __WEBPACK_IMPORTED_MODULE_0__actions__["a" /* default */].touch;
 var unregisterField = __WEBPACK_IMPORTED_MODULE_0__actions__["a" /* default */].unregisterField;
 var untouch = __WEBPACK_IMPORTED_MODULE_0__actions__["a" /* default */].untouch;
+
+/***/ }),
+/* 404 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.hasClass = exports.removeClass = exports.addClass = undefined;
+
+var _addClass = __webpack_require__(483);
+
+var _addClass2 = _interopRequireDefault(_addClass);
+
+var _removeClass = __webpack_require__(484);
+
+var _removeClass2 = _interopRequireDefault(_removeClass);
+
+var _hasClass = __webpack_require__(191);
+
+var _hasClass2 = _interopRequireDefault(_hasClass);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.addClass = _addClass2.default;
+exports.removeClass = _removeClass2.default;
+exports.hasClass = _hasClass2.default;
+exports.default = { addClass: _addClass2.default, removeClass: _removeClass2.default, hasClass: _hasClass2.default };
+
+/***/ }),
+/* 405 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.listen = exports.filter = exports.off = exports.on = undefined;
+
+var _on = __webpack_require__(77);
+
+var _on2 = _interopRequireDefault(_on);
+
+var _off = __webpack_require__(105);
+
+var _off2 = _interopRequireDefault(_off);
+
+var _filter = __webpack_require__(485);
+
+var _filter2 = _interopRequireDefault(_filter);
+
+var _listen = __webpack_require__(486);
+
+var _listen2 = _interopRequireDefault(_listen);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.on = _on2.default;
+exports.off = _off2.default;
+exports.filter = _filter2.default;
+exports.listen = _listen2.default;
+exports.default = { on: _on2.default, off: _off2.default, filter: _filter2.default, listen: _listen2.default };
+
+/***/ }),
+/* 406 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = scrollTop;
+
+var _isWindow = __webpack_require__(74);
+
+var _isWindow2 = _interopRequireDefault(_isWindow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function scrollTop(node, val) {
+  var win = (0, _isWindow2.default)(node);
+
+  if (val === undefined) return win ? 'pageXOffset' in win ? win.pageXOffset : win.document.documentElement.scrollLeft : node.scrollLeft;
+
+  if (win) win.scrollTo(val, 'pageYOffset' in win ? win.pageYOffset : win.document.documentElement.scrollTop);else node.scrollLeft = val;
+}
+module.exports = exports['default'];
 
 /***/ }),
 /* 407 */
@@ -36573,29 +36573,13 @@ exports.default = reducer;
 /**
  * Created by owlaukka on 30/06/17.
  */
-var membershipTypes = [{ name: 'Täysjäsen' }, { name: 'Nuorisojäsen (alle 18v)' }, { name: 'Kannatusjäsen' }];
+var membershipTypes = [{ id: 'Täysjäsen', name: 'Täysjäsen' }, { id: 'Nuorisojäsen (alle 18v)', name: 'Nuorisojäsen (alle 18v)' }, { id: 'Kannatusjäsen', name: 'Kannatusjäsen' }];
 
 function reducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
         membershipTypes: membershipTypes,
         sending: false,
-        sent: false,
-
-        // Mandatory fields (for validations)
-        username: "",
-        email: "",
-        repeatEmail: "",
-        birthday: "",
-        member_type: "",
-        full_name: "",
-        address: "",
-        phone: "",
-        postal_code: "",
-        city: "",
-
-        // Object that will be used for submitting
-        submitObject: {}
-
+        sent: false
     };
     var action = arguments[1];
 
@@ -36606,159 +36590,13 @@ function reducer() {
             }
         case "SUBMIT_APPLICATION_REJECTED":
             {
-                return _extends({}, state, { sending: false, submitError: action.payload });
+                return _extends({}, state, { sending: false });
             }
         case "SUBMIT_APPLICATION_FULFILLED":
             {
                 return _extends({}, state, {
                     sending: false,
-                    sent: true,
-                    successMsg: action.payload
-                });
-            }
-
-        case "SET_USERNAME":
-            {
-                return _extends({}, state, {
-                    username: action.payload,
-                    submitObject: _extends({}, state.submitObject, {
-                        username: action.payload
-                    })
-                });
-            }
-        case "SET_EMAIL":
-            {
-                return _extends({}, state, {
-                    email: action.payload,
-                    submitObject: _extends({}, state.submitObject, {
-                        email: action.payload
-                    })
-                });
-            }
-        case "SET_REPEAT_EMAIL":
-            {
-                return _extends({}, state, {
-                    repeatEmail: action.payload,
-                    submitObject: _extends({}, state.submitObject)
-                });
-            }
-        case "SET_BIRTHDAY":
-            {
-                return _extends({}, state, {
-                    birthday: action.payload,
-                    submitObject: _extends({}, state.submitObject, {
-                        birthday: action.payload
-                    })
-                });
-            }
-        case "SET_MEMBER_TYPE":
-            {
-                return _extends({}, state, {
-                    member_type: action.payload,
-                    submitObject: _extends({}, state.submitObject, {
-                        member_type: action.payload
-                    })
-                });
-            }
-        case "SET_FULL_NAME":
-            {
-                return _extends({}, state, {
-                    full_name: action.payload,
-                    submitObject: _extends({}, state.submitObject, {
-                        full_name: action.payload
-                    })
-                });
-            }
-        case "SET_ADDRESS":
-            {
-                return _extends({}, state, {
-                    address: action.payload,
-                    submitObject: _extends({}, state.submitObject, {
-                        address: action.payload
-                    })
-                });
-            }
-        case "SET_POSTAL_CODE":
-            {
-                return _extends({}, state, {
-                    postal_code: action.payload,
-                    submitObject: _extends({}, state.submitObject, {
-                        postal_code: action.payload
-                    })
-                });
-            }
-        case "SET_CITY":
-            {
-                return _extends({}, state, {
-                    city: action.payload,
-                    submitObject: _extends({}, state.submitObject, {
-                        city: action.payload
-                    })
-                });
-            }
-        case "SET_PHONE_NUMBER":
-            {
-                return _extends({}, state, {
-                    phone: action.payload,
-                    submitObject: _extends({}, state.submitObject, {
-                        phone: action.payload
-                    })
-                });
-            }
-        case "SET_LICENCES":
-            {
-                return _extends({}, state, {
-                    submitObject: _extends({}, state.submitObject, {
-                        licences: action.payload
-                    })
-                });
-            }
-        case "SET_ENGINE_EXP":
-            {
-                return _extends({}, state, {
-                    submitObject: _extends({}, state.submitObject, {
-                        experience_with_engine: action.payload
-                    })
-                });
-            }
-        case "SET_OTHER_EXP":
-            {
-                return _extends({}, state, {
-                    submitObject: _extends({}, state.submitObject, {
-                        other_experience: action.payload
-                    })
-                });
-            }
-        case "SET_OTHER_MEMBERSHIPS":
-            {
-                return _extends({}, state, {
-                    submitObject: _extends({}, state.submitObject, {
-                        other_memberships: action.payload
-                    })
-                });
-            }
-        case "SET_SIL_MEMBERSHIP":
-            {
-                return _extends({}, state, {
-                    submitObject: _extends({}, state.submitObject, {
-                        join_sil: action.payload
-                    })
-                });
-            }
-        case "SET_SIL_NUMBER":
-            {
-                return _extends({}, state, {
-                    submitObject: _extends({}, state.submitObject, {
-                        sil_membership_number: action.payload
-                    })
-                });
-            }
-        case "SET_ADDITIONAL_INFO":
-            {
-                return _extends({}, state, {
-                    submitObject: _extends({}, state.submitObject, {
-                        extra_information: action.payload
-                    })
+                    sent: true
                 });
             }
     }
@@ -36779,7 +36617,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(73);
 
-var _reduxForm = __webpack_require__(406);
+var _reduxForm = __webpack_require__(403);
 
 var _reservationsReducer = __webpack_require__(431);
 
@@ -37632,7 +37470,7 @@ module.exports = function(it){
 "use strict";
 
 var $defineProperty = __webpack_require__(43)
-  , createDesc      = __webpack_require__(62);
+  , createDesc      = __webpack_require__(63);
 
 module.exports = function(object, index, value){
   if(index in object)$defineProperty.f(object, index, createDesc(0, value));
@@ -37646,7 +37484,7 @@ module.exports = function(object, index, value){
 // all enumerable object keys, includes symbols
 var getKeys = __webpack_require__(53)
   , gOPS    = __webpack_require__(115)
-  , pIE     = __webpack_require__(61);
+  , pIE     = __webpack_require__(62);
 module.exports = function(it){
   var result     = getKeys(it)
     , getSymbols = gOPS.f;
@@ -37670,7 +37508,7 @@ module.exports = __webpack_require__(37).document && document.documentElement;
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
-var Iterators  = __webpack_require__(60)
+var Iterators  = __webpack_require__(61)
   , ITERATOR   = __webpack_require__(27)('iterator')
   , ArrayProto = Array.prototype;
 
@@ -37712,7 +37550,7 @@ module.exports = function(iterator, fn, value, entries){
 "use strict";
 
 var create         = __webpack_require__(114)
-  , descriptor     = __webpack_require__(62)
+  , descriptor     = __webpack_require__(63)
   , setToStringTag = __webpack_require__(116)
   , IteratorPrototype = {};
 
@@ -37778,14 +37616,14 @@ module.exports = function(object, el){
 /***/ (function(module, exports, __webpack_require__) {
 
 var META     = __webpack_require__(81)('meta')
-  , isObject = __webpack_require__(59)
+  , isObject = __webpack_require__(60)
   , has      = __webpack_require__(42)
   , setDesc  = __webpack_require__(43).f
   , id       = 0;
 var isExtensible = Object.isExtensible || function(){
   return true;
 };
-var FREEZE = !__webpack_require__(58)(function(){
+var FREEZE = !__webpack_require__(59)(function(){
   return isExtensible(Object.preventExtensions({}));
 });
 var setMeta = function(it){
@@ -37840,13 +37678,13 @@ var meta = module.exports = {
 // 19.1.2.1 Object.assign(target, source, ...)
 var getKeys  = __webpack_require__(53)
   , gOPS     = __webpack_require__(115)
-  , pIE      = __webpack_require__(61)
+  , pIE      = __webpack_require__(62)
   , toObject = __webpack_require__(120)
   , IObject  = __webpack_require__(181)
   , $assign  = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
-module.exports = !$assign || __webpack_require__(58)(function(){
+module.exports = !$assign || __webpack_require__(59)(function(){
   var A = {}
     , B = {}
     , S = Symbol()
@@ -37937,7 +37775,7 @@ module.exports = Object.getPrototypeOf || function(O){
 
 // Works with __proto__ only. Old v8 can't work with null proto objects.
 /* eslint-disable no-proto */
-var isObject = __webpack_require__(59)
+var isObject = __webpack_require__(60)
   , anObject = __webpack_require__(50);
 var check = function(O, proto){
   anObject(O);
@@ -38001,7 +37839,7 @@ module.exports = function(index, length){
 
 var classof   = __webpack_require__(451)
   , ITERATOR  = __webpack_require__(27)('iterator')
-  , Iterators = __webpack_require__(60);
+  , Iterators = __webpack_require__(61);
 module.exports = __webpack_require__(26).getIteratorMethod = function(it){
   if(it != undefined)return it[ITERATOR]
     || it['@@iterator']
@@ -38060,7 +37898,7 @@ $export($export.S + $export.F * !__webpack_require__(459)(function(iter){ Array.
 
 var addToUnscopables = __webpack_require__(449)
   , step             = __webpack_require__(460)
-  , Iterators        = __webpack_require__(60)
+  , Iterators        = __webpack_require__(61)
   , toIObject        = __webpack_require__(38);
 
 // 22.1.3.4 Array.prototype.entries()
@@ -38136,7 +37974,7 @@ var global         = __webpack_require__(37)
   , $export        = __webpack_require__(36)
   , redefine       = __webpack_require__(187)
   , META           = __webpack_require__(462).KEY
-  , $fails         = __webpack_require__(58)
+  , $fails         = __webpack_require__(59)
   , shared         = __webpack_require__(118)
   , setToStringTag = __webpack_require__(116)
   , uid            = __webpack_require__(81)
@@ -38149,7 +37987,7 @@ var global         = __webpack_require__(37)
   , anObject       = __webpack_require__(50)
   , toIObject      = __webpack_require__(38)
   , toPrimitive    = __webpack_require__(121)
-  , createDesc     = __webpack_require__(62)
+  , createDesc     = __webpack_require__(63)
   , _create        = __webpack_require__(114)
   , gOPNExt        = __webpack_require__(465)
   , $GOPD          = __webpack_require__(183)
@@ -38278,7 +38116,7 @@ if(!USE_NATIVE){
   $GOPD.f = $getOwnPropertyDescriptor;
   $DP.f   = $defineProperty;
   __webpack_require__(184).f = gOPNExt.f = $getOwnPropertyNames;
-  __webpack_require__(61).f  = $propertyIsEnumerable;
+  __webpack_require__(62).f  = $propertyIsEnumerable;
   __webpack_require__(115).f = $getOwnPropertySymbols;
 
   if(DESCRIPTORS && !__webpack_require__(113)){
@@ -38411,7 +38249,7 @@ __webpack_require__(122)('observable');
 __webpack_require__(472);
 var global        = __webpack_require__(37)
   , hide          = __webpack_require__(52)
-  , Iterators     = __webpack_require__(60)
+  , Iterators     = __webpack_require__(61)
   , TO_STRING_TAG = __webpack_require__(27)('toStringTag');
 
 for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
@@ -39905,7 +39743,7 @@ function arraySome(array, predicate) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseAssignValue_js__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__eq_js__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__eq_js__ = __webpack_require__(65);
 
 
 
@@ -40540,7 +40378,7 @@ function baseMatches(source) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__isKey_js__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__isStrictComparable_js__ = __webpack_require__(210);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__matchesStrictComparable_js__ = __webpack_require__(211);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__toKey_js__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__toKey_js__ = __webpack_require__(64);
 
 
 
@@ -41204,7 +41042,7 @@ function createBaseFor(fromRight) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Uint8Array_js__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__eq_js__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__eq_js__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__equalArrays_js__ = __webpack_require__(207);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mapToArray_js__ = __webpack_require__(581);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__setToArray_js__ = __webpack_require__(590);
@@ -41673,7 +41511,7 @@ function getValue(object, key) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isArray_js__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__isIndex_js__ = __webpack_require__(131);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__isLength_js__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__toKey_js__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__toKey_js__ = __webpack_require__(64);
 
 
 
@@ -41895,7 +41733,7 @@ function initCloneObject(object) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eq_js__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eq_js__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isArrayLike_js__ = __webpack_require__(89);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isIndex_js__ = __webpack_require__(131);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__isObject_js__ = __webpack_require__(39);
@@ -43037,7 +42875,7 @@ var merge = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__createAssigner_js
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseProperty_js__ = __webpack_require__(538);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__basePropertyDeep_js__ = __webpack_require__(539);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isKey_js__ = __webpack_require__(132);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__toKey_js__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__toKey_js__ = __webpack_require__(64);
 
 
 
@@ -60593,7 +60431,7 @@ Breadcrumb.Item = __WEBPACK_IMPORTED_MODULE_7__BreadcrumbItem__["a" /* default *
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_classnames__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Button__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Button__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils_bootstrapUtils__ = __webpack_require__(9);
 
 
@@ -63839,7 +63677,7 @@ MenuItem.defaultProps = defaultProps;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_extends__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_classnames__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_classnames__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_dom_helpers_events__ = __webpack_require__(404);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_dom_helpers_events__ = __webpack_require__(405);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_dom_helpers_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_dom_helpers_events__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_dom_helpers_ownerDocument__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_dom_helpers_ownerDocument___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_dom_helpers_ownerDocument__);
@@ -66648,7 +66486,7 @@ Row.defaultProps = defaultProps;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_prop_types__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Button__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Button__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Dropdown__ = __webpack_require__(93);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__SplitToggle__ = __webpack_require__(663);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_splitComponentProps__ = __webpack_require__(95);
@@ -68363,7 +68201,7 @@ var _style = __webpack_require__(82);
 
 var _style2 = _interopRequireDefault(_style);
 
-var _class = __webpack_require__(403);
+var _class = __webpack_require__(404);
 
 var _class2 = _interopRequireDefault(_class);
 
@@ -84495,7 +84333,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactBootstrap = __webpack_require__(66);
+var _reactBootstrap = __webpack_require__(58);
 
 var _reactRedux = __webpack_require__(25);
 
@@ -84674,8 +84512,200 @@ function resetNotifications() {
 /* 876 */,
 /* 877 */,
 /* 878 */,
-/* 879 */,
-/* 880 */,
+/* 879 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = __webpack_require__(58);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by owlaukka on 15/08/17.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+var ObjectSelectInput = function (_React$Component) {
+    _inherits(ObjectSelectInput, _React$Component);
+
+    function ObjectSelectInput() {
+        _classCallCheck(this, ObjectSelectInput);
+
+        return _possibleConstructorReturn(this, (ObjectSelectInput.__proto__ || Object.getPrototypeOf(ObjectSelectInput)).apply(this, arguments));
+    }
+
+    _createClass(ObjectSelectInput, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                feedbackIcon = _props.feedbackIcon,
+                input = _props.input,
+                label = _props.label,
+                options = _props.options,
+                _props$meta = _props.meta,
+                error = _props$meta.error,
+                warning = _props$meta.warning,
+                touched = _props$meta.touched,
+                props = _objectWithoutProperties(_props, ['feedbackIcon', 'input', 'label', 'options', 'meta']);
+
+            var message = void 0;
+            var validationState = touched && error && "error" || warning && "warning" || null;
+
+            if (touched && (error || warning)) {
+                message = _react2.default.createElement(
+                    'span',
+                    { className: 'help-block' },
+                    error || warning
+                );
+            }
+            return _react2.default.createElement(
+                _reactBootstrap.FormGroup,
+                { validationState: validationState },
+                _react2.default.createElement(
+                    _reactBootstrap.ControlLabel,
+                    null,
+                    label
+                ),
+                _react2.default.createElement(
+                    _reactBootstrap.FormControl,
+                    _extends({}, input, {
+                        componentClass: 'select'
+                    }, props),
+                    options.map(function (op) {
+                        return _react2.default.createElement(
+                            'option',
+                            { key: op.id, value: op.id },
+                            op.name
+                        );
+                    })
+                ),
+                feedbackIcon ? _react2.default.createElement(
+                    _reactBootstrap.FormControl.Feedback,
+                    null,
+                    feedbackIcon
+                ) : null,
+                message
+            );
+        }
+    }]);
+
+    return ObjectSelectInput;
+}(_react2.default.Component);
+
+exports.default = ObjectSelectInput;
+
+/***/ }),
+/* 880 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = __webpack_require__(58);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by owlaukka on 15/08/17.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+var TextAreaInput = function (_React$Component) {
+    _inherits(TextAreaInput, _React$Component);
+
+    function TextAreaInput() {
+        _classCallCheck(this, TextAreaInput);
+
+        return _possibleConstructorReturn(this, (TextAreaInput.__proto__ || Object.getPrototypeOf(TextAreaInput)).apply(this, arguments));
+    }
+
+    _createClass(TextAreaInput, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                feedbackIcon = _props.feedbackIcon,
+                input = _props.input,
+                label = _props.label,
+                _props$meta = _props.meta,
+                error = _props$meta.error,
+                warning = _props$meta.warning,
+                touched = _props$meta.touched,
+                props = _objectWithoutProperties(_props, ['feedbackIcon', 'input', 'label', 'meta']);
+
+            var message = void 0;
+            var validationState = touched && error && "error" || warning && "warning" || null;
+
+            if (touched && (error || warning)) {
+                message = _react2.default.createElement(
+                    'span',
+                    { className: 'help-block' },
+                    error || warning
+                );
+            }
+
+            return _react2.default.createElement(
+                _reactBootstrap.FormGroup,
+                { validationState: validationState },
+                _react2.default.createElement(
+                    _reactBootstrap.ControlLabel,
+                    null,
+                    label
+                ),
+                _react2.default.createElement(_reactBootstrap.FormControl, _extends({}, input, props)),
+                feedbackIcon ? _react2.default.createElement(
+                    _reactBootstrap.FormControl.Feedback,
+                    null,
+                    feedbackIcon
+                ) : null,
+                message
+            );
+        }
+    }]);
+
+    return TextAreaInput;
+}(_react2.default.Component);
+
+exports.default = TextAreaInput;
+
+/***/ }),
 /* 881 */,
 /* 882 */,
 /* 883 */,
@@ -84713,157 +84743,7 @@ function resetNotifications() {
 /* 915 */,
 /* 916 */,
 /* 917 */,
-/* 918 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.validationStateForForm = validationStateForForm;
-exports.allFieldsValid = allFieldsValid;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _moment = __webpack_require__(1);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Created by owlaukka on 30/06/17.
- */
-var validators = {
-    username: usernameIsValid,
-    email: emailIsValid,
-    repeatEmail: repeatEmailIsValid,
-    birthday: birthdayIsValid,
-    fullName: fullNameIsValid,
-    address: addressIsValid,
-    postalCode: postalCodeIsValid,
-    city: cityIsValid,
-    phoneNumber: phoneNumberIsValid
-};
-
-function validationStateForForm(fieldName) {
-    for (var _len = arguments.length, fieldValues = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        fieldValues[_key - 1] = arguments[_key];
-    }
-
-    if (fieldValues[0].length === 0) {
-        return null;
-    } else if (validators[fieldName].apply(validators, fieldValues)) {
-        return 'success';
-    } else {
-        return 'error';
-    }
-}
-
-function allFieldsValid(submitObject, repeat) {
-    return usernameIsValid(submitObject.username) && emailIsValid(submitObject.email) && repeatEmailIsValid(submitObject.email, repeat) && birthdayIsValid(submitObject.birthday) && fullNameIsValid(submitObject.full_name) && addressIsValid(submitObject.address) && postalCodeIsValid(submitObject.postal_code) && cityIsValid(submitObject.city);
-}
-
-function isEmpty(value) {
-    if (value == undefined || value.length == 0) {
-        return false;
-    }
-}
-
-function usernameIsValid(username) {
-    if (username === undefined) {
-        return true;
-    }
-    if (username.indexOf(' ') > -1) {
-        return false;
-    }
-    if (username.length < 8) {
-        return false;
-    }
-    return true;
-}
-
-function emailIsValid(email) {
-    var copy = (' ' + email).slice(1);
-    if (copy.replace(/[^@]/g, "").length !== 1) {
-        return false;
-    }
-    return true;
-}
-
-function repeatEmailIsValid(email, repeat) {
-    return email == repeat;
-}
-
-function birthdayIsValid(bday) {
-    if (isEmpty(bday)) {
-        return false;
-    }
-    var dateFormat1 = "D.M.YYYY",
-        dateFormat2 = "D.M.YY",
-        correctFormat = null;
-    if ((0, _moment2.default)(bday, dateFormat1, true).isValid()) {
-        correctFormat = dateFormat1;
-    } else if ((0, _moment2.default)(bday, dateFormat2, true).isValid()) {
-        correctFormat = dateFormat2;
-    }
-
-    if (correctFormat === null) {
-        return false;
-    }
-    if ((0, _moment2.default)(bday, correctFormat).format('YYYY') < 1900) {
-        return false;
-    }
-    if ((0, _moment2.default)(bday, correctFormat) >= (0, _moment2.default)()) {
-        return false;
-    }
-    return true;
-}
-
-function fullNameIsValid(name) {
-    if (isEmpty(name)) {
-        return false;
-    }
-    return (/^[a-zA-ZöäåÖÄÅ ]+$/.test(name)
-    );
-}
-
-function addressIsValid(address) {
-    if (isEmpty(address)) {
-        return false;
-    }
-    return true;
-}
-
-function postalCodeIsValid(code) {
-    if (isEmpty(code)) {
-        return false;
-    }
-    return (/^[0-9]{5}$/.test(code)
-    );
-}
-
-function cityIsValid(city) {
-    if (isEmpty(city)) {
-        return false;
-    }
-    return (/^[a-zA-ZöäåÖÄÅ\- ]+$/.test(city)
-    );
-}
-
-function phoneNumberIsValid(number) {
-    if (isEmpty(number)) {
-        return false;
-    }
-    return (/^[0-9\+\-\(\)]+$/.test(number)
-    );
-}
-
-/***/ }),
+/* 918 */,
 /* 919 */,
 /* 920 */,
 /* 921 */,
@@ -84915,7 +84795,8 @@ function phoneNumberIsValid(number) {
 /* 967 */,
 /* 968 */,
 /* 969 */,
-/* 970 */
+/* 970 */,
+/* 971 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84933,7 +84814,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(25);
 
-var _membership_app_page = __webpack_require__(989);
+var _membership_app_page = __webpack_require__(990);
 
 var _membership_app_page2 = _interopRequireDefault(_membership_app_page);
 
@@ -84978,7 +84859,6 @@ var MembershipAppIndex = function (_React$Component) {
 exports.default = MembershipAppIndex;
 
 /***/ }),
-/* 971 */,
 /* 972 */,
 /* 973 */,
 /* 974 */,
@@ -84992,7 +84872,97 @@ exports.default = MembershipAppIndex;
 /* 982 */,
 /* 983 */,
 /* 984 */,
-/* 985 */,
+/* 985 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = __webpack_require__(58);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GenericInput = function (_React$Component) {
+    _inherits(GenericInput, _React$Component);
+
+    function GenericInput() {
+        _classCallCheck(this, GenericInput);
+
+        return _possibleConstructorReturn(this, (GenericInput.__proto__ || Object.getPrototypeOf(GenericInput)).apply(this, arguments));
+    }
+
+    _createClass(GenericInput, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                feedbackIcon = _props.feedbackIcon,
+                input = _props.input,
+                label = _props.label,
+                type = _props.type,
+                _props$meta = _props.meta,
+                error = _props$meta.error,
+                warning = _props$meta.warning,
+                touched = _props$meta.touched,
+                props = _objectWithoutProperties(_props, ['feedbackIcon', 'input', 'label', 'type', 'meta']);
+
+            var message = void 0;
+            var validationState = touched && error && "error" || warning && "warning" || null;
+
+            if (touched && (error || warning)) {
+                message = _react2.default.createElement(
+                    'span',
+                    { className: 'help-block' },
+                    error || warning
+                );
+            }
+
+            return _react2.default.createElement(
+                _reactBootstrap.FormGroup,
+                { validationState: validationState },
+                _react2.default.createElement(
+                    _reactBootstrap.ControlLabel,
+                    null,
+                    label
+                ),
+                _react2.default.createElement(_reactBootstrap.FormControl, _extends({}, input, {
+                    type: type
+                }, props)),
+                feedbackIcon ? _react2.default.createElement(
+                    _reactBootstrap.FormControl.Feedback,
+                    null,
+                    feedbackIcon
+                ) : null,
+                message
+            );
+        }
+    }]);
+
+    return GenericInput;
+}(_react2.default.Component);
+
+exports.default = GenericInput;
+
+/***/ }),
 /* 986 */,
 /* 987 */,
 /* 988 */,
@@ -85003,8 +84973,9 @@ exports.default = MembershipAppIndex;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+       value: true
 });
+exports.MembershipAppForm = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -85012,15 +84983,182 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactBootstrap = __webpack_require__(66);
+var _reduxForm = __webpack_require__(403);
+
+var _reactRedux = __webpack_require__(25);
+
+var _reactBootstrap = __webpack_require__(58);
+
+var _object_select_input = __webpack_require__(879);
+
+var _object_select_input2 = _interopRequireDefault(_object_select_input);
+
+var _textarea_input = __webpack_require__(880);
+
+var _textarea_input2 = _interopRequireDefault(_textarea_input);
+
+var _generic_bootstrap_input = __webpack_require__(985);
+
+var _generic_bootstrap_input2 = _interopRequireDefault(_generic_bootstrap_input);
+
+var _applicationValidationActions = __webpack_require__(1006);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by owlaukka on 22/08/17.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+var MembershipAppForm = exports.MembershipAppForm = function (_React$Component) {
+       _inherits(MembershipAppForm, _React$Component);
+
+       function MembershipAppForm() {
+              _classCallCheck(this, MembershipAppForm);
+
+              return _possibleConstructorReturn(this, (MembershipAppForm.__proto__ || Object.getPrototypeOf(MembershipAppForm)).apply(this, arguments));
+       }
+
+       _createClass(MembershipAppForm, [{
+              key: 'render',
+              value: function render() {
+                     var _props = this.props,
+                         handleSubmit = _props.handleSubmit,
+                         submitting = _props.submitting,
+                         firstEmail = _props.firstEmail,
+                         memberTypes = _props.memberTypes,
+                         joinSil = _props.joinSil;
+
+                     var silOptions = [{ id: 'willJoin', name: 'Liityn myös Suomen Ilmailuliiton jäsenyksi' }, { id: 'willNot', name: 'En halua liittyä SIL:n jäseneksi' }, { id: 'alreadyMember', name: 'Olen jo SIL:n jäsen' }];
+                     var silNumberDisabled = joinSil !== 'alreadyMember' ? true : false;
+                     var validateEmail = (0, _applicationValidationActions.valuesMatch)(firstEmail);
+
+                     return _react2.default.createElement(
+                            'form',
+                            { onSubmit: handleSubmit },
+                            _react2.default.createElement(_reduxForm.Field, { label: 'K\xE4ytt\xE4j\xE4tunnus', name: 'username',
+                                   id: 'app-username', component: _generic_bootstrap_input2.default,
+                                   validate: [_applicationValidationActions.doesNotContainSpaces, _applicationValidationActions.isLongerThan8Characters] }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'S\xE4hk\xF6postiosoite', name: 'email', id: 'app-email',
+                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, _applicationValidationActions.containsAt, _applicationValidationActions.containsPeriod] }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Kirjoita s\xE4hk\xF6postiosoite uudelleen', name: 'repeatEmail', id: 'app-repeat-email',
+                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, validateEmail] }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Syntym\xE4aika (pp.kk.vvvv)', name: 'birthday', id: 'app-birthday',
+                                   component: _generic_bootstrap_input2.default,
+                                   validate: [_applicationValidationActions.required, _applicationValidationActions.birthdayIsInCorrectFormat, _applicationValidationActions.birthdayIsNotTooOld, _applicationValidationActions.birthdayIsNotInTheFuture] }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'J\xE4senlaji', name: 'member_type', id: 'app-member-type',
+                                   component: _object_select_input2.default, options: memberTypes }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Kokonimi', name: 'full_name', id: 'app-full-name',
+                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, _applicationValidationActions.nameIsValid] }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Osoite', name: 'address', id: 'app-address',
+                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required] }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Postinumero', name: 'postal_code', id: 'app-postal-code',
+                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, _applicationValidationActions.postalCodeIsValid] }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Kaupunki', name: 'city', id: 'app-city',
+                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, _applicationValidationActions.cityIsValid] }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Puhelinnumero', name: 'phone', id: 'app-phone',
+                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, _applicationValidationActions.phoneNumberIsValid] }),
+                            _react2.default.createElement('hr', null),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Nykyiset lupakirjaluokat', name: 'licences', id: 'app-licences',
+                                   component: _generic_bootstrap_input2.default }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Lentokokemus moottorikoneilla (tuntia)', name: 'experience_with_engine', id: 'app-experience-with-engine',
+                                   type: 'number', min: 0, component: _generic_bootstrap_input2.default }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Muu lentokokemus', name: 'other_experience', id: 'app-other-experience',
+                                   componentClass: 'textarea', rows: '3', component: _textarea_input2.default }),
+                            _react2.default.createElement(
+                                   'p',
+                                   null,
+                                   _react2.default.createElement(
+                                          'i',
+                                          null,
+                                          'Suomen Ilmailuliitto ry - SIL - on urheilu- ja harrasteilmailun valtakunnallinen keskusj\xE4rjest\xF6 Suomessa. ',
+                                          _react2.default.createElement(
+                                                 'a',
+                                                 { href: 'http://www.ilmailuliitto.fi/fi/jasenille/jasenasiat/jasenedut' },
+                                                 'Ilmailuliitto tarjoaa j\xE4senilleen useita j\xE4senetuja'
+                                          ),
+                                          ', mm. tapaturmavakuutuksen, joka on voimassa my\xF6s ilmailulajeja harrastettaessa ja kuukausittaisen ILMAILU-lehden. Jokainen Ilmailuliittoon kuuluva Malmin Ilmailukerhon j\xE4sen lis\xE4\xE4 kerhomme painoarvoa ja vaikutusmahdollisuuksia liiton p\xE4\xE4t\xF6ksenteossa.',
+                                          _react2.default.createElement(
+                                                 'a',
+                                                 { href: 'http://www.ilmailuliitto.fi/fi/jasenille/jasenasiat' },
+                                                 'Ilmailuliiton voimassaolevat j\xE4senmaksut voit tarkistaa t\xE4st\xE4.'
+                                          )
+                                   )
+                            ),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Suomen Ilmailuliiton (SIL) j\xE4senyys', name: 'join_sil', id: 'app-join-sil',
+                                   component: _object_select_input2.default, options: silOptions }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Muiden kerhojen j\xE4senyys', name: 'other_memberships', id: 'app-other-memberships',
+                                   component: _generic_bootstrap_input2.default }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'SIL j\xE4sennumerosi, jos olet jo SIL:n j\xE4sen', name: 'sil_membership_number', id: 'app-sil-membership-number',
+                                   disabled: silNumberDisabled, component: _generic_bootstrap_input2.default }),
+                            _react2.default.createElement(_reduxForm.Field, { label: 'Muuta aiheeseen liittyv\xE4\xE4', name: 'extra_information', id: 'app-extra-information',
+                                   componentClass: 'textarea', rows: '4', component: _textarea_input2.default }),
+                            _react2.default.createElement(
+                                   _reactBootstrap.Button,
+                                   { type: 'submit', disabled: submitting },
+                                   'L\xE4het\xE4 hakemus',
+                                   submitting ? ' ...' : ''
+                            )
+                     );
+              }
+       }]);
+
+       return MembershipAppForm;
+}(_react2.default.Component);
+
+exports.MembershipAppForm = MembershipAppForm = (0, _reduxForm.reduxForm)({
+       form: 'MembershipAppForm'
+})(MembershipAppForm);
+
+var selector = (0, _reduxForm.formValueSelector)('MembershipAppForm');
+exports.MembershipAppForm = MembershipAppForm = (0, _reactRedux.connect)(function (store) {
+       var firstEmail = selector(store, 'email'),
+           joinSil = selector(store, 'join_sil');
+       return {
+              firstEmail: firstEmail,
+              joinSil: joinSil,
+              memberTypes: store.applications.membershipTypes,
+              initialValues: { member_type: 'Täysjäsen', join_sil: 'willJoin' }
+       };
+})(MembershipAppForm);
+
+exports.default = MembershipAppForm;
+
+/***/ }),
+/* 990 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.MembershipAppPage = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(25);
+
+var _reactBootstrap = __webpack_require__(58);
 
 var _notifications = __webpack_require__(856);
 
 var _notifications2 = _interopRequireDefault(_notifications);
 
-var _membership_form = __webpack_require__(990);
+var _membership_app_form = __webpack_require__(989);
 
-var _membership_form2 = _interopRequireDefault(_membership_form);
+var _membership_app_form2 = _interopRequireDefault(_membership_app_form);
+
+var _applicationActions = __webpack_require__(1005);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -85046,7 +85184,7 @@ var styles = {
     }
 };
 
-var MembershipAppPage = function (_React$Component) {
+var MembershipAppPage = exports.MembershipAppPage = function (_React$Component) {
     _inherits(MembershipAppPage, _React$Component);
 
     function MembershipAppPage() {
@@ -85058,6 +85196,8 @@ var MembershipAppPage = function (_React$Component) {
     _createClass(MembershipAppPage, [{
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             return _react2.default.createElement(
                 _reactBootstrap.Grid,
                 null,
@@ -85072,6 +85212,7 @@ var MembershipAppPage = function (_React$Component) {
                             { className: 'text-center' },
                             'Liity j\xE4seneksi!'
                         ),
+                        _react2.default.createElement(_notifications2.default, null),
                         _react2.default.createElement(
                             _reactBootstrap.Well,
                             { bsSize: 'large', style: styles.helpSpacing },
@@ -85085,8 +85226,11 @@ var MembershipAppPage = function (_React$Component) {
                     _react2.default.createElement(
                         _reactBootstrap.Col,
                         { lg: 6, md: 6, sm: 6, style: styles.colCentered },
-                        _react2.default.createElement(_notifications2.default, null),
-                        _react2.default.createElement(_membership_form2.default, null)
+                        _react2.default.createElement(_membership_app_form2.default, {
+                            id: 'membership-app-form',
+                            onSubmit: function onSubmit(values) {
+                                return _this2.props.dispatch((0, _applicationActions.submitMembershipApp)(values));
+                            } })
                     )
                 )
             );
@@ -85096,450 +85240,9 @@ var MembershipAppPage = function (_React$Component) {
     return MembershipAppPage;
 }(_react2.default.Component);
 
-exports.default = MembershipAppPage;
-
-/***/ }),
-/* 990 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.MembershipForm = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(25);
-
-var _reactBootstrap = __webpack_require__(66);
-
-var _applicationActions = __webpack_require__(1005);
-
-var actions = _interopRequireWildcard(_applicationActions);
-
-var _applicationValidationActions = __webpack_require__(918);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by owlaukka on 29/06/17.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-
-var MembershipForm = exports.MembershipForm = function (_React$Component) {
-    _inherits(MembershipForm, _React$Component);
-
-    function MembershipForm() {
-        _classCallCheck(this, MembershipForm);
-
-        return _possibleConstructorReturn(this, (MembershipForm.__proto__ || Object.getPrototypeOf(MembershipForm)).apply(this, arguments));
-    }
-
-    _createClass(MembershipForm, [{
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'form',
-                    { onSubmit: function onSubmit(event) {
-                            _this2.props.dispatch(actions.submitApplication(_this2.props.submitObject, _this2.props.applications.repeatEmail, event));
-                        } },
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'username', validationState: (0, _applicationValidationActions.validationStateForForm)("username", this.props.applications.username) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'K\xE4ytt\xE4j\xE4tunnus'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setUsername(event.target.value));
-                            } }),
-                        _react2.default.createElement(
-                            _reactBootstrap.HelpBlock,
-                            null,
-                            'Voit j\xE4tt\xE4\xE4 tyhj\xE4ksi halutessasi ja k\xE4ytt\xE4\xE4 s\xE4hk\xF6postiosoitetta kirjautumiseen'
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'email', validationState: (0, _applicationValidationActions.validationStateForForm)("email", this.props.applications.email) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'S\xE4hk\xF6postiosoite'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setEmail(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'repeatEmail', validationState: (0, _applicationValidationActions.validationStateForForm)("repeatEmail", this.props.applications.email, this.props.applications.repeatEmail) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Kirjoita s\xE4hk\xF6postiosoite uudelleen'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setRepeatEmail(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'birthday', validationState: (0, _applicationValidationActions.validationStateForForm)("birthday", this.props.applications.birthday) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Syntym\xE4aika (pp.kk.vvvv)'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setBirthday(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { id: 'memberType', controlId: 'memberType' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'J\xE4senlaji'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(
-                                _reactBootstrap.FormControl,
-                                { componentClass: 'select', onChange: function onChange(event) {
-                                        return _this2.props.dispatch(actions.setMemberType(event.target.value));
-                                    } },
-                                _react2.default.createElement(
-                                    'option',
-                                    { value: 'null' },
-                                    '** Valitse j\xE4senlaji **'
-                                ),
-                                this.props.membershipTypes.map(function (type) {
-                                    return _react2.default.createElement(
-                                        'option',
-                                        { key: type.name, value: type.name },
-                                        type.name
-                                    );
-                                })
-                            ),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'fullName', validationState: (0, _applicationValidationActions.validationStateForForm)("fullName", this.props.applications.full_name) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Koko nimi'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setFullName(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'address', validationState: (0, _applicationValidationActions.validationStateForForm)("address", this.props.applications.address) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Osoite'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setAddress(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'postalCode', validationState: (0, _applicationValidationActions.validationStateForForm)("postalCode", this.props.applications.postal_code) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Postinumero'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setPostalCode(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'city', validationState: (0, _applicationValidationActions.validationStateForForm)("city", this.props.applications.city) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Postitoimipaikka'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setCity(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'phoneNumber', validationState: (0, _applicationValidationActions.validationStateForForm)("phoneNumber", this.props.applications.phone) },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Puhelinnumero'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setPhoneNumber(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'fire' })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement('hr', null),
-                    _react2.default.createElement(
-                        'h4',
-                        null,
-                        'Valinnaiset tiedot'
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'licences' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Nykyiset lupakirjaluokat'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setLicences(event.target.value));
-                            } })
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'expWithEngine' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Lentokokemus moottorikoneilla (tuntia)'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.InputGroup,
-                            null,
-                            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'number', min: 0, onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setEngineExp(event.target.value));
-                                } }),
-                            _react2.default.createElement(
-                                _reactBootstrap.InputGroup.Addon,
-                                null,
-                                'h'
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'otherExp' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Muu lentokokemus'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setOtherExp(event.target.value));
-                            } })
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'otherMemberships' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Muiden kerhojen j\xE4senyys'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setOtherMemberships(event.target.value));
-                            } })
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'silMembership' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Suomen Ilmailuliiton (SIL) j\xE4senyys'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.FormControl,
-                            { componentClass: 'select', onChange: function onChange(event) {
-                                    return _this2.props.dispatch(actions.setSilMembership(event.target.value));
-                                } },
-                            _react2.default.createElement(
-                                'option',
-                                { value: 'willJoin' },
-                                'Liityn my\xF6s Suomen Ilmailuliiton j\xE4senyksi'
-                            ),
-                            _react2.default.createElement(
-                                'option',
-                                { value: 'willNot' },
-                                'En halua liitty\xE4 SIL:n j\xE4seneksi'
-                            ),
-                            _react2.default.createElement(
-                                'option',
-                                { value: 'alreadyMember' },
-                                'Olen jo SIL:n j\xE4sen'
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'silNumber' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'SIL j\xE4sennumerosi, jos olet jo SIL:n j\xE4sen'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setSilNumber(event.target.value));
-                            } })
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        null,
-                        _react2.default.createElement(
-                            'i',
-                            null,
-                            'Suomen Ilmailuliitto ry - SIL - on urheilu- ja harrasteilmailun valtakunnallinen keskusj\xE4rjest\xF6 Suomessa. ',
-                            _react2.default.createElement(
-                                'a',
-                                { href: 'http://www.ilmailuliitto.fi/fi/jasenille/jasenasiat/jasenedut' },
-                                'Ilmailuliitto tarjoaa j\xE4senilleen useita j\xE4senetuja'
-                            ),
-                            ', mm. tapaturmavakuutuksen, joka on voimassa my\xF6s ilmailulajeja harrastettaessa ja kuukausittaisen ILMAILU-lehden. Jokainen Ilmailuliittoon kuuluva Malmin Ilmailukerhon j\xE4sen lis\xE4\xE4 kerhomme painoarvoa ja vaikutusmahdollisuuksia liiton p\xE4\xE4t\xF6ksenteossa.',
-                            _react2.default.createElement(
-                                'a',
-                                { href: 'http://www.ilmailuliitto.fi/fi/jasenille/jasenasiat' },
-                                'Ilmailuliiton voimassaolevat j\xE4senmaksut voit tarkistaa t\xE4st\xE4.'
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'additionalInfo' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Muuta aiheeseen liittyv\xE4\xE4'
-                        ),
-                        _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', style: { 'height': 200 }, onChange: function onChange(event) {
-                                return _this2.props.dispatch(actions.setAdditionalInfo(event.target.value));
-                            } })
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.Button,
-                        { type: 'submit' },
-                        'L\xE4het\xE4 hakemus'
-                    )
-                )
-            );
-        }
-    }]);
-
-    return MembershipForm;
-}(_react2.default.Component);
-
 exports.default = (0, _reactRedux.connect)(function (store) {
-    return {
-        membershipTypes: store.applications.membershipTypes,
-        applications: store.applications,
-        submitObject: store.applications.submitObject
-    };
-})(MembershipForm);
+    return {};
+})(MembershipAppPage);
 
 /***/ }),
 /* 991 */,
@@ -85557,7 +85260,7 @@ exports.default = (0, _reactRedux.connect)(function (store) {
 "use strict";
 
 
-var _index = __webpack_require__(970);
+var _index = __webpack_require__(971);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -85586,24 +85289,7 @@ _webpackerReact2.default.setup({ MembershipAppIndex: _index2.default });
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.submitApplication = submitApplication;
-exports.setUsername = setUsername;
-exports.setEmail = setEmail;
-exports.setRepeatEmail = setRepeatEmail;
-exports.setBirthday = setBirthday;
-exports.setMemberType = setMemberType;
-exports.setFullName = setFullName;
-exports.setAddress = setAddress;
-exports.setPostalCode = setPostalCode;
-exports.setCity = setCity;
-exports.setPhoneNumber = setPhoneNumber;
-exports.setLicences = setLicences;
-exports.setEngineExp = setEngineExp;
-exports.setOtherExp = setOtherExp;
-exports.setOtherMemberships = setOtherMemberships;
-exports.setSilMembership = setSilMembership;
-exports.setSilNumber = setSilNumber;
-exports.setAdditionalInfo = setAdditionalInfo;
+exports.submitMembershipApp = submitMembershipApp;
 
 var _react = __webpack_require__(0);
 
@@ -85613,23 +85299,17 @@ var _ajax_service = __webpack_require__(282);
 
 var _ajax_service2 = _interopRequireDefault(_ajax_service);
 
-var _applicationValidationActions = __webpack_require__(918);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function submitApplication(app, repeatEmail, event) {
-    event.preventDefault();
+/**
+ * Created by owlaukka on 30/06/17.
+ */
+function submitMembershipApp(values) {
     return function (dispatch) {
-        dispatch({ type: "RESET_ERROR_MSG" });
-        if (!(0, _applicationValidationActions.allFieldsValid)(app, repeatEmail)) {
-            dispatch({ type: "SUBMIT_APPLICATION_REJECTED", payload: ["Tarkasta täyttämäsi kentät"] });
-            dispatch({ type: "SET_ERROR", payload: { header: 'Tarkasta täyttämäsi kentät', data: [] } });
-            return;
-        }
         dispatch({ type: "SUBMIT_APPLICATION_PENDING" });
         window.scrollTo(0, 0);
 
-        _ajax_service2.default.post('/api/v1/membership_applications', app, function (status, data) {
+        _ajax_service2.default.post('/api/v1/membership_applications', values, function (status, data) {
             var success = "Hakemuksenne on lähetetty onnistuneesti.",
                 text = 'Vahvistussähköposti on lähetetty antamaanne sähköpostiosoitteeseen. ' + 'Teidät uudelleenohjataan etusivulle piakkoin';
             dispatch({ type: "SUBMIT_APPLICATION_FULFILLED", payload: success });
@@ -85638,114 +85318,118 @@ function submitApplication(app, repeatEmail, event) {
                 return window.location.replace('/');
             }, 5000);
         }, function (status, err) {
-            dispatch({ type: "SUBMIT_APPLICATION_REJECTED", payload: err });
+            dispatch({ type: "SUBMIT_APPLICATION_REJECTED" });
             dispatch({ type: "SET_ERROR", payload: { header: 'Lähetysvirhe', data: err } });
         });
     };
-} /**
-   * Created by owlaukka on 30/06/17.
-   */
-function setUsername(username) {
-    return function (dispatch) {
-        dispatch({ type: "SET_USERNAME", payload: username });
-    };
 }
 
-function setEmail(email) {
-    return function (dispatch) {
-        dispatch({ type: "SET_EMAIL", payload: email });
-    };
-}
+/***/ }),
+/* 1006 */
+/***/ (function(module, exports, __webpack_require__) {
 
-function setRepeatEmail(repeatEmail) {
-    return function (dispatch) {
-        dispatch({ type: "SET_REPEAT_EMAIL", payload: repeatEmail });
-    };
-}
+"use strict";
 
-function setBirthday(bday) {
-    return function (dispatch) {
-        dispatch({ type: "SET_BIRTHDAY", payload: bday });
-    };
-}
 
-function setMemberType(type) {
-    return function (dispatch) {
-        dispatch({ type: "SET_MEMBER_TYPE", payload: type });
-    };
-}
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.phoneNumberIsValid = exports.cityIsValid = exports.postalCodeIsValid = exports.nameIsValid = exports.birthdayIsNotInTheFuture = exports.birthdayIsNotTooOld = exports.birthdayIsInCorrectFormat = exports.valuesMatch = exports.containsPeriod = exports.containsAt = exports.isLongerThan8Characters = exports.doesNotContainSpaces = exports.required = undefined;
 
-function setFullName(name) {
-    return function (dispatch) {
-        dispatch({ type: "SET_FULL_NAME", payload: name });
-    };
-}
+var _react = __webpack_require__(0);
 
-function setAddress(address) {
-    return function (dispatch) {
-        dispatch({ type: "SET_ADDRESS", payload: address });
-    };
-}
+var _react2 = _interopRequireDefault(_react);
 
-function setPostalCode(code) {
-    return function (dispatch) {
-        dispatch({ type: "SET_POSTAL_CODE", payload: code });
-    };
-}
+var _moment = __webpack_require__(1);
 
-function setCity(city) {
-    return function (dispatch) {
-        dispatch({ type: "SET_CITY", payload: city });
-    };
-}
+var _moment2 = _interopRequireDefault(_moment);
 
-function setPhoneNumber(number) {
-    return function (dispatch) {
-        dispatch({ type: "SET_PHONE_NUMBER", payload: number });
-    };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function setLicences(licences) {
-    return function (dispatch) {
-        dispatch({ type: "SET_LICENCES", payload: licences });
-    };
-}
+/**
+ * Created by owlaukka on 30/06/17.
+ */
+var required = exports.required = function required(value) {
+    return value ? undefined : 'Ei voi olla tyhjä';
+};
 
-function setEngineExp(exp) {
-    return function (dispatch) {
-        dispatch({ type: "SET_ENGINE_EXP", payload: exp });
-    };
-}
+var doesNotContainSpaces = exports.doesNotContainSpaces = function doesNotContainSpaces(value) {
+    return value && value.indexOf(' ') > -1 ? 'Ei voi sisältää välilyöntejä' : undefined;
+};
 
-function setOtherExp(exp) {
-    return function (dispatch) {
-        dispatch({ type: "SET_OTHER_EXP", payload: exp });
-    };
-}
+var isLongerThan8Characters = exports.isLongerThan8Characters = function isLongerThan8Characters(value) {
+    return value && value.length < 8 ? 'Pitää olla enemmän kuin 8 merkkiä pitkä.' : undefined;
+};
 
-function setOtherMemberships(memberships) {
-    return function (dispatch) {
-        dispatch({ type: "SET_OTHER_MEMBERSHIPS", payload: memberships });
-    };
-}
+var containsAt = exports.containsAt = function containsAt(value) {
+    var copy = (' ' + value).slice(1);
+    return copy.replace(/[^@]/g, "").length !== 1 ? 'Anna kunnollinen sähköpostiosoite' : undefined;
+};
 
-function setSilMembership(membership) {
-    return function (dispatch) {
-        dispatch({ type: "SET_SIL_MEMBERSHIP", payload: membership });
-    };
-}
+var containsPeriod = exports.containsPeriod = function containsPeriod(value) {
+    var copy = (' ' + value).slice(1);
+    return copy.replace(/[^.]/g, "").length !== 1 ? 'Anna kunnollinen sähköpostiosoite' : undefined;
+};
 
-function setSilNumber(number) {
-    return function (dispatch) {
-        dispatch({ type: "SET_SIL_NUMBER", payload: number });
+var valuesMatch = exports.valuesMatch = function valuesMatch(original) {
+    return function (value) {
+        return value !== original ? 'Sähköpostiosoitteet eivät täsmää' : undefined;
     };
-}
+};
 
-function setAdditionalInfo(info) {
-    return function (dispatch) {
-        dispatch({ type: "SET_ADDITIONAL_INFO", payload: info });
-    };
-}
+var dateFormat = function dateFormat(date) {
+    var dateFormat1 = "D.M.YYYY",
+        dateFormat2 = "D.M.YY",
+        correctFormat = null;
+    if ((0, _moment2.default)(date, dateFormat1, true).isValid()) {
+        correctFormat = dateFormat1;
+    } else if ((0, _moment2.default)(date, dateFormat2, true).isValid()) {
+        correctFormat = dateFormat2;
+    }
+    return correctFormat;
+};
+
+var birthdayIsInCorrectFormat = exports.birthdayIsInCorrectFormat = function birthdayIsInCorrectFormat(value) {
+    return dateFormat(value) === null ? 'Päivämäärä on väärässä muodossa' : undefined;
+};
+
+var birthdayIsNotTooOld = exports.birthdayIsNotTooOld = function birthdayIsNotTooOld(value) {
+    var correctFormat = dateFormat(value);
+    if (correctFormat !== null && (0, _moment2.default)(value, correctFormat).format('YYYY') < 1900) {
+        return 'Syntymäaikasi ei taida olla ennen 1900-lukua';
+    } else {
+        return undefined;
+    }
+};
+
+var birthdayIsNotInTheFuture = exports.birthdayIsNotInTheFuture = function birthdayIsNotInTheFuture(value) {
+    var correctFormat = dateFormat(value);
+    if (correctFormat !== null && (0, _moment2.default)(value, correctFormat) >= (0, _moment2.default)()) {
+        return 'Syntymäaikasi ei taida olla ennen 1900-lukua';
+    } else {
+        return undefined;
+    }
+};
+
+var nameIsValid = exports.nameIsValid = function nameIsValid(value) {
+    return (/^[a-zA-ZöäåÖÄÅ' ]+$/.test(value) ? undefined : 'Nimi voi sisältää vain aakkosia, ääkkösiä ja välilyöntejä.'
+    );
+};
+
+var postalCodeIsValid = exports.postalCodeIsValid = function postalCodeIsValid(value) {
+    return (/^[0-9]{5}$/.test(value) ? undefined : 'Postinumerossa pitää olla tasan viisi numeroa'
+    );
+};
+
+var cityIsValid = exports.cityIsValid = function cityIsValid(value) {
+    return (/^[a-zA-ZöäåÖÄÅ\- ]+$/.test(value) ? undefined : 'Tarkista, että kirjoitit kaupungin oikein'
+    );
+};
+
+var phoneNumberIsValid = exports.phoneNumberIsValid = function phoneNumberIsValid(value) {
+    return (/^[0-9\+\-\(\) ]+$/.test(value) ? undefined : 'Tarkista, että kirjoitit puhelinnumerosi oikein'
+    );
+};
 
 /***/ })
 ],[1000]);

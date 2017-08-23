@@ -142,7 +142,7 @@ describe('Single reservation action', () => {
         });
 
         it('destroyReservationAndRedirect dispatches correct actions on incorrect request', () => {
-            const error = {response: {status: 422}};
+            const error = {response: {status: 422, data: {}}};
             const expectedActions = [
                 { type: "DESTROY_RESERVATION_PENDING" },
                 { type: "DESTROY_RESERVATION_REJECTED", payload: error }

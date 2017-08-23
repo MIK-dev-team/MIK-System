@@ -14,25 +14,12 @@ const mockStore = configureMockStore(middlewares);
 
 const initialStoreState = {
     membershipTypes: [
-        {id: 1, name: 'Täysjäsen'},
-        {id: 2, name: 'Nuorisojäsen (alle 18v)'},
-        {id: 3, name: 'Kannatusjäsen'}
+        { id: 'Täysjäsen', name: 'Täysjäsen' },
+        { id: 'Nuorisojäsen (alle 18v)', name: 'Nuorisojäsen (alle 18v)' },
+        { id: 'Kannatusjäsen', name: 'Kannatusjäsen' }
     ],
     sending: false,
     sent: false,
-    submitError: null,
-
-    username: "",
-    email: "",
-    birthday: "",
-    member_type: "",
-    full_name: "",
-    address: "",
-    phone: "",
-    postal_code: "",
-    city: "",
-
-    submitObject: {}
 };
 
 describe('Application Actions', () => {

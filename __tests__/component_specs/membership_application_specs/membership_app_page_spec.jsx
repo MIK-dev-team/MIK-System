@@ -17,7 +17,7 @@ describe('Membership Application page', () => {
         expect(page.find('Grid').length).toEqual(1);
     });
 
-    it('has Jumbotron', () => {
+    it('has PageHeader', () => {
         expect(page.find('PageHeader').length).toEqual(1);
     });
 
@@ -26,7 +26,7 @@ describe('Membership Application page', () => {
     });
 
     it('has MembershipForm', () => {
-        expect(page.find('Connect(MembershipForm)').length).toEqual(1);
+        expect(page.find('Connect(MembershipAppForm)').length).toEqual(1);
     });
 
     it("has correct style for <Col>", () => {
