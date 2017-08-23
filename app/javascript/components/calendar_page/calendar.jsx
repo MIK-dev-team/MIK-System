@@ -1,7 +1,7 @@
 import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import { Row, Col, Button, Tab, Tabs, Nav, NavItem, NavDropdown, MenuItem, NavBar } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { setCollapsed, fillForm , setSidebarMod } from '../../store/actions/reservationsActions';
@@ -9,6 +9,7 @@ import { selectTimeForNotifier } from "../../store/actions/notifiersActions";
 import { showModal } from '../../store/actions/singleReservationActions';
 import ReservationForm from "./reservation_form";
 import CancellationForm from "./cancellation_form";
+import FormNavigation from "./form_nav";
 
 moment.locale("fi");
 
@@ -49,15 +50,6 @@ export class Calendar extends React.Component {
     toggleCollapse() {
         return () =>
             this.props.dispatch(setCollapsed(this.props.collapsed));
-    }
-
-    toggleSidebarMod(eventKey) {
-      if(this.props.sidebarMod && eventKey === 2) {
-        this.props.dispatch(setSidebarMod(2));
-      }
-      if(!this.props.sidebarMod && eventKey === 1) {
-        this.props.dispatch(setSidebarMod(1));
-      }
     }
 
     // TODO: put this into it's own service/library function etc
@@ -114,12 +106,8 @@ export class Calendar extends React.Component {
                             messages={{next: "seuraava", previous: "edellinen", today: "tämä päivä", month: "kuukausi", week: "viikko", day: "päivä", agenda: "varaukset"}}
                         />
                     </Col>
-                    <Col id="sidebar" className={this.props.collapsed ? 'collapsed' : 'col-lg-4'}>
-                      <Nav bsStyle="tabs" onSelect={(eventKey) => this.toggleSidebarMod(eventKey)}>
-                        <NavItem eventKey={1} title="Varaus">Varaus</NavItem>
-                        <NavItem eventKey={2} title="Peruminen">Joukkoperuminen</NavItem>
-                      </Nav>
-                        {this.props.sidebarMod ? <ReservationForm/> : <CancellationForm/>}
+                    <Col>
+                        <FormNavigation/>
                     </Col>
                 </Row>
                 <br />
