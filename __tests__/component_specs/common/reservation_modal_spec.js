@@ -50,9 +50,11 @@ describe('ReservationModal', () => {
         });
 
         it('this.goToEditPage when clicking edit button', () => {
+            console.log(window.location.pathname, window.location.href)
             functionSpy = sinon.stub(modal.instance(), 'goToEditPage');
 
             modal.find('Button').first().simulate('click');
+            console.log(window.location.pathname, window.location.href)
             expect(functionSpy.calledOnce).toBe(true);
             expect(dispatchSpy.notCalled).toBe(true);
         });
@@ -63,7 +65,7 @@ describe('ReservationModal', () => {
             modal.find('Button').last().simulate('click');
             expect(functionSpy.calledOnce).toBe(true);
             expect(dispatchSpy.calledOnce).toBe(true);
-        })
+        });
     });
 
     describe('with reservation not null', () => {

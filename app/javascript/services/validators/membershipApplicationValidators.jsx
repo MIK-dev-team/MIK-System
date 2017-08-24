@@ -1,27 +1,15 @@
 /**
  * Created by owlaukka on 30/06/17.
  */
-import React from 'react';
 import moment from 'moment';
 
-export const required = value =>
-    value ? undefined : 'Ei voi olla tyhjä'
+import { minLength, containsExactly, containsAtLeast } from "./commonValidators";
 
-export const doesNotContainSpaces = value =>
-    value && value.indexOf(' ') > -1 ? 'Ei voi sisältää välilyöntejä' : undefined
+export const isLongerThan8Characters = minLength(8);
 
-export const isLongerThan8Characters = value =>
-    value && value.length < 8 ? 'Pitää olla enemmän kuin 8 merkkiä pitkä.' : undefined
+export const containsAtOnce = containsExactly('@', 1);
 
-export const containsAt = value => {
-    let copy = (' ' + value).slice(1);
-    return copy.replace(/[^@]/g, "").length !== 1 ? 'Anna kunnollinen sähköpostiosoite' : undefined
-};
-
-export const containsPeriod = value => {
-    let copy = (' ' + value).slice(1);
-    return copy.replace(/[^.]/g, "").length !== 1 ? 'Anna kunnollinen sähköpostiosoite' : undefined
-};
+export const containsAtLeast1Period = containsAtLeast('.', 1);
 
 export const valuesMatch = original => value =>
     value !== original ? 'Sähköpostiosoitteet eivät täsmää' : undefined
@@ -53,14 +41,14 @@ export const birthdayIsNotTooOld = value => {
 export const birthdayIsNotInTheFuture = value => {
     const correctFormat = dateFormat(value)
     if (correctFormat !== null && moment(value, correctFormat) >= moment()) {
-        return 'Syntymäaikasi ei taida olla ennen 1900-lukua'
+        return 'Syntymäaikasi ei voi olla tulevaisuudessa'
     } else {
         return undefined
     }
 };
 
 export const nameIsValid = value =>
-    /^[a-zA-ZöäåÖÄÅ' ]+$/.test(value) ? undefined : 'Nimi voi sisältää vain aakkosia, ääkkösiä ja välilyöntejä.'
+    /^[a-zA-ZöäåÖÄÅ\-' ]+$/.test(value) ? undefined : 'Nimi voi sisältää vain aakkosia, ääkkösiä ja välilyöntejä.'
 
 export const postalCodeIsValid = value =>
     /^[0-9]{5}$/.test(value) ? undefined : 'Postinumerossa pitää olla tasan viisi numeroa'

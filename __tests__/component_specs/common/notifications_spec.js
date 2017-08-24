@@ -67,6 +67,20 @@ describe('Notifications', () => {
             expect(resetStub.calledOnce).toBe(true);
             resetStub.restore();
         });
+
+        it('dispatches correct actions when pressing hiding button', () => {
+            const dispatchSpy = sinon.spy(),
+                resetStub = sinon.stub(notificationsActions, 'resetNotifications');
+            notifications.setProps({dispatch: dispatchSpy});
+            notifications.update();
+
+            expect(dispatchSpy.notCalled).toBe(true);
+            expect(resetStub.notCalled).toBe(true);
+            notifications.find('Button').simulate('click');
+            expect(dispatchSpy.calledOnce).toBe(true);
+            expect(resetStub.calledOnce).toBe(true);
+            resetStub.restore();
+        });
     });
 
     describe('with infoMsg existing', () => {
@@ -105,6 +119,20 @@ describe('Notifications', () => {
             expect(dispatchSpy.notCalled).toBe(true);
             expect(resetStub.notCalled).toBe(true);
             notifications.find('Alert').simulate('dismiss');
+            expect(dispatchSpy.calledOnce).toBe(true);
+            expect(resetStub.calledOnce).toBe(true);
+            resetStub.restore();
+        });
+
+        it('dispatches correct actions when pressing hiding button', () => {
+            const dispatchSpy = sinon.spy(),
+                resetStub = sinon.stub(notificationsActions, 'resetNotifications');
+            notifications.setProps({dispatch: dispatchSpy});
+            notifications.update();
+
+            expect(dispatchSpy.notCalled).toBe(true);
+            expect(resetStub.notCalled).toBe(true);
+            notifications.find('Button').simulate('click');
             expect(dispatchSpy.calledOnce).toBe(true);
             expect(resetStub.calledOnce).toBe(true);
             resetStub.restore();

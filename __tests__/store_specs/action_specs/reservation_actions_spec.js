@@ -65,22 +65,57 @@ describe('Reservation action', () => {
         ];
 
         store.dispatch(actions.fetchReservations());
+        expect(stub.calledWith('/api/v1/planes/1/reservations')).toBe(false);
+        expect(stub.calledWith('/api/v1/reservations')).toBe(true);
         return promise.then(() => {
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
 
-    it('fetchReservations dispatches correct actions on incorrect request', () => {
-        const error = {response: {status: 422}};
+    it('fetchReservations dispatches correct actions on correct request when given plane', () => {
+        promise = Promise.resolve(response);
         const expectedActions = [
             { type: "FETCH_RESERVATIONS_PENDING" },
-            { type: "FETCH_RESERVATIONS_REJECTED", payload: error }
+            { type: "FETCH_RESERVATIONS_FULFILLED", payload: response.data }
         ];
-        promise = Promise.resolve(error);
-        stub = sinon.stub(AjaxService, 'get').callsFake(() => promise);
+        stub = sinon.stub(AjaxService.service, 'get').callsFake(() => promise);
 
-        store.dispatch(actions.fetchReservations());
-        return promise.catch(() => {
+        store.dispatch(actions.fetchReservations({ id: 1, name: "YG5463" }));
+        expect(stub.calledWith('/api/v1/planes/1/reservations')).toBe(true);
+        expect(stub.calledWith('/api/v1/reservations')).toBe(false);
+        return promise.then(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+        })
+    });
+
+    it('fetchMyReservations dispatches correct actions on succesful request', () => {
+        promise = Promise.resolve(response);
+        stub = sinon.stub(AjaxService.service, 'get').callsFake(() => promise);
+        const expectedActions = [
+            { type: "FETCH_RESERVATIONS_PENDING" },
+            { type: "FETCH_RESERVATIONS_FULFILLED", payload: response.data }
+        ];
+
+        store.dispatch(actions.fetchMyReservations());
+        expect(stub.calledWith('api/v1/planes/1/my_reservations')).toBe(false);
+        expect(stub.calledWith('api/v1/all_my_reservations')).toBe(true);
+        return promise.then(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
+    it('fetchMyReservations dispatches correct actions on correct request when given plane', () => {
+        promise = Promise.resolve(response);
+        const expectedActions = [
+            { type: "FETCH_RESERVATIONS_PENDING" },
+            { type: "FETCH_RESERVATIONS_FULFILLED", payload: response.data }
+        ];
+        stub = sinon.stub(AjaxService.service, 'get').callsFake(() => promise);
+
+        store.dispatch(actions.fetchMyReservations({ id: 1, name: "YG5463" }));
+        expect(stub.calledWith('api/v1/planes/1/my_reservations')).toBe(true);
+        expect(stub.calledWith('api/v1/all_my_reservations')).toBe(false);
+        return promise.then(() => {
             expect(store.getActions()).toEqual(expectedActions);
         })
     });

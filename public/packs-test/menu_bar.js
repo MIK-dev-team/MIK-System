@@ -68817,7 +68817,8 @@ function handlePasswordValueChange(event) {
 /* 969 */,
 /* 970 */,
 /* 971 */,
-/* 972 */
+/* 972 */,
+/* 973 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68835,7 +68836,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(25);
 
-var _menu_bar = __webpack_require__(991);
+var _menu_bar = __webpack_require__(992);
 
 var _menu_bar2 = _interopRequireDefault(_menu_bar);
 
@@ -68843,7 +68844,7 @@ var _store = __webpack_require__(434);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _sessionActions = __webpack_require__(1008);
+var _sessionActions = __webpack_require__(1010);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -68887,7 +68888,6 @@ var MenuBarIndex = function (_React$Component) {
 exports.default = MenuBarIndex;
 
 /***/ }),
-/* 973 */,
 /* 974 */,
 /* 975 */,
 /* 976 */,
@@ -68905,7 +68905,8 @@ exports.default = MenuBarIndex;
 /* 988 */,
 /* 989 */,
 /* 990 */,
-/* 991 */
+/* 991 */,
+/* 992 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69068,7 +69069,6 @@ exports.default = (0, _reactRedux.connect)(function (store) {
 })(MenuBar);
 
 /***/ }),
-/* 992 */,
 /* 993 */,
 /* 994 */,
 /* 995 */,
@@ -69077,13 +69077,14 @@ exports.default = (0, _reactRedux.connect)(function (store) {
 /* 998 */,
 /* 999 */,
 /* 1000 */,
-/* 1001 */
+/* 1001 */,
+/* 1002 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(972);
+var _index = __webpack_require__(973);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -69099,13 +69100,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _webpackerReact2.default.setup({ MenuBarIndex: _index2.default });
 
 /***/ }),
-/* 1002 */,
 /* 1003 */,
 /* 1004 */,
 /* 1005 */,
 /* 1006 */,
 /* 1007 */,
-/* 1008 */
+/* 1008 */,
+/* 1009 */,
+/* 1010 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69126,4 +69128,4 @@ function setLoggedIn(loggedIn) {
 }
 
 /***/ })
-],[1001]);
+],[1002]);

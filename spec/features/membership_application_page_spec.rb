@@ -78,7 +78,7 @@ RSpec.describe 'Membership Application page', js: true do
     click_on('Lähetä hakemus')
 
     check_filling_error
-    expect(page).to have_content('Pitää olla enemmän kuin 8 merkkiä pitkä.')
+    expect(page).to have_content('Pitää olla vähintään 8 merkkiä pitkä')
   end
 
   it 'displays correct error when email is not set' do

@@ -10,12 +10,13 @@ import ObjectSelectInput from '../form_fields/object_select_input';
 import TextAreaInput from '../form_fields/textarea_input';
 import GenericInput from "../form_fields/generic_bootstrap_input";
 
+import { required, doesNotContainSpaces } from '../../services/validators/commonValidators';
 import {
-    required, doesNotContainSpaces, isLongerThan8Characters,
-    containsAt, containsPeriod, valuesMatch,
-    birthdayIsInCorrectFormat, birthdayIsNotTooOld, birthdayIsNotInTheFuture,
-    nameIsValid, postalCodeIsValid, cityIsValid, phoneNumberIsValid
-} from "../../store/actions/applicationValidationActions";
+    isLongerThan8Characters, containsAtOnce, containsAtLeast1Period,
+    valuesMatch, birthdayIsInCorrectFormat, birthdayIsNotTooOld,
+    birthdayIsNotInTheFuture, nameIsValid, postalCodeIsValid, cityIsValid,
+    phoneNumberIsValid
+} from "../../services/validators/membershipApplicationValidators";
 
 
 export class MembershipAppForm extends React.Component {
@@ -26,7 +27,7 @@ export class MembershipAppForm extends React.Component {
             { id: 'willNot', name: 'En halua liittyä SIL:n jäseneksi' },
             { id: 'alreadyMember', name: 'Olen jo SIL:n jäsen' }
         ];
-        const silNumberDisabled = joinSil !== 'alreadyMember' ? true : false
+        const silNumberDisabled = joinSil !== 'alreadyMember';
         const validateEmail = valuesMatch(firstEmail);
 
         return (
@@ -35,7 +36,7 @@ export class MembershipAppForm extends React.Component {
                        id="app-username"  component={GenericInput}
                        validate={[doesNotContainSpaces, isLongerThan8Characters]} />
                 <Field label="Sähköpostiosoite" name="email" id="app-email"
-                       component={GenericInput} validate={[required, containsAt, containsPeriod]} />
+                       component={GenericInput} validate={[required, containsAtOnce, containsAtLeast1Period]} />
                 <Field label="Kirjoita sähköpostiosoite uudelleen" name="repeatEmail" id="app-repeat-email"
                        component={GenericInput} validate={[required, validateEmail]} />
                 <Field label="Syntymäaika (pp.kk.vvvv)" name="birthday" id="app-birthday"

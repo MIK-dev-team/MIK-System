@@ -17,7 +17,7 @@ export function submitMembershipApp(values) {
                 const success = "Hakemuksenne on lähetetty onnistuneesti.",
                     text = 'Vahvistussähköposti on lähetetty antamaanne sähköpostiosoitteeseen. ' +
                         'Teidät uudelleenohjataan etusivulle piakkoin';
-                dispatch({type: "SUBMIT_APPLICATION_FULFILLED", payload: success});
+                dispatch({type: "SUBMIT_APPLICATION_FULFILLED"});
                 dispatch({type: "SET_SUCCESS", payload: { header: success, text: text}});
                 setTimeout(() => window.location.replace('/'), 5000);
             },

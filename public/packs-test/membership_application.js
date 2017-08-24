@@ -84745,7 +84745,55 @@ exports.default = TextAreaInput;
 /* 917 */,
 /* 918 */,
 /* 919 */,
-/* 920 */,
+/* 920 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+ * Created by owlaukka on 24/08/17.
+ */
+var required = exports.required = function required(value) {
+    return value ? undefined : 'Ei voi olla tyhjä';
+};
+
+var doesNotContainSpaces = exports.doesNotContainSpaces = function doesNotContainSpaces(value) {
+    return value && value.indexOf(' ') > -1 ? 'Ei voi sisältää välilyöntejä' : undefined;
+};
+
+var minLength = exports.minLength = function minLength(min) {
+    return function (value) {
+        return value && value.length < min ? 'Pit\xE4\xE4 olla v\xE4hint\xE4\xE4n ' + min + ' merkki\xE4 pitk\xE4' : undefined;
+    };
+};
+
+var containsExactly = exports.containsExactly = function containsExactly(character, times) {
+    return function (value) {
+        var re = new RegExp("[^" + character + "]", "g");
+        var copy = (' ' + value).slice(1);
+        if (times === 1) {
+            return copy.replace(re, "").length !== times ? 'Tulee sis\xE4lt\xE4\xE4 ' + character + ' tasan kerran' : undefined;
+        }
+        return copy.replace(re, "").length !== times ? 'Tulee sis\xE4lt\xE4\xE4 ' + character + ' tasan ' + times + ' kertaa' : undefined;
+    };
+};
+
+var containsAtLeast = exports.containsAtLeast = function containsAtLeast(character, times) {
+    return function (value) {
+        var re = new RegExp("[^" + character + "]", "g");
+        var copy = (' ' + value).slice(1);
+        if (times === 1) {
+            return copy.replace(re, "").length < times ? 'Tulee sis\xE4lt\xE4\xE4 ' + character + ' ainakin kerran' : undefined;
+        }
+        return copy.replace(re, "").length < times ? 'Tulee sis\xE4lt\xE4\xE4 ' + character + ' ainakin ' + times + ' kertaa' : undefined;
+    };
+};
+
+/***/ }),
 /* 921 */,
 /* 922 */,
 /* 923 */,
@@ -84796,7 +84844,8 @@ exports.default = TextAreaInput;
 /* 968 */,
 /* 969 */,
 /* 970 */,
-/* 971 */
+/* 971 */,
+/* 972 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84814,7 +84863,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(25);
 
-var _membership_app_page = __webpack_require__(990);
+var _membership_app_page = __webpack_require__(991);
 
 var _membership_app_page2 = _interopRequireDefault(_membership_app_page);
 
@@ -84859,7 +84908,6 @@ var MembershipAppIndex = function (_React$Component) {
 exports.default = MembershipAppIndex;
 
 /***/ }),
-/* 972 */,
 /* 973 */,
 /* 974 */,
 /* 975 */,
@@ -84872,7 +84920,8 @@ exports.default = MembershipAppIndex;
 /* 982 */,
 /* 983 */,
 /* 984 */,
-/* 985 */
+/* 985 */,
+/* 986 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84963,10 +85012,10 @@ var GenericInput = function (_React$Component) {
 exports.default = GenericInput;
 
 /***/ }),
-/* 986 */,
 /* 987 */,
 /* 988 */,
-/* 989 */
+/* 989 */,
+/* 990 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84997,11 +85046,13 @@ var _textarea_input = __webpack_require__(880);
 
 var _textarea_input2 = _interopRequireDefault(_textarea_input);
 
-var _generic_bootstrap_input = __webpack_require__(985);
+var _generic_bootstrap_input = __webpack_require__(986);
 
 var _generic_bootstrap_input2 = _interopRequireDefault(_generic_bootstrap_input);
 
-var _applicationValidationActions = __webpack_require__(1006);
+var _commonValidators = __webpack_require__(920);
+
+var _membershipApplicationValidators = __webpack_require__(1007);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -85034,34 +85085,34 @@ var MembershipAppForm = exports.MembershipAppForm = function (_React$Component) 
                          joinSil = _props.joinSil;
 
                      var silOptions = [{ id: 'willJoin', name: 'Liityn myös Suomen Ilmailuliiton jäsenyksi' }, { id: 'willNot', name: 'En halua liittyä SIL:n jäseneksi' }, { id: 'alreadyMember', name: 'Olen jo SIL:n jäsen' }];
-                     var silNumberDisabled = joinSil !== 'alreadyMember' ? true : false;
-                     var validateEmail = (0, _applicationValidationActions.valuesMatch)(firstEmail);
+                     var silNumberDisabled = joinSil !== 'alreadyMember';
+                     var validateEmail = (0, _membershipApplicationValidators.valuesMatch)(firstEmail);
 
                      return _react2.default.createElement(
                             'form',
                             { onSubmit: handleSubmit },
                             _react2.default.createElement(_reduxForm.Field, { label: 'K\xE4ytt\xE4j\xE4tunnus', name: 'username',
                                    id: 'app-username', component: _generic_bootstrap_input2.default,
-                                   validate: [_applicationValidationActions.doesNotContainSpaces, _applicationValidationActions.isLongerThan8Characters] }),
+                                   validate: [_commonValidators.doesNotContainSpaces, _membershipApplicationValidators.isLongerThan8Characters] }),
                             _react2.default.createElement(_reduxForm.Field, { label: 'S\xE4hk\xF6postiosoite', name: 'email', id: 'app-email',
-                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, _applicationValidationActions.containsAt, _applicationValidationActions.containsPeriod] }),
+                                   component: _generic_bootstrap_input2.default, validate: [_commonValidators.required, _membershipApplicationValidators.containsAtOnce, _membershipApplicationValidators.containsAtLeast1Period] }),
                             _react2.default.createElement(_reduxForm.Field, { label: 'Kirjoita s\xE4hk\xF6postiosoite uudelleen', name: 'repeatEmail', id: 'app-repeat-email',
-                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, validateEmail] }),
+                                   component: _generic_bootstrap_input2.default, validate: [_commonValidators.required, validateEmail] }),
                             _react2.default.createElement(_reduxForm.Field, { label: 'Syntym\xE4aika (pp.kk.vvvv)', name: 'birthday', id: 'app-birthday',
                                    component: _generic_bootstrap_input2.default,
-                                   validate: [_applicationValidationActions.required, _applicationValidationActions.birthdayIsInCorrectFormat, _applicationValidationActions.birthdayIsNotTooOld, _applicationValidationActions.birthdayIsNotInTheFuture] }),
+                                   validate: [_commonValidators.required, _membershipApplicationValidators.birthdayIsInCorrectFormat, _membershipApplicationValidators.birthdayIsNotTooOld, _membershipApplicationValidators.birthdayIsNotInTheFuture] }),
                             _react2.default.createElement(_reduxForm.Field, { label: 'J\xE4senlaji', name: 'member_type', id: 'app-member-type',
                                    component: _object_select_input2.default, options: memberTypes }),
                             _react2.default.createElement(_reduxForm.Field, { label: 'Kokonimi', name: 'full_name', id: 'app-full-name',
-                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, _applicationValidationActions.nameIsValid] }),
+                                   component: _generic_bootstrap_input2.default, validate: [_commonValidators.required, _membershipApplicationValidators.nameIsValid] }),
                             _react2.default.createElement(_reduxForm.Field, { label: 'Osoite', name: 'address', id: 'app-address',
-                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required] }),
+                                   component: _generic_bootstrap_input2.default, validate: [_commonValidators.required] }),
                             _react2.default.createElement(_reduxForm.Field, { label: 'Postinumero', name: 'postal_code', id: 'app-postal-code',
-                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, _applicationValidationActions.postalCodeIsValid] }),
+                                   component: _generic_bootstrap_input2.default, validate: [_commonValidators.required, _membershipApplicationValidators.postalCodeIsValid] }),
                             _react2.default.createElement(_reduxForm.Field, { label: 'Kaupunki', name: 'city', id: 'app-city',
-                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, _applicationValidationActions.cityIsValid] }),
+                                   component: _generic_bootstrap_input2.default, validate: [_commonValidators.required, _membershipApplicationValidators.cityIsValid] }),
                             _react2.default.createElement(_reduxForm.Field, { label: 'Puhelinnumero', name: 'phone', id: 'app-phone',
-                                   component: _generic_bootstrap_input2.default, validate: [_applicationValidationActions.required, _applicationValidationActions.phoneNumberIsValid] }),
+                                   component: _generic_bootstrap_input2.default, validate: [_commonValidators.required, _membershipApplicationValidators.phoneNumberIsValid] }),
                             _react2.default.createElement('hr', null),
                             _react2.default.createElement(_reduxForm.Field, { label: 'Nykyiset lupakirjaluokat', name: 'licences', id: 'app-licences',
                                    component: _generic_bootstrap_input2.default }),
@@ -85129,7 +85180,7 @@ exports.MembershipAppForm = MembershipAppForm = (0, _reactRedux.connect)(functio
 exports.default = MembershipAppForm;
 
 /***/ }),
-/* 990 */
+/* 991 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85154,11 +85205,11 @@ var _notifications = __webpack_require__(856);
 
 var _notifications2 = _interopRequireDefault(_notifications);
 
-var _membership_app_form = __webpack_require__(989);
+var _membership_app_form = __webpack_require__(990);
 
 var _membership_app_form2 = _interopRequireDefault(_membership_app_form);
 
-var _applicationActions = __webpack_require__(1005);
+var _applicationActions = __webpack_require__(1008);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -85245,7 +85296,6 @@ exports.default = (0, _reactRedux.connect)(function (store) {
 })(MembershipAppPage);
 
 /***/ }),
-/* 991 */,
 /* 992 */,
 /* 993 */,
 /* 994 */,
@@ -85254,13 +85304,14 @@ exports.default = (0, _reactRedux.connect)(function (store) {
 /* 997 */,
 /* 998 */,
 /* 999 */,
-/* 1000 */
+/* 1000 */,
+/* 1001 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(971);
+var _index = __webpack_require__(972);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -85276,11 +85327,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _webpackerReact2.default.setup({ MembershipAppIndex: _index2.default });
 
 /***/ }),
-/* 1001 */,
 /* 1002 */,
 /* 1003 */,
 /* 1004 */,
-/* 1005 */
+/* 1005 */,
+/* 1006 */,
+/* 1007 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85289,87 +85341,24 @@ _webpackerReact2.default.setup({ MembershipAppIndex: _index2.default });
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.submitMembershipApp = submitMembershipApp;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _ajax_service = __webpack_require__(282);
-
-var _ajax_service2 = _interopRequireDefault(_ajax_service);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Created by owlaukka on 30/06/17.
- */
-function submitMembershipApp(values) {
-    return function (dispatch) {
-        dispatch({ type: "SUBMIT_APPLICATION_PENDING" });
-        window.scrollTo(0, 0);
-
-        _ajax_service2.default.post('/api/v1/membership_applications', values, function (status, data) {
-            var success = "Hakemuksenne on lähetetty onnistuneesti.",
-                text = 'Vahvistussähköposti on lähetetty antamaanne sähköpostiosoitteeseen. ' + 'Teidät uudelleenohjataan etusivulle piakkoin';
-            dispatch({ type: "SUBMIT_APPLICATION_FULFILLED", payload: success });
-            dispatch({ type: "SET_SUCCESS", payload: { header: success, text: text } });
-            setTimeout(function () {
-                return window.location.replace('/');
-            }, 5000);
-        }, function (status, err) {
-            dispatch({ type: "SUBMIT_APPLICATION_REJECTED" });
-            dispatch({ type: "SET_ERROR", payload: { header: 'Lähetysvirhe', data: err } });
-        });
-    };
-}
-
-/***/ }),
-/* 1006 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.phoneNumberIsValid = exports.cityIsValid = exports.postalCodeIsValid = exports.nameIsValid = exports.birthdayIsNotInTheFuture = exports.birthdayIsNotTooOld = exports.birthdayIsInCorrectFormat = exports.valuesMatch = exports.containsPeriod = exports.containsAt = exports.isLongerThan8Characters = exports.doesNotContainSpaces = exports.required = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
+exports.phoneNumberIsValid = exports.cityIsValid = exports.postalCodeIsValid = exports.nameIsValid = exports.birthdayIsNotInTheFuture = exports.birthdayIsNotTooOld = exports.birthdayIsInCorrectFormat = exports.valuesMatch = exports.containsAtLeast1Period = exports.containsAtOnce = exports.isLongerThan8Characters = undefined;
 
 var _moment = __webpack_require__(1);
 
 var _moment2 = _interopRequireDefault(_moment);
 
+var _commonValidators = __webpack_require__(920);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Created by owlaukka on 30/06/17.
  */
-var required = exports.required = function required(value) {
-    return value ? undefined : 'Ei voi olla tyhjä';
-};
+var isLongerThan8Characters = exports.isLongerThan8Characters = (0, _commonValidators.minLength)(8);
 
-var doesNotContainSpaces = exports.doesNotContainSpaces = function doesNotContainSpaces(value) {
-    return value && value.indexOf(' ') > -1 ? 'Ei voi sisältää välilyöntejä' : undefined;
-};
+var containsAtOnce = exports.containsAtOnce = (0, _commonValidators.containsExactly)('@', 1);
 
-var isLongerThan8Characters = exports.isLongerThan8Characters = function isLongerThan8Characters(value) {
-    return value && value.length < 8 ? 'Pitää olla enemmän kuin 8 merkkiä pitkä.' : undefined;
-};
-
-var containsAt = exports.containsAt = function containsAt(value) {
-    var copy = (' ' + value).slice(1);
-    return copy.replace(/[^@]/g, "").length !== 1 ? 'Anna kunnollinen sähköpostiosoite' : undefined;
-};
-
-var containsPeriod = exports.containsPeriod = function containsPeriod(value) {
-    var copy = (' ' + value).slice(1);
-    return copy.replace(/[^.]/g, "").length !== 1 ? 'Anna kunnollinen sähköpostiosoite' : undefined;
-};
+var containsAtLeast1Period = exports.containsAtLeast1Period = (0, _commonValidators.containsAtLeast)('.', 1);
 
 var valuesMatch = exports.valuesMatch = function valuesMatch(original) {
     return function (value) {
@@ -85405,14 +85394,14 @@ var birthdayIsNotTooOld = exports.birthdayIsNotTooOld = function birthdayIsNotTo
 var birthdayIsNotInTheFuture = exports.birthdayIsNotInTheFuture = function birthdayIsNotInTheFuture(value) {
     var correctFormat = dateFormat(value);
     if (correctFormat !== null && (0, _moment2.default)(value, correctFormat) >= (0, _moment2.default)()) {
-        return 'Syntymäaikasi ei taida olla ennen 1900-lukua';
+        return 'Syntymäaikasi ei voi olla tulevaisuudessa';
     } else {
         return undefined;
     }
 };
 
 var nameIsValid = exports.nameIsValid = function nameIsValid(value) {
-    return (/^[a-zA-ZöäåÖÄÅ' ]+$/.test(value) ? undefined : 'Nimi voi sisältää vain aakkosia, ääkkösiä ja välilyöntejä.'
+    return (/^[a-zA-ZöäåÖÄÅ\-' ]+$/.test(value) ? undefined : 'Nimi voi sisältää vain aakkosia, ääkkösiä ja välilyöntejä.'
     );
 };
 
@@ -85431,5 +85420,50 @@ var phoneNumberIsValid = exports.phoneNumberIsValid = function phoneNumberIsVali
     );
 };
 
+/***/ }),
+/* 1008 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.submitMembershipApp = submitMembershipApp;
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _ajax_service = __webpack_require__(282);
+
+var _ajax_service2 = _interopRequireDefault(_ajax_service);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Created by owlaukka on 30/06/17.
+ */
+function submitMembershipApp(values) {
+    return function (dispatch) {
+        dispatch({ type: "SUBMIT_APPLICATION_PENDING" });
+        window.scrollTo(0, 0);
+
+        _ajax_service2.default.post('/api/v1/membership_applications', values, function (status, data) {
+            var success = "Hakemuksenne on lähetetty onnistuneesti.",
+                text = 'Vahvistussähköposti on lähetetty antamaanne sähköpostiosoitteeseen. ' + 'Teidät uudelleenohjataan etusivulle piakkoin';
+            dispatch({ type: "SUBMIT_APPLICATION_FULFILLED" });
+            dispatch({ type: "SET_SUCCESS", payload: { header: success, text: text } });
+            setTimeout(function () {
+                return window.location.replace('/');
+            }, 5000);
+        }, function (status, err) {
+            dispatch({ type: "SUBMIT_APPLICATION_REJECTED" });
+            dispatch({ type: "SET_ERROR", payload: { header: 'Lähetysvirhe', data: err } });
+        });
+    };
+}
+
 /***/ })
-],[1000]);
+],[1001]);
