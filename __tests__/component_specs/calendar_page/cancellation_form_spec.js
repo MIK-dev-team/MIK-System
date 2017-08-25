@@ -3,22 +3,18 @@ import { shallow } from "enzyme";
 import sinon from 'sinon';
 import moment from 'moment';
 
-import { ReservationForm } from "../../../app/javascript/components/calendar_page/reservation_form";
+import { CancellationForm } from "../../../app/javascript/components/calendar_page/cancellation_form";
 import * as reservationActions from '../../../app/javascript/store/actions/reservationsActions';
 import * as planesActions from '../../../app/javascript/store/actions/planesActions';
 
 let form;
-describe('Reservation form', () => {
+describe('Cancellation form', () => {
     beforeAll(() => {
-        form = shallow(<ReservationForm planes={[{ id: 1, name: "something" }]}/>);
-    });
-
-    it('has a panel header with right props', () => {
-        expect(form.find('Panel').first().props().header).toEqual(<h3>Tee varaus</h3>);
+        form = shallow(<CancellationForm planes={[{ id: 1, name: "something" }]}/>);
     });
 
     it('has correct amount of form groups', () => {
-        expect(form.find('FormGroup').length).toEqual(7);
+        expect(form.find('FormGroup').length).toEqual(6);
     });
 
     it('has select for planes', () => {

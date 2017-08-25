@@ -66,7 +66,7 @@ export function submitReservation(event, start, end, plane, type, desc) {
         reservation_type: type,
         additional_info: desc,
     };
-    return function(dispatch) {
+    return (dispatch) => {
         dispatch({type: "SUBMIT_RESERVATION_PENDING"});
         AjaxService.post(
             '/api/v1/reservations',
@@ -85,8 +85,29 @@ export function submitReservation(event, start, end, plane, type, desc) {
     }
 }
 
+export function submitNewReservation(values) {
+    console.log(values)
+    return
+    return (dispatch) => {
+        dispatch({type: "SUBMIT_RESERVATION_PENDING"});
+        AjaxService.post(
+            '/api/v1/reservations',
+            values,
+            (status, data) => {
+                dispatch({type: "SUBMIT_RESERVATION_FULFILLED"});
+                dispatch({type: "SET_SUCCESS", payload: { header: 'Varaus tallennettu!', text: '' }});
+                dispatch(fetchReservations());
+            },
+            (status, err) => {
+                dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: err})
+                dispatch({type: "SET_ERROR", payload: { header: 'Lähetysvirhe', data: err } });
+            }
+        );
+    }
+}
+
 export function destroyReservation(res) {
-    return function(dispatch) {
+    return (dispatch) => {
         dispatch({type: "DESTROY_RESERVATION_PENDING"});
         AjaxService.destroy(
             '/api/v1/reservations/' + res.id,

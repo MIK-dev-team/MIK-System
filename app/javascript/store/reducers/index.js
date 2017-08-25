@@ -22,5 +22,25 @@ export default combineReducers({
     notifications,
     session,
     singleReservation,
-    form: formReducer,
+    form: formReducer.plugin({
+        ReservationForm: (state, action) => {
+            switch(action.type) {
+                case "SET_TIMESLOT":
+                    return {
+                        ...state,
+                        values: {
+                            ...state.values,
+                            start: action.payload.start,
+                            end: action.payload.end,
+                        },
+                        registeredFields: {
+                            ...state.registeredFields,
+                            start: undefined,
+                            end: undefined,
+                        }
+                    }
+            }
+            return state
+        }
+    }),
 });

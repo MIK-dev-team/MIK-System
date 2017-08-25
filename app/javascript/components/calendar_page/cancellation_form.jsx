@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment'
 import DatePicker from 'react-bootstrap-date-picker';
-// import DatePicker from 'react-datepicker';
 import TimePicker from 'react-bootstrap-time-picker';
 import { Panel, FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -84,63 +83,61 @@ export class CancellationForm extends React.Component {
 
     render() {
         return (
-            <Panel bsStyle="danger" header={<h3>Peru varaukset</h3>}>
-                <form onSubmit={(event) => this.props.dispatch(massDestroyReservation(event, this.props.start, this.props.end, this.props.selectedPlane, description))}>
-                    <FormGroup controlId="1">
-                        <ControlLabel>Alkaen (pvm)</ControlLabel>
-                        <DatePicker
-                            id="startDate"
-                            value={this.normalizeDatePicker(this.props.start)}
-                            onChange={(date) => this.normalizeDatePickerOutput(date, 'start')}
-                            dateFormat={'DD.MM.YYYY'}
-                            showClearButton={false}
-                            dayLabels={days}
-                            monthLabels={months}
-                            weekStartsOn={1}
-                            placeholder="Alkamispäivämäärä" />
-                    </FormGroup>
-                    <FormGroup controlId="startTime">
-                        <ControlLabel>Alkaen (klo)</ControlLabel>
-                        <TimePicker
-                            id="startTime"
-                            value={this.formatTime(this.props.start)}
-                            onChange={(time) => this.props.dispatch(changeStartTime(time, this.props.start, this.props.reservations))}
-                            format={24}
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="2">
-                        <ControlLabel>Päättyen (pvm)</ControlLabel>
-                        <DatePicker
-                            id="endDate"
-                            value={this.normalizeDatePicker(this.props.end)}
-                            onChange={(date) => this.normalizeDatePickerOutput(date, 'end')}
-                            dateFormat={'DD.MM.YYYY'}
-                            showClearButton={false}
-                            dayLabels={days}
-                            monthLabels={months}
-                            weekStartsOn={1}
-                            placeholder="Päättymispäivämäärä" />
-                    </FormGroup>
-                    <FormGroup controlId="endTime">
-                        <ControlLabel>Päättyen (klo)</ControlLabel>
-                        <TimePicker
-                            id="endTime"
-                            value={this.formatTime(this.props.end)}
-                            onChange={(time) => this.props.dispatch(changeEndTime(time, this.props.end, this.props.reservations))}
-                            format={24}
-                        />
-                    </FormGroup>
-                    <FormGroup id="selectPlane" controlId="selectPlane">
-                        <ControlLabel>Lentokone</ControlLabel>
-                        {this.createPlaneSelect()}
-                    </FormGroup>
-                    <FormGroup controlId="setDesc">
-                        <ControlLabel>Perumisen syy</ControlLabel>
-                        <FormControl componentClass="textarea" onChange={(event) => description = event.target.value} />
-                    </FormGroup>
-                    <Button type="submit">Peru varaukset</Button>
-                </form>
-            </Panel>
+            <form onSubmit={(event) => this.props.dispatch(massDestroyReservation(event, this.props.start, this.props.end, this.props.selectedPlane, description))}>
+                <FormGroup controlId="1">
+                    <ControlLabel>Alkaen (pvm)</ControlLabel>
+                    <DatePicker
+                        id="startDate"
+                        value={this.normalizeDatePicker(this.props.start)}
+                        onChange={(date) => this.normalizeDatePickerOutput(date, 'start')}
+                        dateFormat={'DD.MM.YYYY'}
+                        showClearButton={false}
+                        dayLabels={days}
+                        monthLabels={months}
+                        weekStartsOn={1}
+                        placeholder="Alkamispäivämäärä" />
+                </FormGroup>
+                <FormGroup controlId="startTime">
+                    <ControlLabel>Alkaen (klo)</ControlLabel>
+                    <TimePicker
+                        id="startTime"
+                        value={this.formatTime(this.props.start)}
+                        onChange={(time) => this.props.dispatch(changeStartTime(time, this.props.start, this.props.reservations))}
+                        format={24}
+                    />
+                </FormGroup>
+                <FormGroup controlId="2">
+                    <ControlLabel>Päättyen (pvm)</ControlLabel>
+                    <DatePicker
+                        id="endDate"
+                        value={this.normalizeDatePicker(this.props.end)}
+                        onChange={(date) => this.normalizeDatePickerOutput(date, 'end')}
+                        dateFormat={'DD.MM.YYYY'}
+                        showClearButton={false}
+                        dayLabels={days}
+                        monthLabels={months}
+                        weekStartsOn={1}
+                        placeholder="Päättymispäivämäärä" />
+                </FormGroup>
+                <FormGroup controlId="endTime">
+                    <ControlLabel>Päättyen (klo)</ControlLabel>
+                    <TimePicker
+                        id="endTime"
+                        value={this.formatTime(this.props.end)}
+                        onChange={(time) => this.props.dispatch(changeEndTime(time, this.props.end, this.props.reservations))}
+                        format={24}
+                    />
+                </FormGroup>
+                <FormGroup id="selectPlane" controlId="selectPlane">
+                    <ControlLabel>Lentokone</ControlLabel>
+                    {this.createPlaneSelect()}
+                </FormGroup>
+                <FormGroup controlId="setDesc">
+                    <ControlLabel>Perumisen syy</ControlLabel>
+                    <FormControl componentClass="textarea" onChange={(event) => description = event.target.value} />
+                </FormGroup>
+                <Button type="submit">Peru varaukset</Button>
+            </form>
         )
     }
 }
