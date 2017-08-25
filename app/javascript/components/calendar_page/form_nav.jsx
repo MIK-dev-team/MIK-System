@@ -2,9 +2,8 @@ import React from 'react';
 import { Col, Nav, NavItem, Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { setSidebarMod, submitNewReservation } from '../../store/actions/reservationsActions';
+import { setSidebarMod, submitReservation, massDestroyReservation } from '../../store/actions/reservationsActions';
 import ReservationForm from "./reservation_form";
-import CancellationForm from "./cancellation_form";
 
 export class FormNavigation extends React.Component {
 
@@ -31,11 +30,13 @@ export class FormNavigation extends React.Component {
                         <Panel bsStyle="primary" header={<h3>Luo varaus</h3>}>
                             <ReservationForm
                                 id="add-res-form"
-                                onSubmit={(values) => this.props.dispatch(submitNewReservation(values))}/>
+                                onSubmit={(values) => this.props.dispatch(submitReservation(values))}/>
                         </Panel> :
                         <Panel bsStyle="danger" header={<h3>Peru varaukset</h3>}>
-                            <CancellationForm
-                                id="mass-cancel-res-form"/></Panel>
+                            <ReservationForm
+                                id="mass-cancel-res-form"
+                                onSubmit={(values) => this.props.dispatch(massDestroyReservation(values))} />
+                        </Panel>
                 }
 
             </Col>

@@ -35,7 +35,8 @@ export class Calendar extends React.Component {
                 start: moment(res.start).toDate(),
                 end: moment(res.end).toDate(),
                 reservation_type: res.reservation_type,
-                additional_info: res.additional_info
+                additional_info: res.additional_info,
+                user_id: res.user.id
             });
         }
         return newArray;

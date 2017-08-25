@@ -36,17 +36,18 @@ export class ReservationModal extends React.Component {
     }
 
     render() {
+        const { showModal, dispatch, user_id, reservation } = this.props;
         return (
-            <Modal show={this.props.showModal} onHide={() => this.props.dispatch(hideModal())}>
+            <Modal show={showModal} onHide={() => dispatch(hideModal())}>
                 <Modal.Header closeButton>
                     <Modal.Title>Varauksen tiedot</Modal.Title>
                 </Modal.Header>
                 {this.modalBody()}
                 <Modal.Footer>
-                    <Button onClick={() => this.goToEditPage()}>
+                    { user_id && reservation && user_id === reservation.user_id ? <Button onClick={() => this.goToEditPage()}>
                         Muokkaa
-                    </Button>
-                    <Button onClick={() => this.props.dispatch(hideModal())}>
+                    </Button> : null }
+                    <Button onClick={() => dispatch(hideModal())}>
                         Pienennä
                     </Button>
                 </Modal.Footer>
@@ -59,5 +60,7 @@ export default connect((store) => {
     return {
         showModal: store.singleReservation.showModal,
         reservation: store.singleReservation.reservation,
+        logged: store.session.loggedIn,
+        user_id: store.session.user_id,
     }
 })(ReservationModal)

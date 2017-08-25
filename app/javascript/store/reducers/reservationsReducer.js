@@ -9,10 +9,8 @@ export default function reducer(state = {
     sending: false,
     sent: false,
     submitError: null,
-    reservation_type: "harraste",
     start: "",
     end: "",
-    desc: "",
     collapsed: true,
     sidebarMod: true,
 }, action) {
@@ -113,10 +111,8 @@ export default function reducer(state = {
             return {
                 ...state,
                 submitError: null,
-                reservation_type: "harraste",
                 start: "",
                 end: "",
-                desc: "",
                 collapsed: true,
             }
         }

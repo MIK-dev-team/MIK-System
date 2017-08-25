@@ -11,15 +11,24 @@ import { ReservationModal } from "../../../app/javascript/components/common/rese
  * Created by owlaukka on 17/06/17.
  */
 
-let modal;
+
 describe('ReservationModal', () => {
+    let modal;
+    const reservation = {
+        start: "2017-05-05T12:12:12Z",
+        end: "2017-05-05T15:12:12Z",
+        reservation_type: 'opetus',
+        additional_info: 'Some additional info',
+        user_id: 1,
+    };
+
     beforeAll(() => {
         modal = shallow(<ReservationModal reservation={null} showModal={false} />);
     });
 
     it('has correct static elements when reservation is null', () => {
         expect(modal.find('Modal').length).toEqual(1);
-        expect(modal.find('Button').length).toEqual(2);
+        expect(modal.find('Button').length).toEqual(1);
         expect(modal.find('div').length).toEqual(1);
         expect(modal.find('h4').length).toEqual(0);
         expect(modal.find('p').length).toEqual(0);
@@ -33,7 +42,7 @@ describe('ReservationModal', () => {
         let dispatchSpy, functionSpy;
         beforeAll(() => {
             dispatchSpy = sinon.spy();
-            modal.setProps({dispatch: dispatchSpy});
+            modal.setProps({dispatch: dispatchSpy, reservation: reservation, user_id: 1});
         });
 
         afterEach(() => {
@@ -66,16 +75,10 @@ describe('ReservationModal', () => {
         });
     });
 
-    describe('with reservation not null', () => {
-        const reservation = {
-            start: "2017-05-05T12:12:12Z",
-            end: "2017-05-05T15:12:12Z",
-            reservation_type: 'opetus',
-            additional_info: 'Some additional info'
-        };
+    describe('with reservation not null and user logged looking at their own reservation', () => {
 
         beforeAll(() => {
-            modal.setProps({reservation: reservation});
+            modal.setProps({reservation: reservation, user_id: 1});
             modal.update();
         });
 
@@ -101,160 +104,9 @@ describe('ReservationModal', () => {
             expect(modal.find('p').at(2).text()).toEqual("5. toukokuuta 2017, klo 15.12");
             expect(modal.find('p').last().text()).toEqual(reservation.additional_info);
         });
-    });
 
-    // describe('with successMsg existing', () => {
-    //     beforeAll(() => {
-    //         modal.setProps({success: { header: 'Some success header!', text: 'Some success text'}});
-    //         modal.update();
-    //     });
-    //
-    //     afterAll(() => {
-    //         modal.setProps({success: undefined});
-    //         modal.update();
-    //     });
-    //
-    //     it('has correct elements', () => {
-    //         expect(modal.find('div').length).toEqual(0);
-    //         expect(modal.find('Alert').length).toEqual(1);
-    //         expect(modal.find('h4').length).toEqual(1);
-    //         expect(modal.find('p').length).toEqual(2);
-    //         expect(modal.find('Button').length).toEqual(1);
-    //     });
-    //
-    //     it('has Alert element with correct style', () => {
-    //         expect(modal.find('Alert').props().bsStyle).toEqual('success');
-    //     });
-    //
-    //     it('has h4 element that displays correct text', () => {
-    //         expect(modal.find('h4').text()).toEqual('Some success header!');
-    //     });
-    //
-    //     it('has p element that displays correct text', () => {
-    //         expect(modal.find('p').first().text()).toEqual('Some success text');
-    //     });
-    //
-    //     it('has onDismiss prop that dispatches correct action when pressed', () => {
-    //         const dispatchSpy = sinon.spy(),
-    //             resetStub = sinon.stub(notificationsActions, 'resetNotifications');
-    //         modal.setProps({dispatch: dispatchSpy});
-    //         modal.update();
-    //
-    //         expect(dispatchSpy.notCalled).toBe(true);
-    //         expect(resetStub.notCalled).toBe(true);
-    //         modal.find('Alert').simulate('dismiss');
-    //         expect(dispatchSpy.calledOnce).toBe(true);
-    //         expect(resetStub.calledOnce).toBe(true);
-    //         resetStub.restore();
-    //     });
-    // });
-    //
-    // describe('with infoMsg existing', () => {
-    //     beforeAll(() => {
-    //         modal.setProps({info: { header: 'Some info header!', text: 'Some success text'}});
-    //         modal.update();
-    //     });
-    //
-    //     afterAll(() => {
-    //         modal.setProps({info: undefined});
-    //         modal.update();
-    //     });
-    //
-    //     it('has correct elements', () => {
-    //         expect(modal.find('div').length).toEqual(0);
-    //         expect(modal.find('Alert').length).toEqual(1);
-    //         expect(modal.find('h4').length).toEqual(1);
-    //         expect(modal.find('p').length).toEqual(1);
-    //         expect(modal.find('Button').length).toEqual(1);
-    //     });
-    //
-    //     it('has Alert element with correct style', () => {
-    //         expect(modal.find('Alert').props().bsStyle).toEqual('info');
-    //     });
-    //
-    //     it('has h4 element that displays correct text', () => {
-    //         expect(modal.find('h4').text()).toEqual('Some info header!');
-    //     });
-    //
-    //     it('has onDismiss prop that dispatches correct action when pressed', () => {
-    //         const dispatchSpy = sinon.spy(),
-    //             resetStub = sinon.stub(notificationsActions, 'resetNotifications');
-    //         modal.setProps({dispatch: dispatchSpy});
-    //         modal.update();
-    //
-    //         expect(dispatchSpy.notCalled).toBe(true);
-    //         expect(resetStub.notCalled).toBe(true);
-    //         modal.find('Alert').simulate('dismiss');
-    //         expect(dispatchSpy.calledOnce).toBe(true);
-    //         expect(resetStub.calledOnce).toBe(true);
-    //         resetStub.restore();
-    //     });
-    // });
-    //
-    // describe('with errorMsg existing', () => {
-    //     beforeAll(() => {
-    //         modal.setProps({error: { header: 'Some error header!', data: ['some', 'kinda', 'error', 'list']}});
-    //         modal.update();
-    //     });
-    //
-    //     afterAll(() => {
-    //         modal.setProps({error: undefined});
-    //         modal.update();
-    //     });
-    //
-    //     it('has correct elements', () => {
-    //         expect(modal.find('div').length).toEqual(0);
-    //         expect(modal.find('Alert').length).toEqual(1);
-    //         expect(modal.find('h4').length).toEqual(1);
-    //         expect(modal.find('p').length).toEqual(5);
-    //         expect(modal.find('Button').length).toEqual(1);
-    //     });
-    //
-    //     it('has Alert element with correct style', () => {
-    //         expect(modal.find('Alert').props().bsStyle).toEqual('danger');
-    //     });
-    //
-    //     it('has h4 element that displays correct text', () => {
-    //         expect(modal.find('h4').text()).toEqual('Some error header!');
-    //     });
-    //
-    //     it('has correct error text on p elements', () => {
-    //         expect(modal.find('p').first().text()).toEqual('some');
-    //         expect(modal.find('p').at(1).text()).toEqual('kinda');
-    //         expect(modal.find('p').at(2).text()).toEqual('error');
-    //         expect(modal.find('p').at(3).text()).toEqual('list');
-    //     });
-    //
-    //     it('has a Button element with correct text', () => {
-    //         expect(modal.find('Button').props().children).toEqual('Piilota');
-    //     });
-    //
-    //     it('has onDismiss prop that dispatches correct action when pressed', () => {
-    //         const dispatchSpy = sinon.spy(),
-    //             resetStub = sinon.stub(notificationsActions, 'resetNotifications');
-    //         modal.setProps({dispatch: dispatchSpy});
-    //         modal.update();
-    //
-    //         expect(dispatchSpy.notCalled).toBe(true);
-    //         expect(resetStub.notCalled).toBe(true);
-    //         modal.find('Alert').simulate('dismiss');
-    //         expect(dispatchSpy.calledOnce).toBe(true);
-    //         expect(resetStub.calledOnce).toBe(true);
-    //         resetStub.restore();
-    //     });
-    //
-    //     it('has Button that dispatches correct action when pressed', () => {
-    //         const dispatchSpy = sinon.spy(),
-    //             resetStub = sinon.stub(notificationsActions, 'resetNotifications');
-    //         modal.setProps({dispatch: dispatchSpy});
-    //         modal.update();
-    //
-    //         expect(dispatchSpy.notCalled).toBe(true);
-    //         expect(resetStub.notCalled).toBe(true);
-    //         modal.find('Button').simulate('click');
-    //         expect(dispatchSpy.calledOnce).toBe(true);
-    //         expect(resetStub.calledOnce).toBe(true);
-    //         resetStub.restore();
-    //     });
-    // });
+        it('displays two Buttons', () => {
+            expect(modal.find('Button').length).toEqual(2);
+        });
+    });
 });

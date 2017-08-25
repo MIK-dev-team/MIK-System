@@ -12,7 +12,7 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const initialStoreState = {
     planes: { planes: [{ id: 1, name: 'AS123' }, { id: 2, name: 'DF456' }] },
-    reservations: { reservations: [] }
+    reservations: { reservations: [], sidebarMod: true },
 };
 
 import ReservationForm from "../../../app/javascript/components/calendar_page/reservation_form";
@@ -30,31 +30,28 @@ describe('Reservation form', () => {
         form = mount(<Provider store={store}><ReservationForm handleSubmit={submitStub}/></Provider>);
     });
 
-    it('has correct amount of Fields', () => {
-        expect(form.find('Field').length).toEqual(7);
-    });
+    describe('as creating form', () => {
+        it('has correct amount of Fields', () => {
+            expect(form.find('Field').length).toEqual(7);
+        });
 
-    it('has select for planes', () => {
-        expect(form.find('Field').at(4).props().component).toEqual(ObjectSelectInput);
-        expect(form.find('Field').at(4).props().label).toEqual('Lentokone');
-    });
+        it('has select for type', () => {
+            expect(form.find('Field').at(5).props().component).toEqual(SelectInput);
+            expect(form.find('Field').at(5).props().label).toEqual('Tyyppi');
+        });
 
-    it('has select for type', () => {
-        expect(form.find('Field').at(5).props().component).toEqual(SelectInput);
-        expect(form.find('Field').at(5).props().label).toEqual('Tyyppi');
-    });
+        it('has textarea for additional info', () => {
+            expect(form.find('Field').at(6).props().component).toEqual(TextAreaInput);
+            expect(form.find('Field').at(6).props().label).toEqual('Lisätiedot');
+        });
 
-    it('has textarea for additional info', () => {
-        expect(form.find('Field').at(6).props().component).toEqual(TextAreaInput);
-        expect(form.find('Field').at(6).props().label).toEqual('Lisätiedot');
+        it('has select with correct options for selecting type', () => {
+            expect(form.find('Field').at(5).props().options).toEqual(['harraste', 'opetus']);
+        });
     });
 
     it('has select with correct options for selecting plane', () => {
         expect(form.find('Field').at(4).props().options).toEqual([{ id: 1, name: 'AS123' }, { id: 2, name: 'DF456' }]);
-    });
-
-    it('has select with correct options for selecting type', () => {
-        expect(form.find('Field').at(5).props().options).toEqual(['harraste', 'opetus']);
     });
 
     it('has Button with type submit', () => {
@@ -76,5 +73,24 @@ describe('Reservation form', () => {
         expect(submitStub.notCalled).toBe(true);
         form.simulate('submit');
         expect(submitStub.calledOnce).toBe(true);
+    });
+
+    describe('as deletion form', () => {
+        beforeAll(() => {
+            submitStub = sinon.stub();
+            store = mockStore({
+                ...initialStoreState,
+                reservations: {
+                    ...initialStoreState.reservations,
+                    sidebarMod: false,
+                }
+            });
+            form = mount(<Provider store={store}><ReservationForm handleSubmit={submitStub}/></Provider>);
+        });
+
+        it('has textarea for additional info', () => {
+            expect(form.find('Field').at(5).props().component).toEqual(TextAreaInput);
+            expect(form.find('Field').at(5).props().label).toEqual('Perumisen syy');
+        });
     });
 });

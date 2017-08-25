@@ -39,9 +39,10 @@ describe('Calendar', () => {
             title: '<valittu aika>',
             start: moment().add(1, 'days').format(),
             end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'selected'
+            reservation_type: 'selected',
+            user: { id: 1 },
         }];
-        calendar.setProps({reservations: reservations, logged: true});
+        calendar.setProps({reservations: reservations, logged: true, user_id: 1});
         calendar.update();
 
         const isButtonDisabledReturn = calendar.instance().isButtonDisabled();
@@ -53,9 +54,10 @@ describe('Calendar', () => {
             title: '<valittu aika>',
             start: moment().add(1, 'days').format(),
             end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'opetus'
+            reservation_type: 'opetus',
+            user: { id: 1 },
         }];
-        calendar.setProps({reservations: reservations, logged: true});
+        calendar.setProps({reservations: reservations, logged: true, user_id: 1});
         calendar.update();
 
         const isButtonDisabledReturn = calendar.instance().isButtonDisabled();
@@ -67,7 +69,8 @@ describe('Calendar', () => {
             title: '<valittu aika>',
             start: moment().add(1, 'days').format(),
             end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'opetus'
+            reservation_type: 'opetus',
+            user: { id: 2 }
         }];
         calendar.setProps({reservations: reservations, logged: false});
         calendar.update();

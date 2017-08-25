@@ -2,6 +2,7 @@
  * Created by owlaukka on 18/06/17.
  */
 import React from 'react';
+import { reset } from 'redux-form';
 import { Button } from 'react-bootstrap';
 import moment from 'moment';
 
@@ -51,43 +52,8 @@ export function fetchMyReservations(plane=undefined) {
     }
 }
 
-export function submitReservation(event, start, end, plane, type, desc) {
-    event.preventDefault();
-    if (plane === undefined) {
-        return (dispatch) => {
-            // dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: "Valitse kone"});
-            dispatch({type: "SET_ERROR", payload: {header: 'Lähetysvirhe', data: ['Valitse kone']}})
-        }
-    }
-    const reservation = {
-        start: moment(start).toDate(),
-        end: moment(end).toDate(),
-        plane_id: plane.id,
-        reservation_type: type,
-        additional_info: desc,
-    };
-    return (dispatch) => {
-        dispatch({type: "SUBMIT_RESERVATION_PENDING"});
-        AjaxService.post(
-            '/api/v1/reservations',
-            reservation,
-            (status, data) => {
-                dispatch({type: "SUBMIT_RESERVATION_FULFILLED"});
-                dispatch({type: "RESET_NEW_RESERVATION"});
-                dispatch({type: "SET_SUCCESS", payload: { header: 'Varaus tallennettu!', text: '' }});
-                dispatch(fetchReservations());
-            },
-            (status, err) => {
-                dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: err})
-                dispatch({type: "SET_ERROR", payload: { header: 'Lähetysvirhe', data: err } });
-            }
-        );
-    }
-}
-
-export function submitNewReservation(values) {
-    console.log(values)
-    return
+export function submitReservation(values) {
+    window.scrollTo(0, 200);
     return (dispatch) => {
         dispatch({type: "SUBMIT_RESERVATION_PENDING"});
         AjaxService.post(
@@ -96,6 +62,8 @@ export function submitNewReservation(values) {
             (status, data) => {
                 dispatch({type: "SUBMIT_RESERVATION_FULFILLED"});
                 dispatch({type: "SET_SUCCESS", payload: { header: 'Varaus tallennettu!', text: '' }});
+                dispatch({type: "RESET_NEW_RESERVATION"});
+                dispatch(reset('ReservationForm'));
                 dispatch(fetchReservations());
             },
             (status, err) => {
@@ -124,28 +92,27 @@ export function destroyReservation(res) {
     }
 }
 
-export function massDestroyReservation(event, start, end, plane, desc) {
-    event.preventDefault();
-
-    const cancellation = {
-        start: moment(start).toDate(),
-        end: moment(end).toDate(),
-        plane_id: plane.id,
-        description: desc,
+export function massDestroyReservation(values) {
+    const newValues = {
+        ...values,
+        start: moment(values.start).toDate(),
+        end: moment(values.end).toDate()
     };
-
-    return function(dispatch) {
+    window.scrollTo(0, 200);
+    return (dispatch) => {
         dispatch({type: "MASS_DESTROY_RESERVATION_PENDING"});
         AjaxService.post(
             '/api/v1/joukkoperu/',
-            cancellation,
+            newValues,
             (status, data) => {
                 dispatch({type: "MASS_DESTROY_RESERVATION_FULFILLED"});
                 dispatch({type: "SET_SUCCESS", payload: { header: 'Varaukset poistettu!', text: '' }});
+                dispatch({type: "RESET_NEW_RESERVATION"});
+                dispatch(reset('ReservationForm'));
                 dispatch(fetchReservations());
             },
             (status, err) => {
-                dispatch({type: "MASS_DESTROY_RESERVATION_REJECTED", payload: err})
+                dispatch({type: "MASS_DESTROY_RESERVATION_REJECTED", payload: err});
                 dispatch({type: "SET_ERROR", payload: { header: 'Poistovirhe', data: err } });
             }
         );

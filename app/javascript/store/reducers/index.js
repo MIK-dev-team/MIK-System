@@ -22,10 +22,11 @@ export default combineReducers({
     notifications,
     session,
     singleReservation,
+    // TODO: this could be moved to another file... somehow
     form: formReducer.plugin({
         ReservationForm: (state, action) => {
             switch(action.type) {
-                case "SET_TIMESLOT":
+                case "SET_TIMESLOT": {
                     return {
                         ...state,
                         values: {
@@ -39,6 +40,20 @@ export default combineReducers({
                             end: undefined,
                         }
                     }
+                }
+                case "SELECT_PLANE": {
+                    return {
+                        ...state,
+                        values: {
+                            ...state.values,
+                            plane_id: action.payload.id,
+                        },
+                        registeredFields: {
+                            ...state.registeredFields,
+                            plane_id: undefined,
+                        }
+                    }
+                }
             }
             return state
         }

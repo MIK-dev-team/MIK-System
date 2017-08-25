@@ -16,7 +16,7 @@ moment.locale('fi');
 
 export class ReservationForm extends React.Component {
     render() {
-        const { handleSubmit, submitting, planes, reservations, dispatch } = this.props;
+        const { handleSubmit, submitting, planes, reservations, dispatch, sidebarMod } = this.props;
 
         const startOnChange = (event, newValue, previousValue) => {
             dispatch(setReservationStart(newValue, reservations));
@@ -37,10 +37,12 @@ export class ReservationForm extends React.Component {
                 <Field label="Loppuaika" name="end" id="res-end-time"
                        onChange={endOnChange} component={TimePickerInput} normalize={normalizeTimePicker()} />
                 <Field label="Lentokone" name="plane_id" options={planes} component={ObjectSelectInput} />
-                <Field label="Tyyppi" name="reservation_type" options={["harraste", "opetus"]}
-                       component={SelectInput} />
-                <Field label="Lisätiedot" name="additional_info" componentClass="textarea" component={TextAreaInput} />
-                <Button type="submit">Tallenna varaus { submitting ? '...' : null }</Button>
+                { sidebarMod ? <Field label="Tyyppi" name="reservation_type" options={["harraste", "opetus"]}
+                       component={SelectInput} /> : null }
+                <Field label={ sidebarMod ? 'Lisätiedot' : 'Perumisen syy'} name="additional_info" componentClass="textarea" component={TextAreaInput} />
+                <Button type="submit">
+                    { sidebarMod ? 'Tallenna varaus' : 'Poista varaukset'} { submitting ? '...' : null }
+                </Button>
             </form>
         )
     }
@@ -54,6 +56,7 @@ ReservationForm = connect((store) => {
     return {
         planes: store.planes.planes,
         reservations: store.reservations.reservations,
+        sidebarMod: store.reservations.sidebarMod,
         initialValues: {
             start: store.reservations.start,
             end: store.reservations.end,
