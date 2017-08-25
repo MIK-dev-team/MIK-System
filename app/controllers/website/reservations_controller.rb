@@ -25,9 +25,4 @@ class Website::ReservationsController < ApplicationController
     def set_reservation
       @reservation = Reservation.find(params[:id])
     end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def reservation_params
-      params.require(:reservation).permit(:reservation_type, :start, :end, :user_id, :plane_id, :additional_info)
-    end
 end
