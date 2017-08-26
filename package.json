@@ -65,6 +65,7 @@
     "collectCoverageFrom": [
       "**/app/javascript/components/**",
       "**/app/javascript/store/**",
+      "**/app/javascript/services/**",
       "!**/index.*"
     ],
     "testPathIgnorePatterns": [

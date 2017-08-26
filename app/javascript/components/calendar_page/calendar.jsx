@@ -9,6 +9,7 @@ import { selectTimeForNotifier } from "../../store/actions/notifiersActions";
 import { showModal } from '../../store/actions/singleReservationActions';
 import ReservationForm from "./reservation_form";
 import CancellationForm from "./cancellation_form";
+import { eventStyleGetter } from "../../services/functional_styling/calendar/eventStyling";
 import FormNavigation from "./form_nav";
 
 moment.locale("fi");
@@ -52,33 +53,14 @@ export class Calendar extends React.Component {
             this.props.dispatch(setCollapsed(this.props.collapsed));
     }
 
-    // TODO: put this into it's own service/library function etc
-    eventStyleGetter(event, start, end, isSelected) {
-        var background,
-            color = "#000000CC";
-        switch (event.reservation_type) {
-            case "selected": {
-                background = "#ff00008C";
-                break;
-            }
-            case "observer": {
-                background = "#00ff5f";
-                break;
-            }
-            case "opetus": {
-                background = "#ffe99a8C";
-                break;
-            }
-            default:
-                background = "#00eeee8C";
-        }
+    toggleSidebarMod(eventKey) {
+      if(this.props.sidebarMod && eventKey === 2) {
+        this.props.dispatch(setSidebarMod(2));
+      }
+      if(!this.props.sidebarMod && eventKey === 1) {
+        this.props.dispatch(setSidebarMod(1));
+      }
 
-        return ({
-            style: {
-                backgroundColor: background,
-                color: color
-            }
-        })
     }
 
     render() {
@@ -102,7 +84,7 @@ export class Calendar extends React.Component {
                             onSelectEvent={(event) => this.props.dispatch(showModal(event))}
                             onSelectSlot={(timeSlot) => this.selectTimeSlot(timeSlot)}
                             views={["month", "week", "day", "agenda"]}
-                            eventPropGetter={this.eventStyleGetter}
+                            eventPropGetter={eventStyleGetter}
                             messages={{next: "seuraava", previous: "edellinen", today: "tämä päivä", month: "kuukausi", week: "viikko", day: "päivä", agenda: "varaukset"}}
                         />
                     </Col>

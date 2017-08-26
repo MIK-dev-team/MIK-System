@@ -63,7 +63,7 @@ describe('ReservationModal', () => {
             modal.find('Button').last().simulate('click');
             expect(functionSpy.calledOnce).toBe(true);
             expect(dispatchSpy.calledOnce).toBe(true);
-        })
+        });
     });
 
     describe('with reservation not null', () => {
