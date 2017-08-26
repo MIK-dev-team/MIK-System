@@ -7,8 +7,6 @@ import { connect } from 'react-redux';
 import { setCollapsed, fillForm , setSidebarMod } from '../../store/actions/reservationsActions';
 import { selectTimeForNotifier } from "../../store/actions/notifiersActions";
 import { showModal } from '../../store/actions/singleReservationActions';
-import ReservationForm from "./reservation_form";
-import CancellationForm from "./cancellation_form";
 import { eventStyleGetter } from "../../services/functional_styling/calendar/eventStyling";
 import FormNavigation from "./form_nav";
 
@@ -37,7 +35,8 @@ export class Calendar extends React.Component {
                 start: moment(res.start).toDate(),
                 end: moment(res.end).toDate(),
                 reservation_type: res.reservation_type,
-                additional_info: res.additional_info
+                additional_info: res.additional_info,
+                user_id: res.user.id
             });
         }
         return newArray;
@@ -54,12 +53,12 @@ export class Calendar extends React.Component {
     }
 
     toggleSidebarMod(eventKey) {
-      if(this.props.sidebarMod && eventKey === 2) {
-        this.props.dispatch(setSidebarMod(2));
-      }
-      if(!this.props.sidebarMod && eventKey === 1) {
-        this.props.dispatch(setSidebarMod(1));
-      }
+        if (this.props.sidebarMod && eventKey === 2) {
+            this.props.dispatch(setSidebarMod(2));
+        }
+        if (!this.props.sidebarMod && eventKey === 1) {
+            this.props.dispatch(setSidebarMod(1));
+        }
 
     }
 
@@ -76,6 +75,7 @@ export class Calendar extends React.Component {
                 <Row id="row-main">
                     <Col id="content" lg={this.props.collapsed ? 12 : 8} style={{margin: "auto", height: 40 + "vw"}}>
                         <BigCalendar
+                            id="calendar"
                             selectable={this.props.logged ? true : false}
                             {...this.props}
                             events={this.convertReservationsToCalendarEvents()}

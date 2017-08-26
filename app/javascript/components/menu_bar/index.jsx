@@ -6,11 +6,12 @@ import { Provider } from 'react-redux';
 
 import MenuBar from "./menu_bar";
 import store from '../../store/store';
-import { setLoggedIn } from "../../store/actions/sessionActions";
+import { setLoggedIn, setUserId} from "../../store/actions/sessionActions";
 
 export default class MenuBarIndex extends React.Component {
     componentWillMount() {
         store.dispatch(setLoggedIn(this.props.logged));
+        store.dispatch(setUserId(this.props.user_id));
     }
     render() {
         return (

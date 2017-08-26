@@ -140,19 +140,19 @@ describe('Reservation action', () => {
         expect(JSON.stringify(returnedValue)).toEqual(JSON.stringify(expectedValue));
     });
 
-    it('submitReservation dispatches correct actions on successful save', () => {
-        promise = Promise.resolve({});
-        stub = sinon.stub(AjaxService.service, 'request').callsFake(() => promise);
-        const expectedActions = [
-            { type: "SUBMIT_RESERVATION_PENDING" },
-            { type: "SUBMIT_RESERVATION_FULFILLED" },
-            { type: "RESET_NEW_RESERVATION" },
-            { type: "SET_SUCCESS", payload: { header: "Varaus tallennettu!", text: "" } },
-            { type: "FETCH_RESERVATIONS_PENDING" }
-        ];
+        it('submitReservation dispatches correct actions on successful save', () => {
+            promise = Promise.resolve({});
+            stub = sinon.stub(AjaxService.service, 'request').callsFake(() => promise);
+            const expectedActions = [
+                {"type": "SUBMIT_RESERVATION_PENDING"},
+                {"type": "SUBMIT_RESERVATION_FULFILLED"},
+                {"payload": {"header": "Varaus tallennettu!", "text": ""}, "type": "SET_SUCCESS"},
+                {"type": "RESET_NEW_RESERVATION"}, {"meta": {"form": "ReservationForm"}, "type": "@@redux-form/RESET"},
+                {"type": "FETCH_RESERVATIONS_PENDING"}
+            ];
 
-        store.dispatch(actions.submitReservation({preventDefault: () => {}}, undefined, undefined, { id: 1, name: "something" }));
-        return promise.then(() => {
+            store.dispatch(actions.submitReservation({preventDefault: () => {}}, undefined, undefined, { id: 1, name: "something" }));
+            return promise.then(() => {
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -219,6 +219,15 @@ describe('Reservation action', () => {
             { type: "SET_COLLAPSED", payload: !collapsed }
         ];
         store.dispatch(actions.setCollapsed(collapsed));
+        expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it("setSidebarMod dispatches correct actions", () => {
+        const newSelect = false;
+        const expectedActions = [
+            { type: "TOGGLE_SIDEBARMOD", payload: newSelect }
+        ];
+        store.dispatch(actions.setSidebarMod(newSelect));
         expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -458,47 +467,4 @@ describe('Reservation action', () => {
         let result = actions.fillForm(timeSlot, response.data);
         expect(result).toEqual(response.data);
     });
-
-    // TODO: these tests have to be fixed
-
-    // it('fillForm returns original reservations if end of time slot is inside a reserved time', () => {
-    //     const timeSlot = {
-    //         start: moment().add({days: 5, hours: 3}).toDate(),
-    //         end: moment().add({days: 5, hours: 6}).toDate(),
-    //     };
-    //
-    //     let result = actions.fillForm(timeSlot, response.data);
-    //     expect(result).toEqual(response.data);
-    // });
-    //
-    //
-    // it('fillForm returns original reservations if start of time slot is inside a reserved time', () => {
-    //     const timeSlot = {
-    //         start: moment().add({days: 5, hours: 5, minutes: 30}).toDate(),
-    //         end: moment().add({days: 5, hours: 10}).toDate(),
-    //     };
-    //
-    //     let result = actions.fillForm(timeSlot, response.data);
-    //     expect(result).toEqual(response.data);
-    // });
-    //
-    // it('fillForm returns original reservations if time slot completely covers a reserved time', () => {
-    //     const timeSlot = {
-    //         start: moment().add({days: 5, hours: 4}).toDate(),
-    //         end: moment().add({days: 5, hours: 10}).toDate(),
-    //     };
-    //
-    //     let result = actions.fillForm(timeSlot, response.data);
-    //     expect(result).toEqual(response.data);
-    // });
-    //
-    // it('fillForm returns original reservations when trying to reserve an existing time', () => {
-    //     const timeSlot = {
-    //         start: moment().add({days: 5, hours: 5}).toDate(),
-    //         end: moment().add({days: 5, hours: 7}).toDate(),
-    //     };
-    //
-    //     let result = actions.fillForm(timeSlot, response.data);
-    //     expect(result).toEqual(response.data);
-    // });
 });
