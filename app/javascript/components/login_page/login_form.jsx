@@ -1,55 +1,41 @@
 import React from 'react';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux'
-import { FormGroup, ControlLabel, FormControl, Button, Glyphicon, Alert } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import GenericInput from "../form_fields/generic_bootstrap_input";
 
+import { required } from '../../services/validators/commonValidators';
 import * as actions from '../../store/actions/loginActions';
-import * as validators from '../../store/actions/loginValidationActions';
 
 export class LoginForm extends React.Component {
 
-    handleFormSubmit = (e) => {this.props.dispatch(actions.loginUser(this.props.username, this.props.password, e))};
-
     render() {
-        let alert;
-        if (this.props.isLoginFailed) {
-          alert =
-              <Alert bsStyle="danger">
-                  <h4>Kirjautumistiedoissa on virhe!</h4>
-              </Alert>        }
-        if (this.props.isLoginSuccess) {
-          alert =
-              <Alert bsStyle="success">
-                  <h4>Olet kirjautunut sisään!</h4>
-              </Alert>
-            }
+      const { handleSubmit } = this.props;
 
         return (
-            <div>
-                {alert}
-                <form onSubmit={this.handleFormSubmit}>
-                    <FormGroup controlId="username">
-                        <ControlLabel>Käyttäjätunnus/Sähköposti</ControlLabel>
-                        <FormControl type="text" value={this.props.username} onChange={(e) => this.props.dispatch(actions.handleUsernameValueChange(e))}/>
-                    </FormGroup>
-
-                    <FormGroup controlId="password">
-                        <ControlLabel>Salasana</ControlLabel>
-                        <FormControl type="password" value={this.props.password} onChange={(e) => this.props.dispatch(actions.handlePasswordValueChange(e))}/>
-                    </FormGroup>
+                <form onSubmit={handleSubmit}>
+                    <Field label="Käyttäjätunnus/Sähköposti" name="email"
+                          id="login-username"  component={GenericInput}
+                          validate={[required]} />
+                    <Field label="Salasana" name="password" type="password"
+                          id="login-password"  component={GenericInput}
+                          validate={[required]} />
 
                     <Button type="submit">Kirjaudu</Button>
                 </form>
-            </div>
         )
     }
-
 }
 
-export default connect((store) => {
+LoginForm = reduxForm({
+    form: 'LoginForm'
+})(LoginForm);
+
+LoginForm = connect((store) => {
     return {
-      isLoginSuccess: store.login.isLoginSuccess,
       username: store.login.username,
       password: store.login.password,
-      isLoginFailed: store.login.isLoginFailed
     }
 })(LoginForm)
+
+export default LoginForm;

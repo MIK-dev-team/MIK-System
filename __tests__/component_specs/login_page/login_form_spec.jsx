@@ -1,82 +1,53 @@
-import React from 'react';
-import { shallow } from "enzyme";
+import React from "react";
+import { mount } from "enzyme";
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 import sinon from 'sinon';
 
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
 import * as loginActions from '../../../app/javascript/store/actions/loginActions'
-import { LoginForm } from "../../../app/javascript/components/login_page/login_form";
 
-const initialProps = {
-        isLoginSuccess: false,
-        isLoginFailed: false,
-
+const initialStoreState = {
         username: "",
         password: "",
-
-        submitObject: {},
 }
 
-let form;
-describe("Login form", () => {
-    beforeEach(() => {
-        form = shallow(<LoginForm {...initialProps}/>);
+import LoginForm from "../../../app/javascript/components/login_page/login_form";
+import ObjectSelectInput from '../../../app/javascript/components/form_fields/object_select_input';
+import TextAreaInput from '../../../app/javascript/components/form_fields/textarea_input';
+
+describe('LoginForm', () => {
+    let form, submitStub, store = mockStore(initialStoreState);
+    beforeAll(() => {
+        submitStub = sinon.stub();
+        form = mount(<Provider store={store}><LoginForm handleSubmit={submitStub} /></Provider>);
     });
 
-    it("contains 1 form", () => {
+    it('has correct static elements', () => {
         expect(form.find('form').length).toEqual(1);
+        expect(form.find('Button').length).toEqual(1);
     });
 
-    it("contains correct amount of FormGroups", () => {
-        expect(form.find('FormGroup').length).toEqual(2);
+    it('has correct amount of Fields', () => {
+        expect(form.find('Field').length).toEqual(2);
     });
 
-    it("calls dispatch when form is submitted", () => {
-        const spy = sinon.spy();
-        form = shallow(<LoginForm
-            {...initialProps}
-            dispatch={spy}/>);
-        expect(spy.calledOnce).toBe(false);
-        form.find('form').simulate('submit', {preventDefault: () => {}});
-        expect(spy.calledOnce).toBe(true);
+    it('uses correct function when submitting', () => {
+        expect(submitStub.notCalled).toBe(true);
+        form.simulate('submit');
+        expect(submitStub.calledOnce).toBe(true);
     });
 
-    it('calls dispatch when a field is changed', () => {
-        const spy = sinon.spy();
-        form = shallow(<LoginForm
-            {...initialProps}
-            dispatch={spy}/>);
-        form.findWhere(n => n.prop('controlId') === 'username').find('FormControl').simulate('change', { target: {value: 'a'} });
-        form.findWhere(n => n.prop('controlId') === 'password').find('FormControl').simulate('change', { target: {value: 'a'} });
-        expect(spy.callCount).toEqual(2);
+    it('has correct component for select Fields', () => {
+        expect(form.find('Field').at(4).props().component).toEqual(ObjectSelectInput);
+        expect(form.find('Field').at(13).props().component).toEqual(ObjectSelectInput);
     });
 
-    describe('calls correct function inside dispatch', () => {
-        let actionStub;
-        beforeEach(() => {
-          form = shallow(<LoginForm
-              {...initialProps}
-              dispatch={sinon.spy()}/>);
-        });
-
-        afterEach(() => {
-            actionStub.restore();
-        });
-
-        it('when changing username', () => {
-            actionStub = sinon.stub(loginActions, 'handleUsernameValueChange');
-            expect(actionStub.calledOnce).toBe(false)
-            form.findWhere(n => n.prop('controlId') === 'username')
-                .find('FormControl')
-                .simulate('change', { target: {value: 'a'} });
-            expect(actionStub.calledOnce).toBe(true)
-        });
-
-        it('when changing password', () => {
-            actionStub = sinon.stub(loginActions, 'handlePasswordValueChange');
-            expect(actionStub.calledOnce).toBe(false)
-            form.findWhere(n => n.prop('controlId') === 'password')
-                .find('FormControl')
-                .simulate('change', { target: {value: 'a'} });
-            expect(actionStub.calledOnce).toBe(true)
-        });
+    it('has correct component for textarea Fields', () => {
+        expect(form.find('Field').at(12).props().component).toEqual(TextAreaInput);
+        expect(form.find('Field').at(16).props().component).toEqual(TextAreaInput);
     });
 });
