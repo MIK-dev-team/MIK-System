@@ -1,7 +1,7 @@
 #Instructions for developing this project
 ##Technologies used
 This project uses Docker to encapsulate the actual application, so it can be run
-on any platform that can run Docker. You will needto install Docker and Docker 
+on any platform that can run Docker. You will need to install Docker and Docker 
 Compose in order to develop and run this application. Inside the Docker 
 containers, the application is based on Ruby on Rails and React. Essentially you 
 will run all commands inside Docker containers by prepending ```docker-compose```
@@ -19,7 +19,9 @@ React components and on some occasions pass static content from the database to
 the components. The API serves the AJAX-requests React makes from the frontend.
 It is JSON-only.
 
-React and Rails are integrated with Webpack.
+React and Rails are integrated with Webpack.  With this method front- and back-end
+assets are separated neatly, which means you can use Bundler to manage Gems on the
+back-end and Yarn to manage front-end assets like JS-libraries.
 
 For testing we have used Jest and Enzyme for the front-end, and RSpec and Capybara
 for the back-end and UI-testing. Capybara uses the headless Poltergeist-driver, 
