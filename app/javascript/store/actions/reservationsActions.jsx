@@ -1,13 +1,15 @@
 /**
  * Created by owlaukka on 18/06/17.
  */
-import React from 'react';
 import { reset } from 'redux-form';
-import { Button } from 'react-bootstrap';
 import moment from 'moment';
 
 import AjaxService from '../../services/ajax_service';
-import { showModal } from './singleReservationActions';
+import { reservationTimeIsValid,
+    refreshReservationListOnStartChange,
+    refreshReservationListOnEndChange,
+    refreshReservationList
+} from "../../services/logic/reservationLogic";
 
 moment.locale('fi');
 
@@ -137,45 +139,27 @@ export function setSidebarMod(newSelect) {
     }
 }
 
-export function setReservationStart(start, reservations) {
-    let updatedReservations = refreshReservationListOnStartChange(start, reservations);
-    return (dispatch) => {
-        dispatch({type: "SET_RESERVATION_START", payload: start});
-        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
-    }
+export function setReservationStart(start, reservations, dispatch) {
+    const updatedReservations = refreshReservationListOnStartChange(start, reservations);
+    dispatch(dispatchSetReservationStart(start, updatedReservations));
 }
 
-export function setReservationEnd(end, reservations) {
-    let updatedReservations = refreshReservationListOnEndChange(end, reservations);
-    return (dispatch) => {
-        dispatch({type: "SET_RESERVATION_END", payload: end});
-        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
-    }
+export function setReservationEnd(end, reservations, dispatch) {
+    const updatedReservations = refreshReservationListOnEndChange(end, reservations);
+    dispatch(dispatchSetReservationEnd(end, updatedReservations));
 }
 
-export function changeStartTime(time, previousTime, reservations) {
-    const newTime = moment(previousTime).startOf('day').add(time, 'seconds');
-    let updatedReservations = refreshReservationListOnStartChange(newTime, reservations);
-    return (dispatch) => {
-        dispatch({type: "SET_RESERVATION_START", payload: newTime});
-        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
-    }
-}
-
-export function changeEndTime(time, previousTime, reservations) {
-    const newTime = moment(previousTime).startOf('day').add(time, 'seconds');
-    const updatedReservations = refreshReservationListOnEndChange(newTime, reservations);
-    return (dispatch) => {
-        dispatch({type: "SET_RESERVATION_END", payload: newTime});
-        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
-    }
-}
-
-export function fillForm(timeSlot, reservations, sidebarMod) {
-    if (!timeIsValid(timeSlot, reservations, sidebarMod)) {
-        return reservations;
+export function fillForm(timeSlot, reservations, sidebarMod, dispatch) {
+    if (!reservationTimeIsValid(timeSlot, reservations, sidebarMod)) {
+        return;
     }
     let newArray = refreshReservationList(timeSlot, reservations);
+    dispatch(dispatchFillForm(timeSlot, newArray));
+}
+
+// --- LOCAL FUNCTIONS HERE ---
+
+function dispatchFillForm(timeSlot, reservations) {
     return (dispatch) => {
         dispatch({
             type: "SET_TIMESLOT",
@@ -186,92 +170,20 @@ export function fillForm(timeSlot, reservations, sidebarMod) {
         });
 
         dispatch({type: "SET_COLLAPSED", payload: false});
-        dispatch({type: "SET_RESERVATIONS", payload: newArray})
+        dispatch({type: "SET_RESERVATIONS", payload: reservations})
     };
 }
 
-export function mapReservations(reservations, dispatch) {
-    if (reservations === undefined || reservations.length === 0 || reservations[0].id === undefined) {
-        return <tr key="empty"></tr>
-    } else {
-        return reservations.map((res) =>
-            <tr key={res.id}>
-                <td onClick={() => dispatch(showModal(res))}>{res.id}</td>
-                <td onClick={() => dispatch(showModal(res))}>{moment(res.start).format('lll')}</td>
-                <td onClick={() => dispatch(showModal(res))}>{moment(res.end).format('lll')}</td>
-                <td onClick={() => dispatch(showModal(res))} >{res.plane.name}</td>
-                <td onClick={() => dispatch(showModal(res))}>{res.reservation_type}</td>
-                <td><Button onClick={() => dispatch(destroyReservation(res))} bsStyle="danger" bsSize="small">Poista</Button></td>
-            </tr>
-        )
+function dispatchSetReservationStart(start, reservations) {
+    return (dispatch) => {
+        dispatch({type: "SET_RESERVATION_START", payload: start});
+        dispatch({type: "SET_RESERVATIONS", payload: reservations});
     }
 }
 
-// --- LOCAL FUNCTIONS HERE ---
-
-function timeIsValid(timeSlot, reservations, sidebarMod) {
-    if (moment(timeSlot.start).isBefore(moment())) {
-        alert('Älä varaa aikaa menneisyydestä!');
-        return false;
+function dispatchSetReservationEnd(end, reservations) {
+    return (dispatch) => {
+        dispatch({type: "SET_RESERVATION_END", payload: end});
+        dispatch({type: "SET_RESERVATIONS", payload: reservations});
     }
-
-    for (let res of reservations) {
-      if(sidebarMod === true) {
-        if ((res.reservation_type !== 'selected' && res.reservation_type !== 'observer') &&
-            ((moment(timeSlot.end).isAfter(res.start) && moment(timeSlot.end).isSameOrBefore(res.end)) ||
-            (moment(timeSlot.start).isSameOrAfter(res.start) && moment(timeSlot.start).isBefore(res.end)) ||
-            (moment(timeSlot.start).isSameOrBefore(res.start) && moment(timeSlot.end).isSameOrAfter(res.end)))) {
-            alert("Et voi varata jo varattua aikaa");
-            return false;
-        }
-    }}
-    return true;
-}
-
-function refreshReservationListOnStartChange(start, reservations) {
-    let newArray = [];
-    for (let o of reservations) {
-        newArray.push(o);
-    }
-    if (reservations.length !== 0 &&
-        (reservations[reservations.length-1].reservation_type === 'selected'
-            || reservations[reservations.length-1].reservation_type === 'observer')) {
-        newArray[newArray.length-1].start = start;
-    }
-    return newArray;
-}
-
-function refreshReservationListOnEndChange(end, reservations) {
-    let newArray = [];
-    for (let o of reservations) {
-        newArray.push(o);
-    }
-    if (reservations.length !== 0 &&
-        (reservations[reservations.length-1].reservation_type === 'selected'
-            || reservations[reservations.length-1].reservation_type === 'observer')) {
-        newArray[newArray.length-1].end = end;
-    }
-
-    return newArray;
-}
-
-function refreshReservationList(timeSlot, reservations) {
-    let newArray = [];
-    for (let o of reservations) {
-        newArray.push(o);
-    }
-    if (reservations.length !== 0 &&
-        (reservations[reservations.length-1].title === '<valittu aika>'
-            || reservations[reservations.length-1].title === '<valittu aika tarkkailijalle>')) {
-        newArray.pop();
-    }
-
-    const res = {
-        title: "<valittu aika>",
-        start: timeSlot.start,
-        end:timeSlot.end,
-        reservation_type: 'selected',
-    };
-    newArray.push(res);
-    return newArray;
 }

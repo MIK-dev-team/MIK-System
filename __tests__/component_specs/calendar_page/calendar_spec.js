@@ -106,7 +106,7 @@ describe('Calendar', () => {
         });
 
         it('when selectTimeSlot is called and notifierMode is on', () => {
-            actionStub = sinon.stub(notifiersActions, 'selectTimeForNotifier');
+            actionStub = sinon.spy(notifiersActions, 'selectTimeForNotifier');
             calendar.setProps({dispatch: dispatchSpy, notifierMode: true});
             calendar.update();
             const timeSlot = {
@@ -122,7 +122,7 @@ describe('Calendar', () => {
         });
 
         it('when selectTimeSlow is called and notifierMode is off', () => {
-            actionStub = sinon.stub(reservationsActions, 'fillForm');
+            actionStub = sinon.spy(reservationsActions, 'fillForm');
             calendar.setProps({dispatch: dispatchSpy, notifierMode: false});
             calendar.update();
             const timeSlot = {

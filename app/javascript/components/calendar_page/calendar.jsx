@@ -19,9 +19,9 @@ BigCalendar.setLocalizer(
 export class Calendar extends React.Component {
     selectTimeSlot(timeSlot) {
         if (this.props.notifierMode) {
-            this.props.dispatch(selectTimeForNotifier(timeSlot, this.props.reservations));
+            selectTimeForNotifier(timeSlot, this.props.reservations, this.props.dispatch);
         } else {
-            this.props.dispatch(fillForm(timeSlot, this.props.reservations, this.props.sidebarMod));
+            fillForm(timeSlot, this.props.reservations, this.props.sidebarMod, this.props.dispatch);
         }
     }
 
@@ -29,15 +29,32 @@ export class Calendar extends React.Component {
         let i, newArray = [];
         for (i = 0; i < this.props.reservations.length; i++) {
             let res = this.props.reservations[i];
-            newArray.push({
+            let event = {
                 id: res.id,
                 title: res.reservation_type,
                 start: moment(res.start).toDate(),
                 end: moment(res.end).toDate(),
                 reservation_type: res.reservation_type,
                 additional_info: res.additional_info,
-                user_id: res.user.id
-            });
+                plane: res.plane,
+            }
+            if (res.reservation_type === 'selected') {
+                event = {
+                    ...event,
+                    title: '<valittu aika>'
+                }
+            } else if (res.reservation_type === 'observer') {
+                event = {
+                    ...event,
+                    title: '<valittu aika tarkkailijalle>'
+                }
+            } else {
+                event = {
+                    ...event,
+                    user: res.user
+                }
+            }
+            newArray.push(event);
         }
         return newArray;
     }
@@ -63,6 +80,7 @@ export class Calendar extends React.Component {
     }
 
     render() {
+        const { collapsed, logged, dispatch } = this.props;
         let initTime = moment();
         if (initTime.hours() < 9 || initTime.hours() > 21) {
             initTime.hours(7).minutes(30);
@@ -73,15 +91,15 @@ export class Calendar extends React.Component {
         return (
             <div>
                 <Row id="row-main">
-                    <Col id="content" lg={this.props.collapsed ? 12 : 8} style={{margin: "auto", height: 40 + "vw"}}>
+                    <Col id="content" lg={collapsed ? 12 : 8} style={{margin: "auto", height: 40 + "vw"}}>
                         <BigCalendar
                             id="calendar"
-                            selectable={this.props.logged ? true : false}
+                            selectable={logged ? true : false}
                             {...this.props}
                             events={this.convertReservationsToCalendarEvents()}
                             defaultView="week"
                             scrollToTime={initTime}
-                            onSelectEvent={(event) => this.props.dispatch(showModal(event))}
+                            onSelectEvent={(event) => dispatch(showModal(event))}
                             onSelectSlot={(timeSlot) => this.selectTimeSlot(timeSlot)}
                             views={["month", "week", "day", "agenda"]}
                             eventPropGetter={eventStyleGetter}
@@ -96,7 +114,7 @@ export class Calendar extends React.Component {
                 <Row>
                     <Col lg={12} md={12} sm={12}>
                         <Button disabled={this.isButtonDisabled()} onClick={this.toggleCollapse()}>
-                            {this.props.collapsed ? "Näytä varauksesi tiedot" : "Piilota varauksesi tiedot"}
+                            {collapsed ? "Näytä varauksesi tiedot" : "Piilota varauksesi tiedot"}
                         </Button>
                     </Col>
                 </Row>

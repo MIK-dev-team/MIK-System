@@ -8,10 +8,10 @@ import ReservationForm from "./reservation_form";
 export class FormNavigation extends React.Component {
 
     toggleSidebarMod(eventKey) {
-        if(this.props.sidebarMod && eventKey === 2) {
+        if (this.props.sidebarMod && eventKey === 2) {
             this.props.dispatch(setSidebarMod(2));
         }
-        if(!this.props.sidebarMod && eventKey === 1) {
+        if (!this.props.sidebarMod && eventKey === 1) {
             this.props.dispatch(setSidebarMod(1));
         }
     }

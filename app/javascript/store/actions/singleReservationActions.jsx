@@ -5,7 +5,6 @@
 import AjaxService from '../../services/ajax_service';
 
 export function showModal(res) {
-    console.log(res)
     return (dispatch) => {
         dispatch({type: "SHOW_MODAL", payload: res});
     }

@@ -19,7 +19,8 @@ describe('ReservationModal', () => {
         end: "2017-05-05T15:12:12Z",
         reservation_type: 'opetus',
         additional_info: 'Some additional info',
-        user_id: 1,
+        user: { id: 1, full_name: 'Some guy' },
+        plane: { id: 3, name: "ES123" },
     };
 
     beforeAll(() => {
@@ -87,21 +88,23 @@ describe('ReservationModal', () => {
         });
 
         it('has correct elements', () => {
-            expect(modal.find('h4').length).toEqual(4);
-            expect(modal.find('p').length).toEqual(4);
+            expect(modal.find('h4').length).toEqual(5);
+            expect(modal.find('p').length).toEqual(5);
         });
 
         it('has correct headers', () => {
-            expect(modal.find('h4').first().text()).toEqual('Varauksen tyyppi');
-            expect(modal.find('h4').at(1).text()).toEqual('Alkuaika');
-            expect(modal.find('h4').at(2).text()).toEqual('Loppuaika');
+            expect(modal.find('h4').first().text()).toEqual('Kone');
+            expect(modal.find('h4').at(1).text()).toEqual('Varauksen tyyppi');
+            expect(modal.find('h4').at(2).text()).toEqual('Alkuaika');
+            expect(modal.find('h4').at(3).text()).toEqual('Loppuaika');
             expect(modal.find('h4').last().text()).toEqual('Lisätiedot');
         });
 
         it('displays reservation info correctly', () => {
-            expect(modal.find('p').first().text()).toEqual(reservation.reservation_type);
-            expect(modal.find('p').at(1).text()).toEqual("5. toukokuuta 2017, klo 12.12");
-            expect(modal.find('p').at(2).text()).toEqual("5. toukokuuta 2017, klo 15.12");
+            expect(modal.find('p').first().text()).toEqual(reservation.plane.name);
+            expect(modal.find('p').at(1).text()).toEqual(reservation.reservation_type);
+            expect(modal.find('p').at(2).text()).toEqual("5. toukokuuta 2017, klo 12.12");
+            expect(modal.find('p').at(3).text()).toEqual("5. toukokuuta 2017, klo 15.12");
             expect(modal.find('p').last().text()).toEqual(reservation.additional_info);
         });
 

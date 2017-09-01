@@ -19,11 +19,11 @@ export class ReservationForm extends React.Component {
         const { handleSubmit, submitting, planes, reservations, dispatch, sidebarMod } = this.props;
 
         const startOnChange = (event, newValue, previousValue) => {
-            dispatch(setReservationStart(newValue, reservations));
+            setReservationStart(newValue, reservations, dispatch);
         };
 
         const endOnChange = (event, newValue, previousValue) => {
-            dispatch(setReservationEnd(newValue, reservations));
+            setReservationEnd(newValue, reservations, dispatch);
         };
 
         return (
