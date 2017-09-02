@@ -1,6 +1,9 @@
 import React from "react";
+import sinon from 'sinon';
 import { shallow } from "enzyme";
-import LoginPage from "../../../app/javascript/components/login_page/login_page";
+
+import * as actions from "../../../app/javascript/store/actions/loginActions";
+import { LoginPage } from "../../../app/javascript/components/login_page/login_page";
 
 let page;
 

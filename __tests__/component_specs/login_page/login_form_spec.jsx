@@ -8,12 +8,13 @@ import sinon from 'sinon';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-import * as loginActions from '../../../app/javascript/store/actions/loginActions'
-
 const initialStoreState = {
+    login: {
         username: "",
         password: "",
-}
+        user_id: ""
+      }
+};
 
 import LoginForm from "../../../app/javascript/components/login_page/login_form";
 import ObjectSelectInput from '../../../app/javascript/components/form_fields/object_select_input';
@@ -39,15 +40,5 @@ describe('LoginForm', () => {
         expect(submitStub.notCalled).toBe(true);
         form.simulate('submit');
         expect(submitStub.calledOnce).toBe(true);
-    });
-
-    it('has correct component for select Fields', () => {
-        expect(form.find('Field').at(4).props().component).toEqual(ObjectSelectInput);
-        expect(form.find('Field').at(13).props().component).toEqual(ObjectSelectInput);
-    });
-
-    it('has correct component for textarea Fields', () => {
-        expect(form.find('Field').at(12).props().component).toEqual(TextAreaInput);
-        expect(form.find('Field').at(16).props().component).toEqual(TextAreaInput);
     });
 });
