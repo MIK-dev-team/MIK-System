@@ -1,5 +1,5 @@
 import React from 'react';
-import { mapReservations } from '../../store/actions/reservationsActions';
+import { mapReservations } from "../../services/logic/reservationLogic";
 
 export default class ReservationTableContent extends React.Component {
     constructor(props) {

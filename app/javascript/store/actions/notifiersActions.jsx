@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import { fetchReservations } from "./reservationsActions"
 import AjaxService from '../../services/ajax_service';
+import { notifierTimeIsValid, refreshNotifiersList } from "../../services/logic/notifierLogic";
 
 export function fetchNotifiers(user=undefined) {
     user = { id: 1 }; // TODO: remove this when user is supported. allow user to be undefied only for admin
@@ -27,18 +28,13 @@ export function fetchNotifiers(user=undefined) {
     }
 }
 
-export function selectTimeForNotifier(timeSlot, reservations) {
-    if (!timeIsValid(timeSlot)) {
-        return reservations;
+export function selectTimeForNotifier(timeSlot, reservations, dispatch) {
+    if (!notifierTimeIsValid(timeSlot)) {
+        return;
     }
 
-    let newArray = refreshEventsList(timeSlot, reservations);
-    return (dispatch) => {
-        dispatch({type: "SET_NOTIFIER_START", payload: timeSlot.start});
-        dispatch({type: "SET_NOTIFIER_END", payload: timeSlot.end});
-        dispatch({type: "SET_COLLAPSED", payload: true});
-        dispatch({type: "SET_RESERVATIONS", payload: newArray})
-    };
+    let newArray = refreshNotifiersList(timeSlot, reservations);
+    dispatch(dispatchSelectTimeForNotifier(timeSlot, newArray));
 }
 
 export function submitNotifier(event, notifier) {
@@ -90,32 +86,11 @@ export function setNotifierType(type) {
 }
 
 // --- LOCAL FUNCTIONS ---
-function timeIsValid(timeSlot) {
-    if (moment(timeSlot.start).isBefore(moment())) {
-        alert('Älä tarkkaile menneisyyttä!');
-        return false;
-    }
-    return true;
-}
-
-function refreshEventsList(timeSlot, events) {
-    let newArray = [];
-    for (let o of events) {
-        newArray.push(o);
-    }
-    if (events.length !== 0 &&
-        (events[events.length-1].title === '<valittu aika>'
-            || events[events.length-1].title === '<valittu aika tarkkailijalle>')) {
-        newArray.pop();
-    }
-
-    const res = {
-        title: "<valittu aika tarkkailijalle>",
-        start: timeSlot.start,
-        end: timeSlot.end,
-        reservation_type: 'observer'
+function dispatchSelectTimeForNotifier(timeSlot, events) {
+    return (dispatch) => {
+        dispatch({type: "SET_NOTIFIER_START", payload: timeSlot.start});
+        dispatch({type: "SET_NOTIFIER_END", payload: timeSlot.end});
+        dispatch({type: "SET_COLLAPSED", payload: true});
+        dispatch({type: "SET_RESERVATIONS", payload: events})
     };
-    newArray.push(res);
-
-    return newArray;
 }

@@ -48,12 +48,12 @@ RSpec.describe 'Calendar page', js: true do
       expect(page).to_not have_content 'Lennon alkupäivä'
       expect(page).to_not have_content 'Lennon alkuaika'
       click_button 'Näytä varauksesi tiedot'
-      expect(page).to have_content 'Lennon alkupäivä'
-      expect(page).to have_content 'Lennon alkuaika'
-      expect(page).to have_content 'Lennon loppupäivä'
-      expect(page).to have_content 'Lennon loppuaika'
-      expect(page).to have_content 'Lennon tyyppi'
-      expect(page).to have_content 'Lisätietoja'
+      expect(page).to have_content 'Alkupäivämäärä'
+      expect(page).to have_content 'Alkuaika'
+      expect(page).to have_content 'Loppupäivämäärä'
+      expect(page).to have_content 'Loppuaika'
+      expect(page).to have_content 'Tyyppi'
+      expect(page).to have_content 'Lisätiedot'
     end
   end
 

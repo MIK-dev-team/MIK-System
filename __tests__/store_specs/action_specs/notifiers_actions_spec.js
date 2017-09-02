@@ -61,8 +61,8 @@ describe('Notifier action', () => {
             start: moment().subtract(2, 'days').toDate(),
             end: moment().subtract(1, 'days').toDate(),
         };
-        const returnedValue = actions.selectTimeForNotifier(timeSlot, []);
-        expect(returnedValue).toEqual([])
+        actions.selectTimeForNotifier(timeSlot, [], store.dispatch);
+        expect(store.getActions()).toEqual([])
     });
 
     it('selectTimeForNotifier returns new array with new notifier appended when given time is valid', () => {
@@ -85,7 +85,7 @@ describe('Notifier action', () => {
             { type: "SET_COLLAPSED", payload: true },
             { type: "SET_RESERVATIONS", payload: newArray },
         ];
-        store.dispatch(actions.selectTimeForNotifier(timeSlot, []));
+        actions.selectTimeForNotifier(timeSlot, [], store.dispatch);
         expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -133,7 +133,7 @@ describe('Notifier action', () => {
             { type: "SET_RESERVATIONS", payload: expectedNewArray },
         ];
 
-        store.dispatch(actions.selectTimeForNotifier(timeSlot2, inputEvents));
+        actions.selectTimeForNotifier(timeSlot2, inputEvents, store.dispatch);
         expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -153,23 +153,6 @@ describe('Notifier action', () => {
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
-
-    // it('submitNotifier dispatches correct actions on incorrect request', () => {
-    //     const error = {response: {status: 422, data: {some: "data here"}}};
-    //     promise = Promise.reject(error);
-    //     stub = sinon.stub(AjaxService.service, 'request').callsFake(() => promise);
-    //     const expectedActions = [
-    //         { type: "SUBMIT_NOTIFIER_PENDING" },
-    //         { type: "SUBMIT_NOTIFIER_REJECTED", payload: error.response.data }
-    //     ];
-    //
-    //
-    //     store.dispatch(actions.submitNotifier({preventDefault: () => {}}, notifier));
-    //     return promise.catch(() => {
-    //         expect(stub.calledOnce).toBe(true);
-    //         expect(store.getActions()).toEqual(expectedActions);
-    //     })
-    // });
 
     it("setNotifierMode dispatches correct actions", () => {
         const expectedActions = [
