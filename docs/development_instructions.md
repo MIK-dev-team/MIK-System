@@ -1,5 +1,5 @@
-#Instructions for developing this project
-##Technologies used
+# Instructions for developing this project
+## Technologies used
 This project uses Docker to encapsulate the actual application, so it can be run
 on any platform that can run Docker. You will need to install Docker and Docker 
 Compose in order to develop and run this application. Inside the Docker 
@@ -26,7 +26,7 @@ back-end and Yarn to manage front-end assets like JS-libraries.
 For testing we have used Jest and Enzyme for the front-end, and RSpec and Capybara
 for the back-end and UI-testing. Capybara uses the headless Poltergeist-driver, 
 which uses PhantomJS.
-##Running the development environment
+## Running the development environment
 * In the project directory run ```docker-compose up```
     * this will start-up a database container, a container for the app itself and 
     webpack-container, and make them communicate with each other
@@ -40,7 +40,7 @@ You will have to rebuild the created images if you either make changes to a
 Dockerfile or if you add a new gem.
     * to rebuild the images, run ```docker-compose build```
 
-##Running tests
+## Running tests
 * Before running the tests:
     * a test database has to be created and migrated before the RSpec specs 
     will run. If you have started the development environment before already
@@ -64,15 +64,15 @@ Dockerfile or if you add a new gem.
     * coverage information for Jest-tests is saved in the ```/coverage/react/```
     directory
     
-##Production
+## Production
 The production version of this application uses a different image than the 
 development version. The production image, for instance, does not contain 
 webdriver that UI-tests (using Capybara) need to run. 
-###Building a production image
+### Building a production image
 The project has a separate Dockerfile and docker-compose.yml file for production.
 To build a production image use 
 ```docker-compose -f docker-compose.prod.yml build```.
-###Production image to a production server
+### Production image to a production server
 _You don't have to use the following way, but it is the way we did it and it's 
 written here as an example_
 
