@@ -2,10 +2,12 @@
  * Created by owlaukka on 29/06/17.
  */
 import React from 'react';
+import { connect } from 'react-redux';
 import { Grid, Row, Col, Well, PageHeader } from 'react-bootstrap';
 
 import Notifications from '../common/notifications';
-import MembershipForm from './membership_form';
+import MembershipAppForm from './membership_app_form';
+import { submitMembershipApp } from '../../store/actions/applicationActions';
 
 const styles = {
     jumbo: {
@@ -20,13 +22,14 @@ const styles = {
     }
 };
 
-export default class MembershipAppPage extends React.Component {
+export class MembershipAppPage extends React.Component {
     render() {
         return (
             <Grid>
                 <Row>
                     <Col md={6} style={styles.colCentered}>
                         <PageHeader className="text-center">Liity jäseneksi!</PageHeader>
+                        <Notifications/>
                         <Well bsSize="large" style={styles.helpSpacing}>Tervetuloa Malmin Ilmailukerhon ilmailua rakastavien lentäjien ja muiden
                             harrastajien joukkoon! Voit liittyä kerhomme jäseneksi allaolevalla
                             lomakkeella, lomakkeen lähetettyäsi otamme sinuun lähipäivinä yhteyttä
@@ -36,11 +39,16 @@ export default class MembershipAppPage extends React.Component {
                 </Row>
                 <Row>
                     <Col lg={6} md={6} sm={6} style={styles.colCentered}>
-                        <Notifications/>
-                        <MembershipForm />
+                        <MembershipAppForm
+                            id="membership-app-form"
+                            onSubmit={(values) => this.props.dispatch(submitMembershipApp(values))} />
                     </Col>
                 </Row>
             </Grid>
         )
     }
 }
+
+export default connect((store) => {
+    return {}
+})(MembershipAppPage)

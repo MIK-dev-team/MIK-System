@@ -14,10 +14,6 @@ class Api::V1::MembershipApplicationsController < ApiController
   end
 
   private
-    def set_membership_application
-      @membership_application = MembershipApplication.find(params[:id])
-    end
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def application_params
       params.require(:membership_application).permit(:username, :email, :birthday, :member_type, :full_name, :address,

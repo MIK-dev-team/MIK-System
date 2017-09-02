@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { FormGroup, ControlLabel, FormControl, HelpBlock, Button, InputGroup, Glyphicon, Alert } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, Button, Glyphicon, Alert } from 'react-bootstrap';
 
 import * as actions from '../../store/actions/loginActions';
-import * as validators from '../../store/actions/loginValidationActions';
+import * as validators from '../../services/validators/loginValidators';
 
 export class LoginForm extends React.Component {
 

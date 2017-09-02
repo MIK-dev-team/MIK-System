@@ -5,12 +5,13 @@ import moment from "moment";
 
 import * as reservationsActions from '../../../app/javascript/store/actions/reservationsActions';
 import * as notifiersActions from '../../../app/javascript/store/actions/notifiersActions';
+import * as singleReservationAction from '../../../app/javascript/store/actions/singleReservationActions';
 import { Calendar } from "../../../app/javascript/components/calendar_page/calendar";
 /**
  * Created by owlaukka on 17/06/17.
  */
 
-let calendar;
+let calendar, clock;
 describe('Calendar', () => {
     beforeAll(() => {
         calendar = shallow(<Calendar reservations={[]}/>);
@@ -33,125 +34,15 @@ describe('Calendar', () => {
         expect(calendar.find('Button').hasClass('disabled')).toBe(false);
     });
 
-    it('has Button that calls dispatch with correct action', () => {
-        const dispatch = sinon.spy();
-        const setCollapsedStub = sinon.stub(reservationsActions, 'setCollapsed');
-        calendar.setProps({dispatch: dispatch});
-        calendar.update();
-        expect(dispatch.calledOnce).toBe(false);
-        expect(setCollapsedStub.calledOnce).toBe(false);
-        calendar.find('Button').simulate('click');
-        calendar.update();
-        expect(dispatch.calledOnce).toBe(true);
-        expect(setCollapsedStub.calledOnce).toBe(true);
-    });
-
-    it('has selectTimeSlot function that triggers correct function when notifierMode is on', () => {
-        const dispatchSpy = sinon.spy(),
-              selectTimeForNotifier = sinon.stub(notifiersActions, 'selectTimeForNotifier');
-        calendar.setProps({dispatch: dispatchSpy, notifierMode: true});
-        calendar.update();
-        const timeSlot = {
-            start: moment().add(1, 'days').toDate(),
-            end: moment().add(2, 'days').toDate(),
-        };
-        expect(dispatchSpy.calledOnce).toBe(false);
-        expect(selectTimeForNotifier.calledOnce).toBe(false);
-
-        calendar.instance().selectTimeSlot(timeSlot);
-        expect(dispatchSpy.calledOnce).toBe(true);
-        expect(selectTimeForNotifier.calledOnce).toBe(true);
-    });
-
-    it('has selectTimeSlot function that triggers correct function when notifierMode is off', () => {
-        const dispatchSpy = sinon.spy(),
-            fillFormNotifier = sinon.stub(reservationsActions, 'fillForm');
-        calendar.setProps({dispatch: dispatchSpy, notifierMode: false});
-        calendar.update();
-        const timeSlot = {
-            start: moment().add(1, 'days').toDate(),
-            end: moment().add(2, 'days').toDate(),
-        };
-        expect(dispatchSpy.calledOnce).toBe(false);
-        expect(fillFormNotifier.calledOnce).toBe(false);
-
-        calendar.instance().selectTimeSlot(timeSlot);
-        expect(dispatchSpy.calledOnce).toBe(true);
-        expect(fillFormNotifier.calledOnce).toBe(true);
-    });
-
-    it('has eventStyleGetter method that returns a style object', () => {
-        const reservation = {
-            title: 'opetus',
-            start: moment().add(1, 'days').format(),
-            end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'opetus'
-        };
-        const expectedStyle = calendar.instance().eventStyleGetter(reservation, null, null, null);
-        expect(expectedStyle).toEqual({
-            style: {
-                backgroundColor: "#ffe99a8C",
-                color: "#000000CC"
-            }
-        });
-    });
-
-    it('has eventStyleGetter method that returns a correct style object for harraste type', () => {
-        const reservation = {
-            title: 'harraste',
-            start: moment().add(1, 'days').format(),
-            end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'harraste'
-        };
-        const expectedStyle = calendar.instance().eventStyleGetter(reservation, null, null, null);
-        expect(expectedStyle).toEqual({
-            style: {
-                backgroundColor: "#00eeee8C",
-                color: "#000000CC"
-            }
-        });
-    });
-
-    it('has eventStyleGetter method that returns a correct style object for selected timeSlot', () => {
-        const reservation = {
-            title: '<valittu aika>',
-            start: moment().add(1, 'days').format(),
-            end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'selected'
-        };
-        const expectedStyle = calendar.instance().eventStyleGetter(reservation, null, null, null);
-        expect(expectedStyle).toEqual({
-            style: {
-                backgroundColor: "#ff00008C",
-                color: "#000000CC"
-            }
-        });
-    });
-
-    it('has eventStyleGetter method that returns a correct style object for selected observer timeSlot', () => {
-        const reservation = {
-            title: '<valittu aika tarkkailijalle>',
-            start: moment().add(1, 'days').format(),
-            end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'observer'
-        };
-        const expectedStyle = calendar.instance().eventStyleGetter(reservation, null, null, null);
-        expect(expectedStyle).toEqual({
-            style: {
-                backgroundColor: "#00ff5f",
-                color: "#000000CC"
-            }
-        });
-    });
-
     it('has isDisabled function that return true if last reservation in props is of selected type and user is logged', () => {
         const reservations = [{
             title: '<valittu aika>',
             start: moment().add(1, 'days').format(),
             end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'selected'
+            reservation_type: 'selected',
+            user: { id: 1 },
         }];
-        calendar.setProps({reservations: reservations, logged: true});
+        calendar.setProps({reservations: reservations, logged: true, user_id: 1});
         calendar.update();
 
         const isButtonDisabledReturn = calendar.instance().isButtonDisabled();
@@ -163,9 +54,10 @@ describe('Calendar', () => {
             title: '<valittu aika>',
             start: moment().add(1, 'days').format(),
             end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'opetus'
+            reservation_type: 'opetus',
+            user: { id: 1 },
         }];
-        calendar.setProps({reservations: reservations, logged: true});
+        calendar.setProps({reservations: reservations, logged: true, user_id: 1});
         calendar.update();
 
         const isButtonDisabledReturn = calendar.instance().isButtonDisabled();
@@ -177,12 +69,158 @@ describe('Calendar', () => {
             title: '<valittu aika>',
             start: moment().add(1, 'days').format(),
             end: moment().add(1, 'days').add(2, 'hours').format(),
-            reservation_type: 'opetus'
+            reservation_type: 'opetus',
+            user: { id: 2 }
         }];
         calendar.setProps({reservations: reservations, logged: false});
         calendar.update();
 
         const isButtonDisabledReturn = calendar.instance().isButtonDisabled();
         expect(isButtonDisabledReturn).toBe(true);
+    });
+
+    describe('dispatches correct action', () => {
+        let dispatchSpy, actionStub;
+
+        beforeEach(() => {
+            dispatchSpy = sinon.spy();
+            calendar.setProps({dispatch: dispatchSpy});
+            calendar.update();
+        });
+
+        afterEach(() => {
+            actionStub.restore();
+        });
+
+
+        it('when Button for showing form is pressed', () => {
+            actionStub = sinon.stub(reservationsActions, 'setCollapsed');
+            calendar.setProps({dispatch: dispatchSpy});
+            calendar.update();
+            expect(dispatchSpy.calledOnce).toBe(false);
+            expect(actionStub.calledOnce).toBe(false);
+            calendar.find('Button').simulate('click');
+            calendar.update();
+            expect(dispatchSpy.calledOnce).toBe(true);
+            expect(actionStub.calledOnce).toBe(true);
+        });
+
+        it('when selectTimeSlot is called and notifierMode is on', () => {
+            actionStub = sinon.spy(notifiersActions, 'selectTimeForNotifier');
+            calendar.setProps({dispatch: dispatchSpy, notifierMode: true});
+            calendar.update();
+            const timeSlot = {
+                start: moment().add(1, 'days').toDate(),
+                end: moment().add(2, 'days').toDate(),
+            };
+            expect(dispatchSpy.calledOnce).toBe(false);
+            expect(actionStub.calledOnce).toBe(false);
+
+            calendar.instance().selectTimeSlot(timeSlot);
+            expect(dispatchSpy.calledOnce).toBe(true);
+            expect(actionStub.calledOnce).toBe(true);
+        });
+
+        it('when selectTimeSlow is called and notifierMode is off', () => {
+            actionStub = sinon.spy(reservationsActions, 'fillForm');
+            calendar.setProps({dispatch: dispatchSpy, notifierMode: false});
+            calendar.update();
+            const timeSlot = {
+                start: moment().add(1, 'days').toDate(),
+                end: moment().add(2, 'days').toDate(),
+            };
+            expect(dispatchSpy.calledOnce).toBe(false);
+            expect(actionStub.calledOnce).toBe(false);
+
+            calendar.instance().selectTimeSlot(timeSlot);
+            expect(dispatchSpy.calledOnce).toBe(true);
+            expect(actionStub.calledOnce).toBe(true);
+        });
+
+        it('when selecting an event on the calendar', () => {
+            actionStub = sinon.stub(singleReservationAction, 'showModal');
+            expect(actionStub.notCalled).toBe(true);
+            expect(dispatchSpy.notCalled).toBe(true);
+            calendar.find('#calendar').simulate('selectEvent');
+            expect(actionStub.calledOnce).toBe(true);
+            expect(dispatchSpy.calledOnce).toBe(true);
+        });
+
+        it('when selecting timeslot from calendar', () => {
+            actionStub = sinon.stub(calendar.instance(), 'selectTimeSlot');
+            expect(actionStub.notCalled).toBe(true);
+            expect(dispatchSpy.notCalled).toBe(true);
+            calendar.find('#calendar').simulate('selectSlot');
+            expect(actionStub.calledOnce).toBe(true);
+            expect(dispatchSpy.notCalled).toBe(true);
+        });
+
+        it('when toggleSidebarMod is called, sidebarMod is true and given eventkey is 1', () => {
+            actionStub = sinon.stub(reservationsActions, 'setSidebarMod');
+            calendar.setProps({sidebarMod: true});
+            calendar.update();
+
+            expect(actionStub.notCalled).toBe(true);
+            expect(dispatchSpy.notCalled).toBe(true);
+            calendar.instance().toggleSidebarMod(1);
+            expect(actionStub.notCalled).toBe(true);
+            expect(dispatchSpy.notCalled).toBe(true);
+        });
+
+        it('when toggleSidebarMod is called, sidebarMod is true and given eventkey is 2', () => {
+            actionStub = sinon.stub(reservationsActions, 'setSidebarMod');
+            calendar.setProps({sidebarMod: true});
+            calendar.update();
+
+            expect(actionStub.notCalled).toBe(true);
+            expect(dispatchSpy.notCalled).toBe(true);
+            calendar.instance().toggleSidebarMod(2);
+            expect(actionStub.calledOnce).toBe(true);
+            expect(dispatchSpy.calledOnce).toBe(true);
+            actionStub.calledWithExactly(2);
+        });
+
+        it('when toggleSidebarMod is called, sidebarMod is false and given eventkey is 1', () => {
+            actionStub = sinon.stub(reservationsActions, 'setSidebarMod');
+            calendar.setProps({sidebarMod: false});
+            calendar.update();
+
+            expect(actionStub.notCalled).toBe(true);
+            expect(dispatchSpy.notCalled).toBe(true);
+            calendar.instance().toggleSidebarMod(1);
+            expect(actionStub.calledOnce).toBe(true);
+            expect(dispatchSpy.calledOnce).toBe(true);
+            actionStub.calledWithExactly(1);
+        });
+
+        it('when toggleSidebarMod is called, sidebarMod is false and given eventkey is 2', () => {
+            actionStub = sinon.stub(reservationsActions, 'setSidebarMod');
+            calendar.setProps({sidebarMod: false});
+            calendar.update();
+
+            expect(actionStub.notCalled).toBe(true);
+            expect(dispatchSpy.notCalled).toBe(true);
+            calendar.instance().toggleSidebarMod(2);
+            expect(actionStub.notCalled).toBe(true);
+            expect(dispatchSpy.notCalled).toBe(true);
+        });
+    });
+
+    it('has correct time for scrollToTime when time is between 9-21', () => {
+        let expectedDate = moment('2017-03-15T12:00:00').toDate();
+        let clock = sinon.useFakeTimers(new Date(2017, 2, 15).getTime());
+        clock.tick(60*60*17*1000);
+        calendar = shallow(<Calendar reservations={[]}/>);
+        expect(calendar.find('#calendar').props().scrollToTime).toEqual(expectedDate);
+        clock.restore();
+    });
+
+    it('has correct time for scrollToTime when time is between 21-9', () => {
+        let expectedDate = moment('2017-03-15T07:30:00').toDate();
+        let clock = sinon.useFakeTimers(new Date(2017, 2, 15).getTime());
+        clock.tick(60*60*2*1000);
+        calendar = shallow(<Calendar reservations={[]}/>);
+        expect(calendar.find('#calendar').props().scrollToTime).toEqual(expectedDate);
+        clock.restore();
     });
 });

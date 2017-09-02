@@ -44,7 +44,7 @@ gem 'activerecord-nulldb-adapter'
 
 group :test do
   gem 'factory_girl_rails'
-  gem 'capybara-bootstrap-datepicker'
+  gem 'simplecov', require: false
 end
 
 group :development, :test do
