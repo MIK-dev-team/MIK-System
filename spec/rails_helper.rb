@@ -17,6 +17,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rspec'
 require 'capybara/poltergeist'
+require 'support/test_helpers'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -100,5 +101,8 @@ RSpec.configure do |config|
 
   Capybara.javascript_driver = :poltergeist
 
-  Capybara.raise_server_errors = false
+  Capybara.raise_server_errors = true
+
+  config.include TestHelpers::Features, type: :feature
+  config.include TestHelpers::Requests, type: :request
 end

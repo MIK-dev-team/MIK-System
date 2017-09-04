@@ -10,8 +10,11 @@ import { destroyReservation } from "../../store/actions/reservationsActions";
 import { timeIsInThePastAlert, lastElementInListTemporaryType, copyEventsList, overlappingReservationsExistForTimeSlot } from "./commonFunctions";
 
 export function reservationTimeIsValid(timeSlot, reservations, sidebarMod) {
+    if (!sidebarMod) {
+        return true;
+    }
     const overlapping = overlappingReservationsExistForTimeSlot(timeSlot, reservations);
-    return !timeIsInThePastAlert(timeSlot.start) || (sidebarMod && overlapping)
+    return !(overlapping || timeIsInThePastAlert(timeSlot.start))
 }
 
 export function refreshReservationListOnStartChange(start, reservations) {

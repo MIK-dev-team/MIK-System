@@ -12,7 +12,7 @@ RSpec.describe 'AvailabilityNotifier API' do
     end
 
     it 'return created notifier with correct status on successful create when logged in' do
-      login
+      login user.email, 'salasana1'
       plane = FactoryGirl.create(:plane)
       post_params = {start: DateTime.now - 1.day, notifier_type: 'any', plane_id: plane.id}
 
@@ -29,7 +29,7 @@ RSpec.describe 'AvailabilityNotifier API' do
     end
 
     it 'returns an array of errors when given object is invalid' do
-      login
+      login user.email, 'salasana1'
       new_notifier = FactoryGirl.build(:availability_notifier)
 
       post '/api/v1/availability_notifiers', params: { availability_notifier: new_notifier.attributes }
@@ -45,10 +45,5 @@ RSpec.describe 'AvailabilityNotifier API' do
       expect(response).to_not be_success
       expect(response).to have_http_status 401
     end
-  end
-
-  private
-  def login
-    post api_v1_kirjaudu_path, params: {email: user.email, password: 'salasana1'}
   end
 end

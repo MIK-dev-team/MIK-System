@@ -24757,12 +24757,6 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /**
-                                                                                                                                                                                                                                                                   * Created by owlaukka on 18/06/17.
-                                                                                                                                                                                                                                                                   */
-
-
 exports.fetchReservations = fetchReservations;
 exports.fetchMyReservations = fetchMyReservations;
 exports.submitReservation = submitReservation;
@@ -24789,6 +24783,9 @@ var _reservationLogic = __webpack_require__(852);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Created by owlaukka on 18/06/17.
+ */
 _moment2.default.locale('fi');
 
 function fetchReservations() {
@@ -24860,14 +24857,10 @@ function destroyReservation(res) {
 }
 
 function massDestroyReservation(values) {
-    var newValues = _extends({}, values, {
-        start: (0, _moment2.default)(values.start).toDate(),
-        end: (0, _moment2.default)(values.end).toDate()
-    });
     window.scrollTo(0, 200);
     return function (dispatch) {
         dispatch({ type: "MASS_DESTROY_RESERVATION_PENDING" });
-        _ajax_service2.default.post('/api/v1/joukkoperu/', newValues, function (status, data) {
+        _ajax_service2.default.post('/api/v1/joukkoperu/', values, function (status, data) {
             dispatch({ type: "MASS_DESTROY_RESERVATION_FULFILLED" });
             dispatch({ type: "SET_SUCCESS", payload: { header: 'Varaukset poistettu!', text: '' } });
             dispatch({ type: "RESET_NEW_RESERVATION" });
@@ -25911,7 +25904,6 @@ var _ajax_service2 = _interopRequireDefault(_ajax_service);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function showModal(res) {
-    console.log(res);
     return function (dispatch) {
         dispatch({ type: "SHOW_MODAL", payload: res });
     };
@@ -85043,8 +85035,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Created by owlaukka on 29/08/17.
  */
 function reservationTimeIsValid(timeSlot, reservations, sidebarMod) {
+    if (!sidebarMod) {
+        return true;
+    }
     var overlapping = (0, _commonFunctions.overlappingReservationsExistForTimeSlot)(timeSlot, reservations);
-    return !(0, _commonFunctions.timeIsInThePastAlert)(timeSlot.start) || sidebarMod && overlapping;
+    return !(overlapping || (0, _commonFunctions.timeIsInThePastAlert)(timeSlot.start));
 }
 
 function refreshReservationListOnStartChange(start, reservations) {
@@ -85882,7 +85877,8 @@ var DatePickerInput = function (_React$Component) {
                 error = _props$meta.error,
                 warning = _props$meta.warning,
                 touched = _props$meta.touched,
-                props = _objectWithoutProperties(_props, ['feedbackIcon', 'input', 'label', 'meta']);
+                id = _props.id,
+                props = _objectWithoutProperties(_props, ['feedbackIcon', 'input', 'label', 'meta', 'id']);
 
             var message = void 0;
             var validationState = touched && error && "error" || warning && "warning" || null;
@@ -85897,7 +85893,7 @@ var DatePickerInput = function (_React$Component) {
 
             return _react2.default.createElement(
                 _reactBootstrap.FormGroup,
-                { validationState: validationState },
+                { id: id, validationState: validationState },
                 _react2.default.createElement(
                     _reactBootstrap.ControlLabel,
                     null,

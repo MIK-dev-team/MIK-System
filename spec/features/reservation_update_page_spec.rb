@@ -16,7 +16,7 @@ RSpec.describe 'Updating reservation', js: true do
   end
 
   it 'should redirect to login page when trying to modify someone elses reservation' do
-    log_in
+    login user.email, 'salasana1'
     visit "/varaukset/#{reservation2.id}/muokkaa"
 
     expect(page).to have_content 'Kirjaudu sisään'
@@ -25,7 +25,7 @@ RSpec.describe 'Updating reservation', js: true do
   end
 
   it 'should show current details of a reservation when logged and editing own reservation' do
-    log_in
+    login user.email, 'salasana1'
     visit "/varaukset/#{reservation.id}/muokkaa"
 
     expect(page).to have_content 'Muokkaa varausta'
@@ -36,7 +36,7 @@ RSpec.describe 'Updating reservation', js: true do
   end
 
   it 'saves changed reservation to db when additional_info is changed' do
-    log_in
+    login user.email, 'salasana1'
     visit "/varaukset/#{reservation.id}/muokkaa"
 
     expect(Reservation.find(reservation.id).additional_info).to eq(nil)
@@ -49,7 +49,7 @@ RSpec.describe 'Updating reservation', js: true do
   it 'saves changed reservation to db when start time and end time are changed' do
     original_start = Reservation.find(reservation.id).start
     original_end = Reservation.find(reservation.id).end
-    log_in
+    login user.email, 'salasana1'
     visit "/varaukset/#{reservation.id}/muokkaa"
 
     select '18:30', from: 'start'
@@ -67,7 +67,7 @@ RSpec.describe 'Updating reservation', js: true do
     expect(Reservation.find(reservation.id).reservation_type).to eq 'opetus'
     expect(Reservation.find(reservation.id).plane.name).to eq 'EH123'
     plane
-    log_in
+    login user.email, 'salasana1'
 
     visit "/varaukset/#{reservation.id}/muokkaa"
 
@@ -83,7 +83,7 @@ RSpec.describe 'Updating reservation', js: true do
 
   it 'displays error correctly given start time that is in the past' do
     orig_start = reservation.start
-    log_in
+    login user.email, 'salasana1'
     visit "/varaukset/#{reservation.id}/muokkaa"
     page.all(:xpath, "//input[@value='#{reservation.start.strftime('%d.%m.%Y')}']")[0].set("19.08.2017")
 
@@ -94,7 +94,7 @@ RSpec.describe 'Updating reservation', js: true do
 
   it 'displays error correctly when given end time that is before start' do
     orig_start = reservation.start
-    log_in
+    login user.email, 'salasana1'
     visit "/varaukset/#{reservation.id}/muokkaa"
     page.all(:xpath,
              "//input[@value='#{reservation.start.strftime('%d.%m.%Y')}']")[0].set(3.days.from_now.strftime('%d.%m.%Y'))
@@ -105,7 +105,7 @@ RSpec.describe 'Updating reservation', js: true do
   end
 
   it 'displays error correctly when trying to change reservation in a way that it would overlap with another reservation' do
-    log_in
+    login user.email, 'salasana1'
     visit "/varaukset/#{reservation.id}/muokkaa"
     select reservation2.plane.name, from: 'plane'
 
@@ -115,7 +115,7 @@ RSpec.describe 'Updating reservation', js: true do
 
   it 'deletes reservation when Poista button is pressed' do
     expect(Reservation.count).to eq(2)
-    log_in
+    login user.email, 'salasana1'
     visit "/varaukset/#{reservation.id}/muokkaa"
 
     click_button 'Poista'
@@ -127,7 +127,7 @@ RSpec.describe 'Updating reservation', js: true do
 
   it 'can cancel reservation deletion before executing it' do
     expect(Reservation.count).to eq(2)
-    log_in
+    login user.email, 'salasana1'
     visit "/varaukset/#{reservation.id}/muokkaa"
 
     click_button 'Poista'
@@ -135,14 +135,5 @@ RSpec.describe 'Updating reservation', js: true do
     find('button', text: 'Peruuta').trigger('click')
     expect(page).to_not have_content 'Varaus poistettu'
     expect(Reservation.count).to eq(2)
-  end
-
-  private
-  def log_in
-    visit '/kirjaudu'
-    fill_in 'Käyttäjätunnus/Sähköposti', with: 'asdf@asdf.fi'
-    fill_in 'Salasana', with: 'salasana1'
-    click_button 'Kirjaudu'
-    expect(page).to have_content 'Olet kirjautunut sisään!'
   end
 end

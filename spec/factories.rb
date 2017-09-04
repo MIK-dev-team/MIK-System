@@ -30,6 +30,7 @@ FactoryGirl.define do
   end
 
   factory :user do
+    username 'testaaja'
     email 'asdf@asdf.fi'
     password 'salasana1'
   end
