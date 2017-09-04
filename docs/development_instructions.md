@@ -39,6 +39,9 @@ which uses PhantomJS.
 You will have to rebuild the created images if you either make changes to a
 Dockerfile or if you add a new gem.
     * to rebuild the images, run ```docker-compose build```
+    
+## Adding front-end assets
+You can easily add front-end assets using Yarn. Since the front-end assets are almost completely handled by Yarn, you can simply use ```docker-compose run web yarn add NAME-OF-ASSET```. Same for removing front-end assets. See more details in the Yarn documentation.
 
 ## Running tests
 * Before running the tests:
