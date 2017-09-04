@@ -1,4 +1,4 @@
-# MIK-System [![Build Status](https://www.travis-ci.org/Owlaukka/MIK-System.svg?branch=master)](https://www.travis-ci.org/Owlaukka/MIK-System)
+# MIK-System [![Build Status](https://www.travis-ci.org/MIK-dev-team/MIK-System.svg?branch=master)](https://www.travis-ci.org/Owlaukka/MIK-System)
 
 New system for MIK (Malmin Ilmailukerho) to handle reservation of
 aeroplanes, keeping track of flight times for members, handling 
