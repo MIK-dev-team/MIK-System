@@ -14,27 +14,27 @@ RSpec.describe 'Session action', js: true do
 
     it 'displays error when logging with wrong password' do
       visit '/kirjaudu'
-      fill_in 'Käyttäjätunnus/Sähköposti', with: user.email
-      fill_in 'Salasana', with: 'salasana2'
+      find('input[name="email"]').set(user.email)
+      find('input[name="password"]').set('salasana2')
       click_button 'Kirjaudu'
-      expect(page).to have_content 'Kirjautumistiedoissa on virhe!'
+      expect(page).to have_content 'Kirjautumistiedoissa on virhe'
     end
 
     it 'displays error when logging with wrong non-existent email' do
       visit '/kirjaudu'
-      fill_in 'Käyttäjätunnus/Sähköposti', with: 'wrong@email.fu'
-      fill_in 'Salasana', with: 'salasana1'
+      find('input[name="email"]').set('wrong@email.fu')
+      find('input[name="password"]').set('salasana1')
       click_button 'Kirjaudu'
-      expect(page).to have_content 'Kirjautumistiedoissa on virhe!'
+      expect(page).to have_content 'Kirjautumistiedoissa on virhe'
     end
 
 
     it 'hides login NavItem when logged in' do
       visit '/kirjaudu'
-      fill_in 'Käyttäjätunnus/Sähköposti', with: user.email
-      fill_in 'Salasana', with: 'salasana1'
+      find('input[name="email"]').set(user.email)
+      find('input[name="password"]').set('salasana1')
       click_button 'Kirjaudu'
-      expect(page).to have_content 'Olet kirjautunut sisään!'
+      expect(page).to have_content 'Olet kirjautunut sisään'
 
       visit '/'
       expect(page).to have_content 'Kirjaudu ulos'

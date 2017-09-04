@@ -2,10 +2,10 @@ module TestHelpers
   module Features
     def login(login, password)
       visit '/kirjaudu'
-      fill_in 'Käyttäjätunnus/Sähköposti', with: login
-      fill_in 'Salasana', with: password
+      find('input[name="email"]').set(login)
+      find('input[name="password"]').set(password)
       click_button 'Kirjaudu'
-      expect(page).to have_content 'Olet kirjautunut sisään!'
+      expect(page).to have_content 'Olet kirjautunut sisään'
     end
   end
 
