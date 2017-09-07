@@ -1,6 +1,6 @@
 class Api::V1::ReservationsController < ApiController
   before_action :set_reservation, only: [:destroy, :update]
-  before_action :ensure_that_signed_in, only: [:all_my_reservations, :create, :destroy, :update]
+  before_action :ensure_that_signed_in, only: [:all_my_reservations, :create, :destroy, :update, :mass_destroy]
 
   def index
     reservations = Reservation.all
@@ -46,14 +46,16 @@ class Api::V1::ReservationsController < ApiController
   end
 
   def mass_destroy
-    range = Range.new params[:start], params[:end]
+    range = Range.new DateTime.parse(params[:start]), DateTime.parse(params[:end])
     reservations = Reservation.where(plane_id: params[:plane_id]).in_range(range)
-    reservations.each do |r|
-      r.destroy
+    unless reservations.count.zero?
+      reservations.each do |r|
+        r.destroy
+      end
+      render json: {}, status: :no_content
+    else
+      render json: ['Yhtään varausta ei löytynyt'], status: :not_found
     end
-
-    render json: {}, status: :no_content
-
   end
 
   private

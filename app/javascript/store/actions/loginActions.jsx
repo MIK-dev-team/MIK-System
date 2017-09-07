@@ -1,23 +1,20 @@
 import React from 'react';
 import AjaxService from '../../services/ajax_service';
 
-export function loginUser(email, password, event) {
-    event.preventDefault();
+export function loginUser(values) {
     let route = '/api/v1/kirjaudu';
-    const auth_details = {
-        email: email,
-        password: password
-    };
-    return function(dispatch) {
+    return (dispatch) => {
         AjaxService.post(
             route,
-            auth_details,
+            values,
             (status, data) => {
                 dispatch({type: "SUBMIT_LOGIN", payload: data});
-                setTimeout(() => window.location.replace('/'), 5000);
+                dispatch({type: "SET_SUCCESS", payload: { header: 'Olet kirjautunut sisään'}});
+                dispatch({type: "SET_LOGGED_IN", payload: false});
+                setTimeout(() => window.location.replace('/'), 2000);
             },
             (status, err) => {
-                dispatch({type: "LOGIN_FAILED"})
+                dispatch({type: "SET_ERROR", payload: { header: 'Kirjautumistiedoissa on virhe', data: [] } })
             }
         );
     }
@@ -31,23 +28,11 @@ export function logOutAndRedirect() {
             (status, data) => {
                 dispatch({type: "SET_SUCCESS", payload: { header: 'Olet kirjautunut ulos', text: '' } });
                 dispatch({type: "SET_LOGGED_IN", payload: false});
-                setTimeout(() => window.location.reload(), 4000);
+                setTimeout(() => window.location.reload(), 2000);
             },
             (status, err) => {
                 dispatch({type: "SET_ERROR", payload: { header: 'Jotain meni vikaan', data: [] } })
             }
-        )
-    }
-}
-
-export function handleUsernameValueChange(event) {
-    return function (dispatch) {
-        dispatch({type: "USERNAME_CHANGED", payload: event.target.value});
-    }
-}
-
-export function handlePasswordValueChange(event) {
-    return function (dispatch) {
-        dispatch({type: "PASSWORD_CHANGED", payload: event.target.value});
+        );
     }
 }

@@ -7,8 +7,13 @@ RSpec.describe 'Membership Application page', js: true do
     visit '/liity'
   end
 
+  it 'is accessible from the frontpage' do
+    visit '/'
+    click_on 'Liity!'
+    expect(page).to have_current_path '/liity'
+  end
 
-  it 'should have correct static elements' do
+  it 'has correct static elements' do
     expect(page).to have_content 'Liity jäseneksi!'
     expect(page).to have_content 'Käyttäjätunnus'
     expect(page).to have_content 'Sähköpostiosoite'

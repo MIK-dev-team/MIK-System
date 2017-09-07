@@ -95,17 +95,12 @@ export function destroyReservation(res) {
 }
 
 export function massDestroyReservation(values) {
-    const newValues = {
-        ...values,
-        start: moment(values.start).toDate(),
-        end: moment(values.end).toDate()
-    };
     window.scrollTo(0, 200);
     return (dispatch) => {
         dispatch({type: "MASS_DESTROY_RESERVATION_PENDING"});
         AjaxService.post(
             '/api/v1/joukkoperu/',
-            newValues,
+            values,
             (status, data) => {
                 dispatch({type: "MASS_DESTROY_RESERVATION_FULFILLED"});
                 dispatch({type: "SET_SUCCESS", payload: { header: 'Varaukset poistettu!', text: '' }});

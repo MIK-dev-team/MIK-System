@@ -147,7 +147,7 @@ describe('CommonFunctions', () => {
         it('returns false when given end time is same as existing reservation start', () => {
             const timeSlot = {
                 start: moment().format(),
-                end: moment().add(1, 'hour').format(),
+                end: reservations[0].start,
             };
 
             expect(functions.overlappingReservationsExistForTimeSlot(timeSlot, reservations)).toBe(false);
