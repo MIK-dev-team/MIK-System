@@ -9,7 +9,7 @@ For UI-tests we have RSpec use Capybara.
 ## Testing methodology
 Most of the codebase is JS, so most of the tests are also for JS. There is not much integration in the front-end tests. The idea
 was to unit-test the front-end code well and handle integration testing with Capybara on the back-end. This way the whole testing
-suite remains relatively simple. 
+suite remains relatively simple. Test coverage is 100% on the back-end code (measured with SimpleCov) and roughly 90% on the front-end code (measured with Jest's coverage calculation).
 ### Front-end tests
 Front-end tests are in the ```__tests__``` directory. They include unit tests for React-components, redux-reducer tests,
 redux-action-dispatcher tests and seperate logic tests. 
@@ -19,3 +19,4 @@ Models and services are unit tested. Since we have an API that only serves JSON,
 There's very little business logic on the backend at this moment, since most of it is covered by models (through validation etc).
 The little logic there is, is thoroughly tested (mainly the availability notifier). Rest of the back-end tests are UI-tests,
 implemented using Capybara. 
+
