@@ -8,10 +8,8 @@ const initialState = {
     sending: false,
     sent: false,
     submitError: null,
-    reservation_type: "harraste",
     start: "",
     end: "",
-    desc: "",
     collapsed: true,
     sidebarMod: true,
 };

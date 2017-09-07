@@ -1,3 +1,12 @@
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/'
+  add_filter '/config/'
+  add_group 'Models', 'app/models'
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Services', 'app/services'
+  add_group 'Mailers', 'app/mailers'
+end
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
@@ -8,7 +17,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rspec'
 require 'capybara/poltergeist'
-require 'capybara-bootstrap-datepicker/rspec'
+require 'support/test_helpers'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -92,5 +101,8 @@ RSpec.configure do |config|
 
   Capybara.javascript_driver = :poltergeist
 
-  Capybara.raise_server_errors = false
+  Capybara.raise_server_errors = true
+
+  config.include TestHelpers::Features, type: :feature
+  config.include TestHelpers::Requests, type: :request
 end

@@ -22,5 +22,40 @@ export default combineReducers({
     notifications,
     session,
     singleReservation,
-    form: formReducer,
+    // TODO: this could be moved to another file... somehow
+    form: formReducer.plugin({
+        ReservationForm: (state, action) => {
+            switch(action.type) {
+                case "SET_TIMESLOT": {
+                    return {
+                        ...state,
+                        values: {
+                            ...state.values,
+                            start: action.payload.start,
+                            end: action.payload.end,
+                        },
+                        registeredFields: {
+                            ...state.registeredFields,
+                            start: undefined,
+                            end: undefined,
+                        }
+                    }
+                }
+                case "SELECT_PLANE": {
+                    return {
+                        ...state,
+                        values: {
+                            ...state.values,
+                            plane_id: action.payload.id,
+                        },
+                        registeredFields: {
+                            ...state.registeredFields,
+                            plane_id: undefined,
+                        }
+                    }
+                }
+            }
+            return state
+        }
+    }),
 });

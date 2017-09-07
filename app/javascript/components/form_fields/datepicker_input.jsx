@@ -16,6 +16,7 @@ export default class DatePickerInput extends React.Component {
             input,
             label,
             meta: { error, warning, touched },
+            id,
             ...props
         } = this.props;
 
@@ -27,7 +28,7 @@ export default class DatePickerInput extends React.Component {
         }
 
         return (
-            <FormGroup validationState={ validationState }>
+            <FormGroup id={id} validationState={ validationState }>
                 <ControlLabel>{ label }</ControlLabel>
                 <DatePicker
                     {...input}

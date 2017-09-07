@@ -13,6 +13,8 @@ import TimePickerInput from '../form_fields/timepicker_input';
 import DatePickerInput from '../form_fields/datepicker_input';
 import TextAreaInput from '../form_fields/textarea_input';
 import ConfirmDeleteButton from './confirm_delete_button';
+import { setReservationStart, setReservationEnd } from '../../store/actions/reservationsActions';
+import { normalizeDatePicker, normalizeTimePicker } from "../../services/normalizers/normalizers";
 
 moment.locale('fi');
 
@@ -26,14 +28,6 @@ const validate = values => {
     }
 
     return errors
-};
-
-const normalizeTimePicker = value => (value, previousValue) =>
-    moment(previousValue).startOf('day').add(value, 'seconds').format();
-
-const normalizeDatePicker = value => (value, previousValue) => {
-    const timeInSeconds = moment.duration(moment(previousValue).format('HH:mm')).asSeconds();
-    return moment(value).startOf('day').add(timeInSeconds, 'seconds').format();
 };
 
 export class ReservationEditForm extends React.Component {

@@ -13,7 +13,7 @@ export default class CalendarIndex extends React.Component {
     render() {
         return (
             <Provider store={store}>
-                <CalendarPage planes={this.props.planes}/>
+                <CalendarPage user_id={this.props.user_id} planes={this.props.planes}/>
             </Provider>
         )
     }

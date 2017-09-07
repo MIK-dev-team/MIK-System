@@ -1,6 +1,8 @@
 /**
  * Created by owlaukka on 24/08/17.
  */
+import moment from 'moment';
+
 export const required = value =>
     value ? undefined : 'Ei voi olla tyhjä'
 
@@ -27,3 +29,6 @@ export const containsAtLeast = (character, times) => value => {
     }
     return copy.replace(re, "").length < times ? `Tulee sisältää ${character} ainakin ${times} kertaa` : undefined
 };
+
+export const timeIsNotInThePast = start =>
+    moment(start).isSameOrAfter(moment())

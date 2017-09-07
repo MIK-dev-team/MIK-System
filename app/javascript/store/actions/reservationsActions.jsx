@@ -1,12 +1,15 @@
 /**
  * Created by owlaukka on 18/06/17.
  */
-import React from 'react';
-import { Button } from 'react-bootstrap';
+import { reset } from 'redux-form';
 import moment from 'moment';
 
 import AjaxService from '../../services/ajax_service';
-import { showModal } from './singleReservationActions';
+import { reservationTimeIsValid,
+    refreshReservationListOnStartChange,
+    refreshReservationListOnEndChange,
+    refreshReservationList
+} from "../../services/logic/reservationLogic";
 
 moment.locale('fi');
 
@@ -51,30 +54,18 @@ export function fetchMyReservations(plane=undefined) {
     }
 }
 
-export function submitReservation(event, start, end, plane, type, desc) {
-    event.preventDefault();
-    if (plane === undefined) {
-        return (dispatch) => {
-            // dispatch({type: "SUBMIT_RESERVATION_REJECTED", payload: "Valitse kone"});
-            dispatch({type: "SET_ERROR", payload: {header: 'Lähetysvirhe', data: ['Valitse kone']}})
-        }
-    }
-    const reservation = {
-        start: moment(start).toDate(),
-        end: moment(end).toDate(),
-        plane_id: plane.id,
-        reservation_type: type,
-        additional_info: desc,
-    };
-    return function(dispatch) {
+export function submitReservation(values) {
+    window.scrollTo(0, 200);
+    return (dispatch) => {
         dispatch({type: "SUBMIT_RESERVATION_PENDING"});
         AjaxService.post(
             '/api/v1/reservations',
-            reservation,
+            values,
             (status, data) => {
                 dispatch({type: "SUBMIT_RESERVATION_FULFILLED"});
-                dispatch({type: "RESET_NEW_RESERVATION"});
                 dispatch({type: "SET_SUCCESS", payload: { header: 'Varaus tallennettu!', text: '' }});
+                dispatch({type: "RESET_NEW_RESERVATION"});
+                dispatch(reset('ReservationForm'));
                 dispatch(fetchReservations());
             },
             (status, err) => {
@@ -86,7 +77,7 @@ export function submitReservation(event, start, end, plane, type, desc) {
 }
 
 export function destroyReservation(res) {
-    return function(dispatch) {
+    return (dispatch) => {
         dispatch({type: "DESTROY_RESERVATION_PENDING"});
         AjaxService.destroy(
             '/api/v1/reservations/' + res.id,
@@ -103,28 +94,22 @@ export function destroyReservation(res) {
     }
 }
 
-export function massDestroyReservation(event, start, end, plane, desc) {
-    event.preventDefault();
-
-    const cancellation = {
-        start: moment(start).toDate(),
-        end: moment(end).toDate(),
-        plane_id: plane.id,
-        description: desc,
-    };
-
-    return function(dispatch) {
+export function massDestroyReservation(values) {
+    window.scrollTo(0, 200);
+    return (dispatch) => {
         dispatch({type: "MASS_DESTROY_RESERVATION_PENDING"});
         AjaxService.post(
             '/api/v1/joukkoperu/',
-            cancellation,
+            values,
             (status, data) => {
                 dispatch({type: "MASS_DESTROY_RESERVATION_FULFILLED"});
                 dispatch({type: "SET_SUCCESS", payload: { header: 'Varaukset poistettu!', text: '' }});
+                dispatch({type: "RESET_NEW_RESERVATION"});
+                dispatch(reset('ReservationForm'));
                 dispatch(fetchReservations());
             },
             (status, err) => {
-                dispatch({type: "MASS_DESTROY_RESERVATION_REJECTED", payload: err})
+                dispatch({type: "MASS_DESTROY_RESERVATION_REJECTED", payload: err});
                 dispatch({type: "SET_ERROR", payload: { header: 'Poistovirhe', data: err } });
             }
         );
@@ -149,45 +134,27 @@ export function setSidebarMod(newSelect) {
     }
 }
 
-export function setReservationStart(start, reservations) {
-    let updatedReservations = refreshReservationListOnStartChange(start, reservations);
-    return (dispatch) => {
-        dispatch({type: "SET_RESERVATION_START", payload: start});
-        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
-    }
+export function setReservationStart(start, reservations, dispatch) {
+    const updatedReservations = refreshReservationListOnStartChange(start, reservations);
+    dispatch(dispatchSetReservationStart(start, updatedReservations));
 }
 
-export function setReservationEnd(end, reservations) {
-    let updatedReservations = refreshReservationListOnEndChange(end, reservations);
-    return (dispatch) => {
-        dispatch({type: "SET_RESERVATION_END", payload: end});
-        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
-    }
+export function setReservationEnd(end, reservations, dispatch) {
+    const updatedReservations = refreshReservationListOnEndChange(end, reservations);
+    dispatch(dispatchSetReservationEnd(end, updatedReservations));
 }
 
-export function changeStartTime(time, previousTime, reservations) {
-    const newTime = moment(previousTime).startOf('day').add(time, 'seconds');
-    let updatedReservations = refreshReservationListOnStartChange(newTime, reservations);
-    return (dispatch) => {
-        dispatch({type: "SET_RESERVATION_START", payload: newTime});
-        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
-    }
-}
-
-export function changeEndTime(time, previousTime, reservations) {
-    const newTime = moment(previousTime).startOf('day').add(time, 'seconds');
-    const updatedReservations = refreshReservationListOnEndChange(newTime, reservations);
-    return (dispatch) => {
-        dispatch({type: "SET_RESERVATION_END", payload: newTime});
-        dispatch({type: "SET_RESERVATIONS", payload: updatedReservations});
-    }
-}
-
-export function fillForm(timeSlot, reservations, sidebarMod) {
-    if (!timeIsValid(timeSlot, reservations, sidebarMod)) {
-        return reservations;
+export function fillForm(timeSlot, reservations, sidebarMod, dispatch) {
+    if (!reservationTimeIsValid(timeSlot, reservations, sidebarMod)) {
+        return;
     }
     let newArray = refreshReservationList(timeSlot, reservations);
+    dispatch(dispatchFillForm(timeSlot, newArray));
+}
+
+// --- LOCAL FUNCTIONS HERE ---
+
+function dispatchFillForm(timeSlot, reservations) {
     return (dispatch) => {
         dispatch({
             type: "SET_TIMESLOT",
@@ -198,92 +165,20 @@ export function fillForm(timeSlot, reservations, sidebarMod) {
         });
 
         dispatch({type: "SET_COLLAPSED", payload: false});
-        dispatch({type: "SET_RESERVATIONS", payload: newArray})
+        dispatch({type: "SET_RESERVATIONS", payload: reservations})
     };
 }
 
-export function mapReservations(reservations, dispatch) {
-    if (reservations === undefined || reservations.length === 0 || reservations[0].id === undefined) {
-        return <tr key="empty"></tr>
-    } else {
-        return reservations.map((res) =>
-            <tr key={res.id}>
-                <td onClick={() => dispatch(showModal(res))}>{res.id}</td>
-                <td onClick={() => dispatch(showModal(res))}>{moment(res.start).format('lll')}</td>
-                <td onClick={() => dispatch(showModal(res))}>{moment(res.end).format('lll')}</td>
-                <td onClick={() => dispatch(showModal(res))} >{res.plane.name}</td>
-                <td onClick={() => dispatch(showModal(res))}>{res.reservation_type}</td>
-                <td><Button onClick={() => dispatch(destroyReservation(res))} bsStyle="danger" bsSize="small">Poista</Button></td>
-            </tr>
-        )
+function dispatchSetReservationStart(start, reservations) {
+    return (dispatch) => {
+        dispatch({type: "SET_RESERVATION_START", payload: start});
+        dispatch({type: "SET_RESERVATIONS", payload: reservations});
     }
 }
 
-// --- LOCAL FUNCTIONS HERE ---
-
-function timeIsValid(timeSlot, reservations, sidebarMod) {
-    if (moment(timeSlot.start).isBefore(moment())) {
-        alert('Älä varaa aikaa menneisyydestä!');
-        return false;
+function dispatchSetReservationEnd(end, reservations) {
+    return (dispatch) => {
+        dispatch({type: "SET_RESERVATION_END", payload: end});
+        dispatch({type: "SET_RESERVATIONS", payload: reservations});
     }
-
-    for (let res of reservations) {
-      if(sidebarMod === true) {
-        if ((res.reservation_type !== 'selected' && res.reservation_type !== 'observer') &&
-            ((moment(timeSlot.end).isAfter(res.start) && moment(timeSlot.end).isSameOrBefore(res.end)) ||
-            (moment(timeSlot.start).isSameOrAfter(res.start) && moment(timeSlot.start).isBefore(res.end)) ||
-            (moment(timeSlot.start).isSameOrBefore(res.start) && moment(timeSlot.end).isSameOrAfter(res.end)))) {
-            alert("Et voi varata jo varattua aikaa");
-            return false;
-        }
-    }}
-    return true;
-}
-
-function refreshReservationListOnStartChange(start, reservations) {
-    let newArray = [];
-    for (let o of reservations) {
-        newArray.push(o);
-    }
-    if (reservations.length !== 0 &&
-        (reservations[reservations.length-1].reservation_type === 'selected'
-            || reservations[reservations.length-1].reservation_type === 'observer')) {
-        newArray[newArray.length-1].start = start;
-    }
-    return newArray;
-}
-
-function refreshReservationListOnEndChange(end, reservations) {
-    let newArray = [];
-    for (let o of reservations) {
-        newArray.push(o);
-    }
-    if (reservations.length !== 0 &&
-        (reservations[reservations.length-1].reservation_type === 'selected'
-            || reservations[reservations.length-1].reservation_type === 'observer')) {
-        newArray[newArray.length-1].end = end;
-    }
-
-    return newArray;
-}
-
-function refreshReservationList(timeSlot, reservations) {
-    let newArray = [];
-    for (let o of reservations) {
-        newArray.push(o);
-    }
-    if (reservations.length !== 0 &&
-        (reservations[reservations.length-1].title === '<valittu aika>'
-            || reservations[reservations.length-1].title === '<valittu aika tarkkailijalle>')) {
-        newArray.pop();
-    }
-
-    const res = {
-        title: "<valittu aika>",
-        start: timeSlot.start,
-        end:timeSlot.end,
-        reservation_type: 'selected',
-    };
-    newArray.push(res);
-    return newArray;
 }

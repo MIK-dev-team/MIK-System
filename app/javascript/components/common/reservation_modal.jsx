@@ -10,22 +10,26 @@ import { hideModal } from '../../store/actions/singleReservationActions';
 
 export class ReservationModal extends React.Component {
     modalBody() {
-        if (this.props.reservation === null) {
+        const { reservation } = this.props;
+        if (reservation === null) {
             return <div></div>
         } else {
             return (
                 <Modal.Body>
+                    <h4>Kone</h4>
+                    <p>{reservation.plane.name}</p>
+
                     <h4>Varauksen tyyppi</h4>
-                    <p>{this.props.reservation.reservation_type}</p>
+                    <p>{reservation.reservation_type}</p>
 
                     <h4>Alkuaika</h4>
-                    <p>{moment(this.props.reservation.start).format('LLL')}</p>
+                    <p>{moment(reservation.start).format('LLL')}</p>
 
                     <h4>Loppuaika</h4>
-                    <p>{moment(this.props.reservation.end).format('LLL')}</p>
+                    <p>{moment(reservation.end).format('LLL')}</p>
 
                     <h4>Lisätiedot</h4>
-                    <p>{this.props.reservation.additional_info}</p>
+                    <p>{reservation.additional_info}</p>
                 </Modal.Body>
             )
         }
@@ -36,17 +40,18 @@ export class ReservationModal extends React.Component {
     }
 
     render() {
+        const { showModal, dispatch, user_id, reservation } = this.props;
         return (
-            <Modal show={this.props.showModal} onHide={() => this.props.dispatch(hideModal())}>
+            <Modal show={showModal} onHide={() => dispatch(hideModal())}>
                 <Modal.Header closeButton>
                     <Modal.Title>Varauksen tiedot</Modal.Title>
                 </Modal.Header>
                 {this.modalBody()}
                 <Modal.Footer>
-                    <Button onClick={() => this.goToEditPage()}>
+                    { user_id && reservation && user_id === reservation.user.id ? <Button onClick={() => this.goToEditPage()}>
                         Muokkaa
-                    </Button>
-                    <Button onClick={() => this.props.dispatch(hideModal())}>
+                    </Button> : null }
+                    <Button onClick={() => dispatch(hideModal())}>
                         Pienennä
                     </Button>
                 </Modal.Footer>
@@ -59,5 +64,7 @@ export default connect((store) => {
     return {
         showModal: store.singleReservation.showModal,
         reservation: store.singleReservation.reservation,
+        logged: store.session.loggedIn,
+        user_id: store.session.user_id,
     }
 })(ReservationModal)

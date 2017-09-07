@@ -31,7 +31,7 @@ class Reservation < ApplicationRecord
   end
 
   def start_date_before_end_date
-    if self.start > self.end
+    if not self.start.nil? and not self.end.nil? and self.start > self.end
       errors.add(:end, 'tulee olla aloituksen jälkeen')
     end
   end
