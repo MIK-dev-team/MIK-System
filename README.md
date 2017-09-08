@@ -14,6 +14,6 @@ deployed using Docker.
 
 If you need to change Dockerfile or Gemfile run docker-compile build
 
-Detailed development instructions can be found in the ```Docs```
+Detailed development instructions can be found in the ```docs```
 
 ### Previous backlog: https://tree.taiga.io/project/owlaukka-mik-system/backlog
